@@ -1,6 +1,6 @@
 ﻿namespace PipelineML
 {
-    partial class Form1
+    partial class frmMain
     {
         /// <summary>
         /// Required designer variable.
@@ -28,12 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.btnTest = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(13, 13);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(108, 31);
+            this.btnTest.TabIndex = 0;
+            this.btnTest.Text = "button1";
+            this.btnTest.UseVisualStyleBackColor = true;
+            // 
+            // frmMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(513, 455);
+            this.Controls.Add(this.btnTest);
+            this.Name = "frmMain";
+            this.Text = "Pipeline ML";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnTest;
     }
 }
 
