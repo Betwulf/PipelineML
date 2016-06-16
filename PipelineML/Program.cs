@@ -18,5 +18,6 @@ namespace PipelineML
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmMain());
         }
+
     }
 }
