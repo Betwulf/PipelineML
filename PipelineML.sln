@@ -5,12 +5,12 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineML", "PipelineML\PipelineML.csproj", "{F2B635EB-88C9-4B86-BCDC-2D80A4D4751F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineMLInterfaces", "PipelineMLInterfaces\PipelineMLInterfaces.csproj", "{4423E3F4-37A8-4532-ABDB-9A62C030F70C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0E481137-A1AE-41BB-9129-90EF19196A3E}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineMLCore", "PipelineMLCore\PipelineMLCore.csproj", "{7C910241-6BA7-4BF7-9B9C-B546C09C735F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{F2B635EB-88C9-4B86-BCDC-2D80A4D4751F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2B635EB-88C9-4B86-BCDC-2D80A4D4751F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2B635EB-88C9-4B86-BCDC-2D80A4D4751F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4423E3F4-37A8-4532-ABDB-9A62C030F70C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4423E3F4-37A8-4532-ABDB-9A62C030F70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4423E3F4-37A8-4532-ABDB-9A62C030F70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4423E3F4-37A8-4532-ABDB-9A62C030F70C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C910241-6BA7-4BF7-9B9C-B546C09C735F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C910241-6BA7-4BF7-9B9C-B546C09C735F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C910241-6BA7-4BF7-9B9C-B546C09C735F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C910241-6BA7-4BF7-9B9C-B546C09C735F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
