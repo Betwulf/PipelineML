@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PipelineMLInterfaces
+namespace PipelineMLCore
 {
     public interface IRawDatasetGenerator
     {
         IRawDatasetDescriptor DatasetDescription { get; set; }
 
-        public int MyProperty { get; set; }
+        ConfigBase Config { get; set; }
+
+        void Configure(string jsonConfig);
 
         IRawDataset Generate();
     }

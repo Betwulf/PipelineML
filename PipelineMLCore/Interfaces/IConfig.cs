@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IRawDatasetDescriptor
+    public interface IConfig
     {
         string Name { get; set; }
-
-        List<DataColumn> ColumnNames { get; set; }
-
 
     }
 }

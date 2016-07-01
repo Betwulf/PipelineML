@@ -1,4 +1,4 @@
-﻿namespace PipelineMLInterfaces
+﻿namespace PipelineMLCore
 {
     public class PipelineResults
     {

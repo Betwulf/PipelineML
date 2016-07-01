@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IRawDatasetDescriptor
+    public class RawDatasetGeneratorFactory
     {
-        string Name { get; set; }
-
-        List<DataColumn> ColumnNames { get; set; }
-
-
+        public RawDatasetGeneratorFactory(IConfig config)
+        {
+        }
     }
 }
