@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace PipelineMLCore
     {
         public PipelineDefinition Definition { get; set; }
 
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public IRawDatasetGenerator DatasetGenerator { get; set; }
 
         public Queue<IDataTransform> PreprocessDataTransforms { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,11 @@ namespace PipelineMLCore
 {
     public class RawDatasetGeneratorYahoo : IRawDatasetGenerator
     {
+        public string Name { get; set; }
+
         public IRawDatasetDescriptor DatasetDescription { get; set; }
 
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public RawDatasetConfigYahooMarketData Config { get; set; }
 
         
@@ -22,9 +26,13 @@ namespace PipelineMLCore
         public void Configure(string json)
         {
             Config = JsonConvert.DeserializeObject<RawDatasetConfigYahooMarketData>(json);
+            Name = Config.Name;
         }
 
-
+        public override string ToString()
+        {
+            return Name;
+        }
 
         public IRawDataset Generate()
         {

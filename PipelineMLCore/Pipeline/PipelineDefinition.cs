@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PipelineMLCore
 {
     public class PipelineDefinition : ConfigBase
     {
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public TypeDefinition DatasetGenerator { get; set; }
 
         public Queue<TypeDefinition> PreprocessDataTransforms { get; set; }

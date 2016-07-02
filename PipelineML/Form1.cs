@@ -26,6 +26,7 @@ namespace PipelineML
         {
             string[] stocks = new string[] { "SCTY", "SPY", "GOOG", "NFLX" };
             var dsg = new RawDatasetGeneratorYahoo();
+            dsg.DatasetDescription = new DatasetDescriptor();
             dsg.Config.Name = "Yahoo Market Data";
             dsg.Config.Symbols.AddRange(stocks);
             dsg.Config.StartDate = DateTime.Parse("1/1/2010");
@@ -33,6 +34,7 @@ namespace PipelineML
             var cfg = dsg.Config.ToJSON();
 
             var pd = new PipelineDefinition();
+            pd.Name = "Test";
             pd.DatasetGenerator = new TypeDefinition();
             pd.DatasetGenerator.ClassConfig = cfg;
             pd.DatasetGenerator.ClassType = dsg.GetType();
@@ -47,7 +49,7 @@ namespace PipelineML
             string pdJson = File.ReadAllText(pdJsonFilename);
             PipelineDefinition pd = ConfigBase.FromJSON(pdJson, typeof(PipelineDefinition)) as PipelineDefinition;
             var pi = pd.CreateInstance();
-            prpGrid.SelectedObject = pi.DatasetGenerator;
+            prpGrid.SelectedObject = pi;
         }
     }
 }
