@@ -10,9 +10,9 @@ namespace PipelineMLCore
     {
         string Name { get; set; }
 
-        IRawDatasetDescriptor DatasetDescription { get; set; }
-
         void Configure(string jsonConfig);
+
+        IRawDatasetDescriptor DatasetDescription { get; set; }
 
         IRawDataset Generate();
     }

@@ -6,9 +6,12 @@ namespace PipelineMLCore
 {
     public class PipelineDefinition : ConfigBase
     {
+
+        public string RootFolder { get; set; }
+
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public TypeDefinition DatasetGenerator { get; set; }
-
+        
         public Queue<TypeDefinition> PreprocessDataTransforms { get; set; }
 
         public List<TypeDefinition> MLList { get; set; }

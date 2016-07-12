@@ -5,3 +5,5 @@ PipelineML is a C# project designed to help manage the machine learning process.
 cleaning, testing out various machine learning parameters, training, measuring, post-processing data steps, success, and analytics. It is often hard to keep track of all the experiments parameters and what made them different. 
 
 This codebase aims to manage the auditing and processing of your ML experiments so that you can focus on the problem at hand.
+
+(edited with https://stackedit.io/editor)

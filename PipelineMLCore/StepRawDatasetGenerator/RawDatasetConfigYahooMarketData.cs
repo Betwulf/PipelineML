@@ -10,6 +10,7 @@ namespace PipelineMLCore
 {
     public class RawDatasetConfigYahooMarketData : ConfigBase
     {
+        public string SubFolder { get; set; }
 
         public DateTime StartDate { get; set; }
 

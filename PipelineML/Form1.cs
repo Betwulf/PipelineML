@@ -31,25 +31,51 @@ namespace PipelineML
             dsg.Config.Symbols.AddRange(stocks);
             dsg.Config.StartDate = DateTime.Parse("1/1/2010");
             dsg.Config.EndDate = DateTime.Parse("1/1/2016");
-            var cfg = dsg.Config.ToJSON();
+            var dsgCfg = dsg.Config.ToJSON();
+
+            var transformCfg = GetDataTransformConfig();
 
             var pd = new PipelineDefinition();
             pd.Name = "Test";
             pd.DatasetGenerator = new TypeDefinition();
-            pd.DatasetGenerator.ClassConfig = cfg;
+            pd.DatasetGenerator.ClassConfig = dsgCfg;
             pd.DatasetGenerator.ClassType = dsg.GetType();
-            var jsonPD = pd.ToJSON();
+            var tdpreprocess = new TypeDefinition() { ClassConfig = transformCfg, ClassType = typeof(DataTransformRemoveColumns) };
+            pd.PreprocessDataTransforms.Enqueue(tdpreprocess);
+            var jsonPD = dsg.Config.ToJSON();
 
-            File.WriteAllText(pdJsonFilename, jsonPD);
+            IDataTransform remove = (IDataTransform)Activator.CreateInstance(tdpreprocess.ClassType);
 
+            remove.Configure(tdpreprocess.ClassConfig);
+            prpGrid.SelectedObject = remove;
+
+            //File.WriteAllText(pdJsonFilename, jsonPD);
+
+        }
+
+        string GetDataTransformConfig()
+        {
+            var remove = new DataTransformRemoveColumns();
+            remove.Config.ColumnNames.Add(new PipelineMLCore.DataColumn() { DataType = typeof(System.String), Description = "",
+                Id = 1, IsFeature = true, IsLabel = false, Name = "ID" });
+            remove.Config.Name = "Remove ID";
+            var configString = remove.Config.ToJSON();
+            return configString;
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            string pdJson = File.ReadAllText(pdJsonFilename);
-            PipelineDefinition pd = ConfigBase.FromJSON(pdJson, typeof(PipelineDefinition)) as PipelineDefinition;
-            var pi = pd.CreateInstance();
-            prpGrid.SelectedObject = pi;
+            string configJson = File.ReadAllText(pdJsonFilename);
+            RawDatasetConfigYahooMarketData yahooConfig = ConfigBase.FromJSON(configJson, typeof(RawDatasetConfigYahooMarketData)) as RawDatasetConfigYahooMarketData;
+            prpGrid.SelectedObject = yahooConfig;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            RawDatasetConfigYahooMarketData pd = prpGrid.SelectedObject as RawDatasetConfigYahooMarketData;
+            var jsonPD = pd.ToJSON();
+            File.WriteAllText(pdJsonFilename, jsonPD);
+
         }
     }
 }

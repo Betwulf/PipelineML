@@ -48,9 +48,12 @@
   <ItemGroup>
     <Compile Include="Base\DataColumn.cs" />
     <Compile Include="Base\DatasetDescriptor.cs" />
+    <Compile Include="Base\RawDatasetBase.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Config\ConfigBase.cs" />
-    <Compile Include="Config\RawDatasetConfigYahooMarketData.cs" />
+    <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
+    <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
+    <Compile Include="StepRawDatasetGenerator\RawDatasetConfigYahooMarketData.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Interfaces\IConfig.cs" />
     <Compile Include="Interfaces\IRawDatasetGeneratorConfig.cs" />
@@ -66,7 +69,7 @@
     <Compile Include="Pipeline\PipelineInstance.cs" />
     <Compile Include="Pipeline\PipelineResults.cs" />
     <Compile Include="Pipeline\PipelineRun.cs" />
-    <Compile Include="Pipeline\RawDatasetGeneratorYahoo.cs" />
+    <Compile Include="StepRawDatasetGenerator\RawDatasetGeneratorYahoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

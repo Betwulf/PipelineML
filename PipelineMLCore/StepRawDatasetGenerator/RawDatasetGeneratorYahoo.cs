@@ -23,9 +23,9 @@ namespace PipelineMLCore
             Config = new RawDatasetConfigYahooMarketData();
         }
 
-        public void Configure(string json)
+        public void Configure(string jsonConfig)
         {
-            Config = JsonConvert.DeserializeObject<RawDatasetConfigYahooMarketData>(json);
+            Config = JsonConvert.DeserializeObject<RawDatasetConfigYahooMarketData>(jsonConfig);
             Name = Config.Name;
         }
 
