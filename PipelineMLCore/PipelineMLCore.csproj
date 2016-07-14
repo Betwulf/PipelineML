@@ -51,6 +51,9 @@
     <Compile Include="Base\RawDatasetBase.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Config\ConfigBase.cs" />
+    <Compile Include="Helpers\SearchClasses.cs" />
+    <Compile Include="Interfaces\IPipelinePart.cs" />
+    <Compile Include="Interfaces\ISearchableClass.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
     <Compile Include="StepRawDatasetGenerator\RawDatasetConfigYahooMarketData.cs" />

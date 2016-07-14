@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class RawDatasetGeneratorYahoo : IRawDatasetGenerator
+    public class RawDatasetGeneratorYahoo : IRawDatasetGenerator, ISearchableClass
     {
         public string Name { get; set; }
 
         public IRawDatasetDescriptor DatasetDescription { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public RawDatasetConfigYahooMarketData Config { get; set; }
+        public ConfigBase Config { get; set; }
 
-        
+        public string FriendlyName { get { return "Yahoo Data Generator"; } }
+        public string Description { get { return "Will call and cache security information from Yahoo"; } }
+
+
         public RawDatasetGeneratorYahoo()
         {
             Config = new RawDatasetConfigYahooMarketData();

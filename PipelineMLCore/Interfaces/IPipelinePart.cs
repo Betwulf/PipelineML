@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IRawDatasetGenerator
+    public interface IPipelinePart
     {
         string Name { get; set; }
+
 
         void Configure(string jsonConfig);
 
         ConfigBase Config { get; set; }
 
-        IRawDatasetDescriptor DatasetDescription { get; set; }
-
-        IRawDataset Generate();
     }
 }

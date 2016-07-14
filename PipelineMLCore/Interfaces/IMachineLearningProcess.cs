@@ -1,6 +1,7 @@
 ﻿namespace PipelineMLCore
 {
-    public interface IMachineLearningProcess
+    public interface IMachineLearningProcess : IPipelinePart
     {
+
     }
 }

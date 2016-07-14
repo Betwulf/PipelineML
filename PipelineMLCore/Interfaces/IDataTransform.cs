@@ -1,10 +1,8 @@
 ﻿namespace PipelineMLCore
 {
-    public interface IDataTransform
+    public interface IDataTransform : IPipelinePart
     {
         string Name { get; set; }
-
-        void Configure(string jsonConfig);
 
         IRawDataset Transform(IRawDataset datasetIn);
     }

@@ -32,6 +32,7 @@
             this.btnOpen = new System.Windows.Forms.Button();
             this.prpGrid = new System.Windows.Forms.PropertyGrid();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnLaunchEditor = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTest
@@ -74,11 +75,22 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // btnLaunchEditor
+            // 
+            this.btnLaunchEditor.Location = new System.Drawing.Point(13, 124);
+            this.btnLaunchEditor.Name = "btnLaunchEditor";
+            this.btnLaunchEditor.Size = new System.Drawing.Size(108, 31);
+            this.btnLaunchEditor.TabIndex = 4;
+            this.btnLaunchEditor.Text = "Edit...";
+            this.btnLaunchEditor.UseVisualStyleBackColor = true;
+            this.btnLaunchEditor.Click += new System.EventHandler(this.btnLaunchEditor_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 455);
+            this.Controls.Add(this.btnLaunchEditor);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.prpGrid);
             this.Controls.Add(this.btnOpen);
@@ -95,6 +107,7 @@
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.PropertyGrid prpGrid;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnLaunchEditor;
     }
 }
 

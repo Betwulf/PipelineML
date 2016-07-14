@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DataTransformRemoveColumns : IDataTransform
+    public class DataTransformRemoveColumns : IDataTransform, ISearchableClass
     {
         public string Name { get; set; }
 
+        public string FriendlyName { get { return "Remove Columns Data Transform"; } }
+        public string Description { get { return "Will remove selected columns from the dataset"; } }
+
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public DataTransformConfigColumns Config { get; set; }
+        public ConfigBase Config { get; set; }
 
         public DataTransformRemoveColumns()
         {
@@ -28,7 +31,8 @@ namespace PipelineMLCore
 
         public IRawDataset Transform(IRawDataset datasetIn)
         {
-            foreach (var col in Config.ColumnNames)
+            var realConfig = Config as DataTransformConfigColumns;
+            foreach (var col in realConfig.ColumnNames)
             {
                 datasetIn.Descriptor.ColumnNames.RemoveAll(x => x.Name == col.Name);
                 for (int i = datasetIn.Table.Columns.Count-1; i >= 0; i--)
