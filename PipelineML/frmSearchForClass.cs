@@ -39,7 +39,7 @@ namespace PipelineML
                 {
                     foreach (Type iDataSourceType in TypeList)
                     {
-                        if (lvwClasses.SelectedItems[0].Tag == iDataSourceType)
+                        if (lvwClasses.SelectedItems[0].Tag == iDataSourceType as object)
                         {
                             return iDataSourceType;
                         }

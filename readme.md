@@ -6,4 +6,15 @@ cleaning, testing out various machine learning parameters, training, measuring, 
 
 This codebase aims to manage the auditing and processing of your ML experiments so that you can focus on the problem at hand.
 
+Serializable template that can create a Pipeline Instance. Should contain all the types and configuration 
+that define a pipeline, with an end step to simulate.
+
+1) Dataset Generator
+2) Preprocess Data Transforms
+3) Machine Learning Algorithim collection (all can run in parallel on the preprocessed data)
+4) Postprocess Data Tranforms
+5) Evaluators - this will compare the effectiveness of the various machine learning algorithms relative to each other / or absolute.
+6) Trade Simulation - Step to specifically go run a simulation with the trained machine learning algorithm
+
+
 (edited with https://stackedit.io/editor)

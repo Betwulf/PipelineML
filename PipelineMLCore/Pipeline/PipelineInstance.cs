@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
+    /// <summary>
+    /// An instance pipeline as defined by a PipelineDefinition - see that class for more info.
+    /// </summary>
     public class PipelineInstance : ConfigBase
     {
         public string InstanceID { get; set; }

@@ -50,17 +50,18 @@
     <Compile Include="Base\DatasetDescriptor.cs" />
     <Compile Include="Base\RawDatasetBase.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
-    <Compile Include="Config\ConfigBase.cs" />
+    <Compile Include="Base\ConfigBase.cs" />
+    <Compile Include="Helpers\ExtendCalculations.cs" />
     <Compile Include="Helpers\SearchClasses.cs" />
     <Compile Include="Interfaces\IPipelinePart.cs" />
     <Compile Include="Interfaces\ISearchableClass.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
+    <Compile Include="StepRawDatasetGenerator\RawDatasetConfigQuandlMarketData.cs" />
     <Compile Include="StepRawDatasetGenerator\RawDatasetConfigYahooMarketData.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Interfaces\IConfig.cs" />
     <Compile Include="Interfaces\IRawDatasetGeneratorConfig.cs" />
-    <Compile Include="Factories\RawDatasetGeneratorFactory.cs" />
     <Compile Include="Interfaces\IDataTransform.cs" />
     <Compile Include="Interfaces\IEvaluator.cs" />
     <Compile Include="Interfaces\IMachineLearningProcess.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Pipeline\PipelineInstance.cs" />
     <Compile Include="Pipeline\PipelineResults.cs" />
     <Compile Include="Pipeline\PipelineRun.cs" />
+    <Compile Include="StepRawDatasetGenerator\RawDatasetGeneratorQuandl.cs" />
     <Compile Include="StepRawDatasetGenerator\RawDatasetGeneratorYahoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

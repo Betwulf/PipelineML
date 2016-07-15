@@ -33,6 +33,7 @@
             this.prpGrid = new System.Windows.Forms.PropertyGrid();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLaunchEditor = new System.Windows.Forms.Button();
+            this.lblTest = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnTest
@@ -85,11 +86,22 @@
             this.btnLaunchEditor.UseVisualStyleBackColor = true;
             this.btnLaunchEditor.Click += new System.EventHandler(this.btnLaunchEditor_Click);
             // 
+            // lblTest
+            // 
+            this.lblTest.AutoSize = true;
+            this.lblTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTest.Location = new System.Drawing.Point(127, 17);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(40, 20);
+            this.lblTest.TabIndex = 5;
+            this.lblTest.Text = "Test";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 455);
+            this.Controls.Add(this.lblTest);
             this.Controls.Add(this.btnLaunchEditor);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.prpGrid);
@@ -98,6 +110,7 @@
             this.Name = "frmMain";
             this.Text = "Pipeline ML";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -108,6 +121,7 @@
         private System.Windows.Forms.PropertyGrid prpGrid;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLaunchEditor;
+        private System.Windows.Forms.Label lblTest;
     }
 }
 

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
+    /// <summary>
+    /// This class assists with the display of string lists separated by commas when using a win form property grid
+    /// </summary>
     public class CsvConverter : TypeConverter
     {
         // Overrides the ConvertTo method of TypeConverter.

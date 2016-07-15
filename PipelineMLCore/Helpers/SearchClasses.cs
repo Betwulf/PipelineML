@@ -8,6 +8,11 @@ using System.Linq;
 
 namespace PipelineMLCore
 {
+    /// <summary>
+    /// This class allows the user to generically search for any class that 
+    /// implements ISearchableClass plus an interface of their choice. 
+    /// Uses reflection, not fast.
+    /// </summary>
     public static class SearchClasses
     {
         static bool SearchDirectory = false; // TODO: TURN OFF FOR NOW, enable later when you want to pursue add on libraries
