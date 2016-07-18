@@ -103,6 +103,10 @@
       <Project>{7c910241-6ba7-4bf7-9b9c-b546c09c735f}</Project>
       <Name>PipelineMLCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PipelineMLShared\PipelineMLShared.csproj">
+      <Project>{7124dff2-87ba-486d-bc09-53e97e7bad9a}</Project>
+      <Name>PipelineMLShared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icons\document.ico" />

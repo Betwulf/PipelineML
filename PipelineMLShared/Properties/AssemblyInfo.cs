@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PipelineMLInterfaces")]
+[assembly: AssemblyTitle("PipelineMLShared")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PipelineMLInterfaces")]
+[assembly: AssemblyProduct("PipelineMLShared")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4423e3f4-37a8-4532-abdb-9a62c030f70c")]
+[assembly: Guid("7124dff2-87ba-486d-bc09-53e97e7bad9a")]
 
 // Version information for an assembly consists of the following four values:
 //
