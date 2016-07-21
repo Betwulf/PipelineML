@@ -54,19 +54,18 @@ namespace PipelineMLCore
 
         public IRawDataset Generate(Action<string> updateMessage)
         {
-            var dsd = new DatasetDescriptor();
-            dsd.Name = "Yahoo Financial Market Data";
-            dsd.ColumnNames.Add(new DataColumn() { Id = 1, Name = "Ticker", DataType = typeof(string), Description = "The stock ticker", IsFeature = false, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 2, Name = "Date", DataType = typeof(DateTime), Description = "Date of the prices", IsFeature = false, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 3, Name = "Adjusted Close", DataType = typeof(decimal), Description = "Adjusted Close", IsFeature = true, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 4, Name = "Close", DataType = typeof(decimal), Description = "Close", IsFeature = true, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 5, Name = "High", DataType = typeof(decimal), Description = "High", IsFeature = true, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 6, Name = "Open", DataType = typeof(decimal), Description = "Open", IsFeature = true, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 7, Name = "Low", DataType = typeof(decimal), Description = "Low", IsFeature = true, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 8, Name = "Volume", DataType = typeof(int), Description = "Volume", IsFeature = true, IsLabel = false });
-            dsd.ColumnNames.Add(new DataColumn() { Id = 9, Name = "Source", DataType = typeof(int), Description = "Source of the Data", IsFeature = false, IsLabel = false });
-
-            var ds = new RawDatasetBase(dsd);
+            DatasetDescription = new DatasetDescriptor();
+            DatasetDescription.Name = "Yahoo Financial Market Data";
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 1, Name = "Ticker", DataType = typeof(string), Description = "The stock ticker", IsFeature = false, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 2, Name = "Date", DataType = typeof(DateTime), Description = "Date of the prices", IsFeature = false, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 3, Name = "Adjusted Close", DataType = typeof(decimal), Description = "Adjusted Close", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 4, Name = "Close", DataType = typeof(decimal), Description = "Close", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 5, Name = "High", DataType = typeof(decimal), Description = "High", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 6, Name = "Open", DataType = typeof(decimal), Description = "Open", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 7, Name = "Low", DataType = typeof(decimal), Description = "Low", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 8, Name = "Volume", DataType = typeof(int), Description = "Volume", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 9, Name = "Source", DataType = typeof(string), Description = "Source of the Data", IsFeature = false, IsLabel = false });
+            var ds = new RawDatasetBase(DatasetDescription);
 
             var dates = GetTimeSegmentsFromConfig();
             var allData = new List<YahooMarketData>();
@@ -221,7 +220,7 @@ namespace PipelineMLCore
                 row["Low"] = x.Low;
                 row["Volume"] = x.Volume;
                 row["Source"] = "Yahoo";
-
+                dt.Table.Rows.Add(row);
             });
             return dt;
         }

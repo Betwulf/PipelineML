@@ -85,5 +85,20 @@ namespace PipelineML
             var frmEdit = new frmEditPipelineDefinition();
             frmEdit.Show(this);
         }
+
+        private void btnTestDataGen_Click(object sender, EventArgs e)
+        {
+            var cfg = new RawDatasetConfigYahooMarketData();
+            cfg.StartDate = DateTime.Parse("2015/01/02");
+            cfg.EndDate = DateTime.Parse("2016/07/01");
+            cfg.SubFolder = "yahoo\\";
+            cfg.Symbols = new List<string>() { "MSFT", "SCTY" };
+            cfg.Name = "Test";
+
+            var dgy = new RawDatasetGeneratorYahoo();
+            dgy.Configure("C:\\Temp\\Test\\", cfg.ToJSON());
+            var result = dgy.Generate(Console.WriteLine);
+            prpGrid.SelectedObject = result.Table.Rows[0];
+        }
     }
 }
