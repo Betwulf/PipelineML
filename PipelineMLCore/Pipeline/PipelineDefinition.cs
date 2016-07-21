@@ -17,7 +17,7 @@ namespace PipelineMLCore
     public class PipelineDefinition : ConfigBase
     {
 
-        public string RootFolder { get; set; }
+        public string RootDirectory { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public TypeDefinition DatasetGenerator { get; set; }
@@ -46,14 +46,14 @@ namespace PipelineMLCore
 
             // hydrate params
             pi.Name = Name;
-            pi.RootFolder = RootFolder;
+            pi.RootDirectory = RootDirectory;
 
 
             // hydrate dataset generator
             if (DatasetGenerator != null)
             {
                 pi.DatasetGenerator = Activator.CreateInstance(DatasetGenerator.ClassType) as IRawDatasetGenerator;
-                pi.DatasetGenerator.Configure(DatasetGenerator.ClassConfig);
+                pi.DatasetGenerator.Configure(RootDirectory, DatasetGenerator.ClassConfig);
             }
 
             // hydrate preprocess data transforms

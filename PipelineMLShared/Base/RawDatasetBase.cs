@@ -11,9 +11,16 @@ namespace PipelineMLCore.Base
     {
         public IRawDatasetDescriptor Descriptor { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get { return Table?.TableName ; } }
 
         public DataTable Table { get; set; }
+
+        public RawDatasetBase(IRawDatasetDescriptor descriptor)
+        {
+            Descriptor = descriptor;
+            Table = new DataTable(Descriptor.Name);
+            Descriptor.ColumnNames.ForEach(x => Table.Columns.Add(x.Name, x.DataType));
+        }
 
     }
 }

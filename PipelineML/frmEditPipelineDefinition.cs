@@ -43,7 +43,7 @@ namespace PipelineML
                 PipelineInst = PipelineDef.CreateInstance();
             }
             txtName.Text = PipelineDef.Name;
-            txtRoot.Text = PipelineDef.RootFolder;
+            txtRoot.Text = PipelineDef.RootDirectory;
         }
         public bool GetSaveFilenameFromUser(out string filename)
         {
@@ -108,7 +108,7 @@ namespace PipelineML
 
         private void txtRoot_TextChanged(object sender, EventArgs e)
         {
-            PipelineInst.RootFolder = txtRoot.Text;
+            PipelineInst.RootDirectory = txtRoot.Text;
         }
     }
 }

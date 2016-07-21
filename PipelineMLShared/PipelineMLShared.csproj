@@ -47,12 +47,13 @@
     <Compile Include="Base\ConfigBase.cs" />
     <Compile Include="Base\DataColumn.cs" />
     <Compile Include="Base\DatasetDescriptor.cs" />
+    <Compile Include="Base\JsonRepository.cs" />
     <Compile Include="Base\RawDatasetBase.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Helpers\ExtendCalculations.cs" />
     <Compile Include="Helpers\SearchClasses.cs" />
-    <Compile Include="Interfaces\IConfig.cs" />
+    <Compile Include="Interfaces\INamed.cs" />
     <Compile Include="Interfaces\IDataTransform.cs" />
     <Compile Include="Interfaces\IEvaluator.cs" />
     <Compile Include="Interfaces\IMachineLearningProcess.cs" />

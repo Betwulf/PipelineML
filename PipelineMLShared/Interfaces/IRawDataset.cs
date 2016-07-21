@@ -9,7 +9,7 @@ namespace PipelineMLCore
 {
     public interface IRawDataset
     {
-        string Name { get; set; }
+        string Name { get; }
 
         IRawDatasetDescriptor Descriptor { get; set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IConfig
+    public interface INamed
     {
         string Name { get; set; }
 

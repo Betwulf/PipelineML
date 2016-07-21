@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class ConfigBase : IConfig
+    public class ConfigBase : INamed
     {
         public string Name { get; set; }
 

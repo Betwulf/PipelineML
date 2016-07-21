@@ -29,7 +29,7 @@ namespace PipelineMLCore
 
             // Base params
             pd.Name = Name;
-            pd.RootFolder = RootFolder;
+            pd.RootDirectory = RootDirectory;
 
             // Dataset Gen
             pd.DatasetGenerator = new TypeDefinition();
@@ -54,7 +54,7 @@ namespace PipelineMLCore
 
         }
 
-        public string RootFolder { get; set; }
+        public string RootDirectory { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public IRawDatasetGenerator DatasetGenerator { get; set; }

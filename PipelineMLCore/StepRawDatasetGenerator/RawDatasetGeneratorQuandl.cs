@@ -26,7 +26,7 @@ namespace PipelineMLCore
             Config = new RawDatasetConfigQuandlMarketData();
         }
 
-        public void Configure(string jsonConfig)
+        public void Configure(string RootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<RawDatasetConfigQuandlMarketData>(jsonConfig);
             Name = Config.Name;
@@ -37,7 +37,7 @@ namespace PipelineMLCore
             return Name;
         }
 
-        public IRawDataset Generate()
+        public IRawDataset Generate(Action<string> updateMessage)
         {
             return null;
         }
