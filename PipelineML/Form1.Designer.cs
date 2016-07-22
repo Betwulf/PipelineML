@@ -34,8 +34,6 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLaunchEditor = new System.Windows.Forms.Button();
             this.lblTest = new System.Windows.Forms.Label();
-            this.btnTestDataGen = new System.Windows.Forms.Button();
-            this.btnTestWebsiteCSV = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnTest
@@ -98,33 +96,11 @@
             this.lblTest.TabIndex = 5;
             this.lblTest.Text = "Test";
             // 
-            // btnTestDataGen
-            // 
-            this.btnTestDataGen.Location = new System.Drawing.Point(13, 161);
-            this.btnTestDataGen.Name = "btnTestDataGen";
-            this.btnTestDataGen.Size = new System.Drawing.Size(107, 31);
-            this.btnTestDataGen.TabIndex = 6;
-            this.btnTestDataGen.Text = "Test Data Gen";
-            this.btnTestDataGen.UseVisualStyleBackColor = true;
-            this.btnTestDataGen.Click += new System.EventHandler(this.btnTestDataGen_Click);
-            // 
-            // btnTestWebsiteCSV
-            // 
-            this.btnTestWebsiteCSV.Location = new System.Drawing.Point(13, 198);
-            this.btnTestWebsiteCSV.Name = "btnTestWebsiteCSV";
-            this.btnTestWebsiteCSV.Size = new System.Drawing.Size(107, 31);
-            this.btnTestWebsiteCSV.TabIndex = 7;
-            this.btnTestWebsiteCSV.Text = "Test CSV";
-            this.btnTestWebsiteCSV.UseVisualStyleBackColor = true;
-            this.btnTestWebsiteCSV.Click += new System.EventHandler(this.btnTestWebsiteCSV_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 455);
-            this.Controls.Add(this.btnTestWebsiteCSV);
-            this.Controls.Add(this.btnTestDataGen);
             this.Controls.Add(this.lblTest);
             this.Controls.Add(this.btnLaunchEditor);
             this.Controls.Add(this.btnSave);
@@ -146,8 +122,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLaunchEditor;
         private System.Windows.Forms.Label lblTest;
-        private System.Windows.Forms.Button btnTestDataGen;
-        private System.Windows.Forms.Button btnTestWebsiteCSV;
     }
 }
 

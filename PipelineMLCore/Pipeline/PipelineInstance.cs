@@ -21,6 +21,7 @@ namespace PipelineMLCore
             PreprocessDataTransforms = new List<IDataTransform>();
             MLList = new List<IMachineLearningProcess>();
             PostprocessDataTransforms = new List<IDataTransform>();
+            Evaluators = new List<IEvaluator>();
         }
 
         public PipelineDefinition CreateDefinition()

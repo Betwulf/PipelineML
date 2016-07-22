@@ -44,8 +44,6 @@
             this.lblPostprocess = new System.Windows.Forms.Label();
             this.flwEvaluate = new System.Windows.Forms.FlowLayoutPanel();
             this.lblEvaluate = new System.Windows.Forms.Label();
-            this.flwTradesim = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblTradesim = new System.Windows.Forms.Label();
             this.prpGrid = new System.Windows.Forms.PropertyGrid();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -59,7 +57,6 @@
             this.flwML.SuspendLayout();
             this.flwPostprocess.SuspendLayout();
             this.flwEvaluate.SuspendLayout();
-            this.flwTradesim.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblPreProcessTransforms
@@ -130,6 +127,7 @@
             this.btnAddPreprocessTransform.TabIndex = 4;
             this.btnAddPreprocessTransform.Text = "Add...";
             this.btnAddPreprocessTransform.UseVisualStyleBackColor = true;
+            this.btnAddPreprocessTransform.Click += new System.EventHandler(this.btnAddPreprocessTransform_Click);
             // 
             // btnEditPreprocessTransform
             // 
@@ -139,6 +137,7 @@
             this.btnEditPreprocessTransform.TabIndex = 5;
             this.btnEditPreprocessTransform.Text = "Edit...";
             this.btnEditPreprocessTransform.UseVisualStyleBackColor = true;
+            this.btnEditPreprocessTransform.Click += new System.EventHandler(this.btnEditPreprocessTransform_Click);
             // 
             // flwMain
             // 
@@ -150,7 +149,6 @@
             this.flwMain.Controls.Add(this.flwML);
             this.flwMain.Controls.Add(this.flwPostprocess);
             this.flwMain.Controls.Add(this.flwEvaluate);
-            this.flwMain.Controls.Add(this.flwTradesim);
             this.flwMain.Location = new System.Drawing.Point(12, 39);
             this.flwMain.Name = "flwMain";
             this.flwMain.Size = new System.Drawing.Size(404, 648);
@@ -206,27 +204,9 @@
             this.lblEvaluate.AutoSize = true;
             this.lblEvaluate.Location = new System.Drawing.Point(3, 0);
             this.lblEvaluate.Name = "lblEvaluate";
-            this.lblEvaluate.Size = new System.Drawing.Size(61, 13);
+            this.lblEvaluate.Size = new System.Drawing.Size(69, 13);
             this.lblEvaluate.TabIndex = 1;
-            this.lblEvaluate.Text = "5) Evaluate";
-            // 
-            // flwTradesim
-            // 
-            this.flwTradesim.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flwTradesim.Controls.Add(this.lblTradesim);
-            this.flwTradesim.Location = new System.Drawing.Point(198, 223);
-            this.flwTradesim.Name = "flwTradesim";
-            this.flwTradesim.Size = new System.Drawing.Size(189, 104);
-            this.flwTradesim.TabIndex = 8;
-            // 
-            // lblTradesim
-            // 
-            this.lblTradesim.AutoSize = true;
-            this.lblTradesim.Location = new System.Drawing.Point(3, 0);
-            this.lblTradesim.Name = "lblTradesim";
-            this.lblTradesim.Size = new System.Drawing.Size(98, 13);
-            this.lblTradesim.TabIndex = 1;
-            this.lblTradesim.Text = "6) Trade Simulation";
+            this.lblEvaluate.Text = "5) Evaluators";
             // 
             // prpGrid
             // 
@@ -321,8 +301,6 @@
             this.flwPostprocess.PerformLayout();
             this.flwEvaluate.ResumeLayout(false);
             this.flwEvaluate.PerformLayout();
-            this.flwTradesim.ResumeLayout(false);
-            this.flwTradesim.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -346,8 +324,6 @@
         private System.Windows.Forms.Button btnEditPreprocessTransform;
         private System.Windows.Forms.FlowLayoutPanel flwEvaluate;
         private System.Windows.Forms.Label lblEvaluate;
-        private System.Windows.Forms.FlowLayoutPanel flwTradesim;
-        private System.Windows.Forms.Label lblTradesim;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Label lblName;

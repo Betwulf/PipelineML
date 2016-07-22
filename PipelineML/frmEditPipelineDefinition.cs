@@ -110,5 +110,15 @@ namespace PipelineML
         {
             PipelineInst.RootDirectory = txtRoot.Text;
         }
+
+        private void btnAddPreprocessTransform_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditPreprocessTransform_Click(object sender, EventArgs e)
+        {
+            prpGrid.SelectedObject = PipelineInst.PreprocessDataTransforms;
+        }
     }
 }
