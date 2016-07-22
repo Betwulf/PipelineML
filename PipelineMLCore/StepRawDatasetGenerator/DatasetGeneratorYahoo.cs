@@ -59,7 +59,7 @@ namespace PipelineMLCore
             DatasetDescription.Name = "Yahoo Financial Market Data";
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 1, Name = "Ticker", DataType = typeof(string), Description = "The stock ticker", IsFeature = false, IsLabel = false });
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 2, Name = "Date", DataType = typeof(DateTime), Description = "Date of the prices", IsFeature = false, IsLabel = false });
-            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 3, Name = "Adjusted Close", DataType = typeof(decimal), Description = "Adjusted Close", IsFeature = true, IsLabel = false });
+            DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 3, Name = "AdjustedClose", DataType = typeof(decimal), Description = "Adjusted Close", IsFeature = true, IsLabel = false });
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 4, Name = "Close", DataType = typeof(decimal), Description = "Close", IsFeature = true, IsLabel = false });
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 5, Name = "High", DataType = typeof(decimal), Description = "High", IsFeature = true, IsLabel = false });
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 6, Name = "Open", DataType = typeof(decimal), Description = "Open", IsFeature = true, IsLabel = false });
@@ -213,7 +213,7 @@ namespace PipelineMLCore
             {
                 var row = dt.Table.NewRow();
                 row["Ticker"] = x.Ticker;
-                row["PriceDate"] = x.PriceDate;
+                row["Date"] = x.PriceDate;
                 row["AdjustedClose"] = x.AdjustedClose;
                 row["Close"] = x.Close;
                 row["High"] = x.High;
