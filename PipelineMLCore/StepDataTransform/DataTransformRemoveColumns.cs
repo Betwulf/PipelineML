@@ -29,7 +29,7 @@ namespace PipelineMLCore
             Name = Config.Name;
         }
 
-        public IRawDataset Transform(IRawDataset datasetIn)
+        public IDataset Transform(IDataset datasetIn)
         {
             var realConfig = Config as DataTransformConfigColumns;
             foreach (var col in realConfig.ColumnNames)

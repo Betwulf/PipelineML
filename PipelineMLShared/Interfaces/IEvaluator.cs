@@ -1,6 +1,7 @@
 ﻿namespace PipelineMLCore
 {
-    public interface IEvaluator
+    public interface IEvaluator : IPipelinePart
     {
+        IEvaluatorResults Evaluate(IMachineLearningResults mlResults, IDataset datasetIn);
     }
 }

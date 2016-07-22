@@ -87,10 +87,10 @@ namespace PipelineML
         private void btnCreateDatasetGen_Click(object sender, EventArgs e)
         {
             var searchForm = new frmSearchForClass();
-            searchForm.Initialize(typeof(IRawDatasetGenerator));
+            searchForm.Initialize(typeof(IDatasetGenerator));
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                IRawDatasetGenerator datagen = (IRawDatasetGenerator)Activator.CreateInstance(searchForm.SelectedType);
+                IDatasetGenerator datagen = (IDatasetGenerator)Activator.CreateInstance(searchForm.SelectedType);
                 PipelineInst.DatasetGenerator = datagen;
                 prpGrid.SelectedObject = datagen.Config;
             }

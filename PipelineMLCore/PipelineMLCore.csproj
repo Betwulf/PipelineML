@@ -36,9 +36,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,14 +51,18 @@
   <ItemGroup>
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
-    <Compile Include="StepRawDatasetGenerator\RawDatasetConfigQuandlMarketData.cs" />
-    <Compile Include="StepRawDatasetGenerator\RawDatasetConfigYahooMarketData.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetConfigCSVFile.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetConfigQuandlMarketData.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetConfigWebsiteCSV.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetConfigYahooMarketData.cs" />
     <Compile Include="Pipeline\PipelineDefinition.cs" />
     <Compile Include="Pipeline\PipelineInstance.cs" />
     <Compile Include="Pipeline\PipelineResults.cs" />
     <Compile Include="Pipeline\PipelineRun.cs" />
-    <Compile Include="StepRawDatasetGenerator\RawDatasetGeneratorQuandl.cs" />
-    <Compile Include="StepRawDatasetGenerator\RawDatasetGeneratorYahoo.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetGeneratorCSVFile.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetGeneratorQuandl.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetGeneratorWebsiteCSV.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetGeneratorYahoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepRawDatasetGenerator\YahooCaller.cs" />
     <Compile Include="StepRawDatasetGenerator\YahooMarketData.cs" />

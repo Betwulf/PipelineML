@@ -17,7 +17,7 @@ namespace PipelineMLCore
         public DateTime PriceDate { get; set; }
 
         [JsonProperty(PropertyName = "Adj_Close")]
-        public decimal AdjClose { get; set; }
+        public decimal AdjustedClose { get; set; }
 
         public decimal Close { get; set; }
 

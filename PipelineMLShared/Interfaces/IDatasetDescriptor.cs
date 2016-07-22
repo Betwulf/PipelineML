@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IRawDatasetDescriptor
+    public interface IDatasetDescriptor
     {
         string Name { get; set; }
 

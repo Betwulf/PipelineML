@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IRawDatasetGenerator
+    public interface IDatasetGenerator
     {
         string Name { get; set; }
 
@@ -14,8 +14,8 @@ namespace PipelineMLCore
 
         ConfigBase Config { get; set; }
 
-        IRawDatasetDescriptor DatasetDescription { get; set; }
+        IDatasetDescriptor DatasetDescription { get; set; }
 
-        IRawDataset Generate(Action<string> updateMessage);
+        IDataset Generate(Action<string> updateMessage);
     }
 }

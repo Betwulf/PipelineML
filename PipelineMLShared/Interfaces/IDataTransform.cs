@@ -2,6 +2,6 @@
 {
     public interface IDataTransform : IPipelinePart
     {
-        IRawDataset Transform(IRawDataset datasetIn);
+        IDataset Transform(IDataset datasetIn);
     }
 }

@@ -28,16 +28,14 @@ namespace PipelineMLCore
 
         public List<TypeDefinition> PostprocessDataTransforms { get; set; }
 
-        public TypeDefinition TradeSim { get; set; }
-
-        public TypeDefinition Evaluator { get; set; }
+        public List<TypeDefinition> Evaluators { get; set; }
 
         public PipelineDefinition()
         {
             PreprocessDataTransforms = new List<TypeDefinition>();
             MLList = new List<TypeDefinition>();
             PostprocessDataTransforms = new List<TypeDefinition>();
-
+            Evaluators = new List<TypeDefinition>();
         }
 
         public PipelineInstance CreateInstance()
@@ -52,7 +50,7 @@ namespace PipelineMLCore
             // hydrate dataset generator
             if (DatasetGenerator != null)
             {
-                pi.DatasetGenerator = Activator.CreateInstance(DatasetGenerator.ClassType) as IRawDatasetGenerator;
+                pi.DatasetGenerator = Activator.CreateInstance(DatasetGenerator.ClassType) as IDatasetGenerator;
                 pi.DatasetGenerator.Configure(RootDirectory, DatasetGenerator.ClassConfig);
             }
 
@@ -72,6 +70,21 @@ namespace PipelineMLCore
                 pi.MLList.Add(ml);
             }
 
+            // hydrate postprocess data transforms
+            foreach (var item in PostprocessDataTransforms)
+            {
+                IDataTransform dt = Activator.CreateInstance(item.ClassType) as IDataTransform;
+                dt.Configure(item.ClassConfig);
+                pi.PostprocessDataTransforms.Add(dt);
+            }
+
+            //hydrate Evaluators
+            foreach (var item in Evaluators)
+            {
+                IEvaluator eval = Activator.CreateInstance(item.ClassType) as IEvaluator;
+                eval.Configure(item.ClassConfig);
+                pi.Evaluators.Add(eval);
+            }
 
             return pi;
         }

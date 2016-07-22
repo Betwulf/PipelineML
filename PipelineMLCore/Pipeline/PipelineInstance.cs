@@ -36,7 +36,7 @@ namespace PipelineMLCore
             pd.DatasetGenerator.ClassConfig = DatasetGenerator.Config.ToJSON();
             pd.DatasetGenerator.ClassType = DatasetGenerator.GetType();
 
-            //Preprocessors
+            // Preprocessors
             foreach (var item in PreprocessDataTransforms)
             {
                 var dtrans = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
@@ -50,6 +50,20 @@ namespace PipelineMLCore
                 pd.MLList.Add(ml);
             }
 
+            // Postprocessors
+            foreach (var item in PostprocessDataTransforms)
+            {
+                var dtrans = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
+                pd.PostprocessDataTransforms.Add(dtrans);
+            }
+
+            // Evaluators
+            foreach (var item in Evaluators)
+            {
+                var eval = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
+                pd.Evaluators.Add(eval);
+            }
+
             return pd;
 
         }
@@ -57,7 +71,7 @@ namespace PipelineMLCore
         public string RootDirectory { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public IRawDatasetGenerator DatasetGenerator { get; set; }
+        public IDatasetGenerator DatasetGenerator { get; set; }
 
         public List<IDataTransform> PreprocessDataTransforms { get; set; }
 
@@ -65,9 +79,7 @@ namespace PipelineMLCore
 
         public List<IDataTransform> PostprocessDataTransforms { get; set; }
 
-        public ITradesimulator TradeSim { get; set; }
-
-        public IEvaluator Evaluator { get; set; }
+        public List<IEvaluator> Evaluators { get; set; }
 
     }
 }

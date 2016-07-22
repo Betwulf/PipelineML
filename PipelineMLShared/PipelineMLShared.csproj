@@ -48,21 +48,24 @@
     <Compile Include="Base\DataColumn.cs" />
     <Compile Include="Base\DatasetDescriptor.cs" />
     <Compile Include="Base\JsonRepository.cs" />
-    <Compile Include="Base\RawDatasetBase.cs" />
+    <Compile Include="Base\DatasetBase.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Helpers\ExtendCalculations.cs" />
     <Compile Include="Helpers\SearchClasses.cs" />
+    <Compile Include="Interfaces\IDatasetGeneratorResults.cs" />
+    <Compile Include="Interfaces\IDataTransformResults.cs" />
+    <Compile Include="Interfaces\IEvaluatorResults.cs" />
+    <Compile Include="Interfaces\IMachineLearningResults.cs" />
     <Compile Include="Interfaces\INamed.cs" />
     <Compile Include="Interfaces\IDataTransform.cs" />
     <Compile Include="Interfaces\IEvaluator.cs" />
     <Compile Include="Interfaces\IMachineLearningProcess.cs" />
     <Compile Include="Interfaces\IPipelinePart.cs" />
-    <Compile Include="Interfaces\IRawDataset.cs" />
-    <Compile Include="Interfaces\IRawDatasetDescriptor.cs" />
-    <Compile Include="Interfaces\IRawDatasetGenerator.cs" />
+    <Compile Include="Interfaces\IDataset.cs" />
+    <Compile Include="Interfaces\IDatasetDescriptor.cs" />
+    <Compile Include="Interfaces\IDatasetGenerator.cs" />
     <Compile Include="Interfaces\ISearchableClass.cs" />
-    <Compile Include="Interfaces\ITradesimulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class RawDatasetGeneratorQuandl : IRawDatasetGenerator, ISearchableClass
+    public class DatasetGeneratorQuandl : IDatasetGenerator, ISearchableClass
     {
         public string Name { get; set; }
 
-        public IRawDatasetDescriptor DatasetDescription { get; set; }
+        public IDatasetDescriptor DatasetDescription { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
@@ -21,14 +21,14 @@ namespace PipelineMLCore
         public string Description { get { return "Will call and cache security information from Quandl"; } }
 
 
-        public RawDatasetGeneratorQuandl()
+        public DatasetGeneratorQuandl()
         {
-            Config = new RawDatasetConfigQuandlMarketData();
+            Config = new DatasetConfigQuandlMarketData();
         }
 
         public void Configure(string RootDirectory, string jsonConfig)
         {
-            Config = JsonConvert.DeserializeObject<RawDatasetConfigQuandlMarketData>(jsonConfig);
+            Config = JsonConvert.DeserializeObject<DatasetConfigQuandlMarketData>(jsonConfig);
             Name = Config.Name;
         }
 
@@ -37,7 +37,7 @@ namespace PipelineMLCore
             return Name;
         }
 
-        public IRawDataset Generate(Action<string> updateMessage)
+        public IDataset Generate(Action<string> updateMessage)
         {
             return null;
         }

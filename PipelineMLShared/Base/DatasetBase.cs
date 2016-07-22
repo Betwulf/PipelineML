@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore.Base
 {
-    public class RawDatasetBase : IRawDataset
+    public class DatasetBase : IDataset
     {
-        public IRawDatasetDescriptor Descriptor { get; set; }
+        public IDatasetDescriptor Descriptor { get; set; }
 
         public string Name { get { return Table?.TableName ; } }
 
         public DataTable Table { get; set; }
 
-        public RawDatasetBase(IRawDatasetDescriptor descriptor)
+        public DatasetBase(IDatasetDescriptor descriptor)
         {
             Descriptor = descriptor;
             Table = new DataTable(Descriptor.Name);

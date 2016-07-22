@@ -8,7 +8,7 @@ using System.Drawing.Design;
 
 namespace PipelineMLCore
 {
-    public class RawDatasetConfigYahooMarketData : ConfigBase
+    public class DatasetConfigQuandlMarketData : ConfigBase
     {
         public string SubFolder { get; set; }
 
@@ -22,7 +22,7 @@ typeof(UITypeEditor))]
         [TypeConverter(typeof(CsvConverter))]
         public List<string> Symbols { get; set; }
 
-        public RawDatasetConfigYahooMarketData()
+        public DatasetConfigQuandlMarketData()
         {
             Symbols = new List<string>();
         }

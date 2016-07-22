@@ -7,11 +7,11 @@ using System.Data;
 
 namespace PipelineMLCore
 {
-    public interface IRawDataset
+    public interface IDataset
     {
         string Name { get; }
 
-        IRawDatasetDescriptor Descriptor { get; set; }
+        IDatasetDescriptor Descriptor { get; set; }
 
         DataTable Table { get; set; }
     }

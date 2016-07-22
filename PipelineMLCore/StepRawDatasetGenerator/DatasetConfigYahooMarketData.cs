@@ -8,8 +8,11 @@ using System.Drawing.Design;
 
 namespace PipelineMLCore
 {
-    public class RawDatasetConfigQuandlMarketData : ConfigBase
+    public class DatasetConfigYahooMarketData : ConfigBase
     {
+        /// <summary>
+        /// Subfolder for Yahoo Market Data to be cached to disk
+        /// </summary>
         public string SubFolder { get; set; }
 
         public DateTime StartDate { get; set; }
@@ -22,9 +25,13 @@ typeof(UITypeEditor))]
         [TypeConverter(typeof(CsvConverter))]
         public List<string> Symbols { get; set; }
 
-        public RawDatasetConfigQuandlMarketData()
+        /// <summary>
+        /// Seed the config with default / sample data
+        /// </summary>
+        public DatasetConfigYahooMarketData()
         {
             Symbols = new List<string>();
+            Name = "Yahoo Market Data";
         }
 
         public override string ToString()

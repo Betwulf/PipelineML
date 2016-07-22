@@ -25,9 +25,9 @@ namespace PipelineML
         private void btnTest_Click(object sender, EventArgs e)
         {
             string[] stocks = new string[] { "SCTY", "SPY", "GOOG", "NFLX" };
-            var dsg = new RawDatasetGeneratorYahoo();
+            var dsg = new DatasetGeneratorYahoo();
             dsg.DatasetDescription = new DatasetDescriptor();
-            var dsgconfig = dsg.Config as RawDatasetConfigYahooMarketData;
+            var dsgconfig = dsg.Config as DatasetConfigYahooMarketData;
             dsgconfig.Name = "Yahoo Market Data";
             dsgconfig.Symbols.AddRange(stocks);
             dsgconfig.StartDate = DateTime.Parse("1/1/2010");
@@ -68,13 +68,13 @@ namespace PipelineML
         private void btnOpen_Click(object sender, EventArgs e)
         {
             string configJson = File.ReadAllText(pdJsonFilename);
-            RawDatasetConfigYahooMarketData yahooConfig = ConfigBase.FromJSON(configJson, typeof(RawDatasetConfigYahooMarketData)) as RawDatasetConfigYahooMarketData;
+            DatasetConfigYahooMarketData yahooConfig = ConfigBase.FromJSON(configJson, typeof(DatasetConfigYahooMarketData)) as DatasetConfigYahooMarketData;
             prpGrid.SelectedObject = yahooConfig;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            RawDatasetConfigYahooMarketData pd = prpGrid.SelectedObject as RawDatasetConfigYahooMarketData;
+            DatasetConfigYahooMarketData pd = prpGrid.SelectedObject as DatasetConfigYahooMarketData;
             var jsonPD = pd.ToJSON();
             File.WriteAllText(pdJsonFilename, jsonPD);
 
@@ -88,17 +88,34 @@ namespace PipelineML
 
         private void btnTestDataGen_Click(object sender, EventArgs e)
         {
-            var cfg = new RawDatasetConfigYahooMarketData();
+            var cfg = new DatasetConfigYahooMarketData();
             cfg.StartDate = DateTime.Parse("2015/01/02");
             cfg.EndDate = DateTime.Parse("2016/07/01");
             cfg.SubFolder = "yahoo\\";
             cfg.Symbols = new List<string>() { "MSFT", "SCTY" };
             cfg.Name = "Test";
 
-            var dgy = new RawDatasetGeneratorYahoo();
+            var dgy = new DatasetGeneratorYahoo();
             dgy.Configure("C:\\Temp\\Test\\", cfg.ToJSON());
             var result = dgy.Generate(Console.WriteLine);
             prpGrid.SelectedObject = result.Table.Rows[0];
+        }
+
+        private void btnTestWebsiteCSV_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                var cfg = new DatasetConfigCSVFile();
+                cfg.Name = "Test";
+                cfg.Filepath = ofd.FileName;
+
+                var dgy = new DatasetGeneratorCSVFile();
+                dgy.Configure("C:\\Temp\\Test\\", cfg.ToJSON());
+                var result = dgy.Generate(Console.WriteLine);
+                prpGrid.SelectedObject = result.Table.Rows[0];
+            }
+
         }
     }
 }

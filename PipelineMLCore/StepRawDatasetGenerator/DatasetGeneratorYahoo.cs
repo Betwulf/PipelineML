@@ -13,15 +13,16 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class RawDatasetGeneratorYahoo : IRawDatasetGenerator, ISearchableClass
+    public class DatasetGeneratorYahoo : IDatasetGenerator, ISearchableClass
     {
         public string Name { get; set; }
 
-        public IRawDatasetDescriptor DatasetDescription { get; set; }
+        public IDatasetDescriptor DatasetDescription { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
-        private RawDatasetConfigYahooMarketData ConfigInternal { get { return Config as RawDatasetConfigYahooMarketData; } }
+
+        private DatasetConfigYahooMarketData ConfigInternal { get { return Config as DatasetConfigYahooMarketData; } }
 
         private JsonRepository<YahooMarketDataSeries> Cache;
 
@@ -34,14 +35,14 @@ namespace PipelineMLCore
         /// </summary>
         private const int MonthsAtATime = 14;
 
-        public RawDatasetGeneratorYahoo()
+        public DatasetGeneratorYahoo()
         {
-            Config = new RawDatasetConfigYahooMarketData();
+            Config = new DatasetConfigYahooMarketData();
         }
 
         public void Configure(string RootDirectory, string jsonConfig)
         {
-            Config = JsonConvert.DeserializeObject<RawDatasetConfigYahooMarketData>(jsonConfig);
+            Config = JsonConvert.DeserializeObject<DatasetConfigYahooMarketData>(jsonConfig);
             Name = Config.Name;
             string fullPath = Path.Combine(RootDirectory, ConfigInternal.SubFolder);
             Cache = new JsonRepository<YahooMarketDataSeries>(fullPath);
@@ -52,7 +53,7 @@ namespace PipelineMLCore
             return Name;
         }
 
-        public IRawDataset Generate(Action<string> updateMessage)
+        public IDataset Generate(Action<string> updateMessage)
         {
             DatasetDescription = new DatasetDescriptor();
             DatasetDescription.Name = "Yahoo Financial Market Data";
@@ -65,7 +66,7 @@ namespace PipelineMLCore
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 7, Name = "Low", DataType = typeof(decimal), Description = "Low", IsFeature = true, IsLabel = false });
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 8, Name = "Volume", DataType = typeof(int), Description = "Volume", IsFeature = true, IsLabel = false });
             DatasetDescription.ColumnNames.Add(new DataColumn() { Id = 9, Name = "Source", DataType = typeof(string), Description = "Source of the Data", IsFeature = false, IsLabel = false });
-            var ds = new RawDatasetBase(DatasetDescription);
+            var ds = new DatasetBase(DatasetDescription);
 
             var dates = GetTimeSegmentsFromConfig();
             var allData = new List<YahooMarketData>();
@@ -126,13 +127,13 @@ namespace PipelineMLCore
 
                 if (overlap == null)
                 { throw new ArgumentException("AddToCache - requires overlapped records to correctly calc adjustment"); }
-                if (overlap.AdjClose != lastMarketData.AdjClose)
+                if (overlap.AdjustedClose != lastMarketData.AdjustedClose)
                 {
                     // then adjustment is needed
-                    decimal overlapAdjustValue = overlap.Close / overlap.AdjClose;
+                    decimal overlapAdjustValue = overlap.Close / overlap.AdjustedClose;
                     foreach (var item in historicalData)
                     {
-                        item.AdjClose = item.AdjClose / overlapAdjustValue;
+                        item.AdjustedClose = item.AdjustedClose / overlapAdjustValue;
                     }
                 }
                 // remove overlap(s)
@@ -205,15 +206,15 @@ namespace PipelineMLCore
 
 
 
-        private RawDatasetBase ConvertListToDataTable(List<YahooMarketData> list)
+        private DatasetBase ConvertListToDataTable(List<YahooMarketData> list)
         {
-            var dt = new RawDatasetBase(DatasetDescription);
+            var dt = new DatasetBase(DatasetDescription);
             list.ForEach(x =>
             {
                 var row = dt.Table.NewRow();
                 row["Ticker"] = x.Ticker;
-                row["Date"] = x.PriceDate;
-                row["Adjusted Close"] = x.AdjClose;
+                row["PriceDate"] = x.PriceDate;
+                row["AdjustedClose"] = x.AdjustedClose;
                 row["Close"] = x.Close;
                 row["High"] = x.High;
                 row["Open"] = x.Open;
