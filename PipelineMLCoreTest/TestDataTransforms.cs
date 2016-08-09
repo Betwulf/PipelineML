@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PipelineMLCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PipelineMLCoreTest
 {
@@ -19,7 +14,7 @@ namespace PipelineMLCoreTest
             dtcfg.Code = TestConstants.testCode;
             dtcfg.Name = TestConstants.testName;
             dtcfg.NewColumn = TestConstants.testDataColumnNew;
-            dt.Configure(dtcfg.ToJSON());
+            dt.Configure(string.Empty, dtcfg.ToJSON());
             IDataset dsIn = TestConstants.GetIDataset();
             var result = dt.Transform(dsIn);
             Assert.IsTrue(result.Table.Columns.Count == 2);

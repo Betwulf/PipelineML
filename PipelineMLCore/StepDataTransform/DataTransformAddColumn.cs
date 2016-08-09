@@ -23,8 +23,10 @@ namespace PipelineMLCore
         private DataTransformConfigAddColumn ConfigInternal { get { return Config as DataTransformConfigAddColumn; } }
 
         public string CodeHeader
-        { get
-            { return @"
+        {
+            get
+            {
+                return @"
             using System;
             using System.Collections.Generic;
             using System.ComponentModel;
@@ -69,7 +71,7 @@ namespace PipelineMLCore
 
 
 
-        public void Configure(string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigAddColumn>(jsonConfig);
             Name = Config.Name;
@@ -89,7 +91,7 @@ namespace PipelineMLCore
             CompilerParameters compilerParams = new CompilerParameters(assemblyNames: referencedDlls.ToArray())
             {
                 WarningLevel = 0,
-                TreatWarningsAsErrors = false,                
+                TreatWarningsAsErrors = false,
                 GenerateInMemory = true,
                 GenerateExecutable = false
             };
@@ -97,7 +99,7 @@ namespace PipelineMLCore
             CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, totalCode);
 
             if (results.Errors.Count != 0)
-                throw new Exception (results.Errors.ToString());
+                throw new Exception(results.Errors.ToString());
 
             object o = results.CompiledAssembly.CreateInstance("PipelineMLCore.TransformDynamic");
             MethodInfo mi = o.GetType().GetMethod("Transform");

@@ -39,7 +39,7 @@ namespace PipelineML
             if (GetOpenFilenameFromUser(out filename))
             {
                 string configJson = File.ReadAllText(filename);
-                PipelineDef = PipelineDefinition.FromJSON(configJson, typeof(PipelineDefinition)) as PipelineDefinition;
+                PipelineDef = ConfigBase.FromJSON<PipelineDefinition>(configJson);
                 PipelineInst = PipelineDef.CreateInstance();
             }
             txtName.Text = PipelineDef.Name;

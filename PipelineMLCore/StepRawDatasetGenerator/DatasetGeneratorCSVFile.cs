@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PipelineMLShared.Base;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -55,7 +54,7 @@ namespace PipelineMLCore
             dt.Columns.AddRange(col.ToArray());
             col.ToList().ForEach(x =>
             {
-                DatasetDescription.ColumnNames.Add(new DataColumn() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
+                DatasetDescription.ColumnNames.Add(new DataColumnBase() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
             });
 
             foreach (var item in tableData.Skip(1)) { dt.Rows.Add(item.Split(",".ToCharArray())); }
