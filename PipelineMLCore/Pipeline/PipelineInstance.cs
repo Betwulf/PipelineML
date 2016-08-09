@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
@@ -17,7 +14,7 @@ namespace PipelineMLCore
 
         public PipelineInstance()
         {
-            InstanceID = Path.GetRandomFileName();
+            InstanceID = Path.GetTempFileName();
             PreprocessDataTransforms = new List<IDataTransform>();
             MLList = new List<IMachineLearningProcess>();
             PostprocessDataTransforms = new List<IDataTransform>();
@@ -26,44 +23,37 @@ namespace PipelineMLCore
 
         public PipelineDefinition CreateDefinition()
         {
-            var pd = new PipelineDefinition();
-
-            // Base params
-            pd.Name = Name;
-            pd.RootDirectory = RootDirectory;
-
-            // Dataset Gen
-            pd.DatasetGenerator = new TypeDefinition();
-            pd.DatasetGenerator.ClassConfig = DatasetGenerator.Config.ToJSON();
-            pd.DatasetGenerator.ClassType = DatasetGenerator.GetType();
+            var pd = new PipelineDefinition
+            {
+                // Base params
+                Name = Name,
+                RootDirectory = RootDirectory,
+                DatasetGenerator = TypeDefinition.Create(DatasetGenerator)
+            };
 
             // Preprocessors
-            foreach (var item in PreprocessDataTransforms)
-            {
-                var dtrans = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
-                pd.PreprocessDataTransforms.Add(dtrans);
-            }
+            PreprocessDataTransforms
+                .Select(TypeDefinition.Create)
+                .ToList()
+                .ForEach(pd.PreprocessDataTransforms.Add);
 
             // ML
-            foreach (var item in MLList)
-            {
-                var ml = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
-                pd.MLList.Add(ml);
-            }
+            MLList
+                .Select(TypeDefinition.Create)
+                .ToList()
+                .ForEach(pd.MLList.Add);
 
             // Postprocessors
-            foreach (var item in PostprocessDataTransforms)
-            {
-                var dtrans = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
-                pd.PostprocessDataTransforms.Add(dtrans);
-            }
+            PostprocessDataTransforms
+                .Select(TypeDefinition.Create)
+                .ToList()
+                .ForEach(pd.PostprocessDataTransforms.Add);
 
             // Evaluators
-            foreach (var item in Evaluators)
-            {
-                var eval = new TypeDefinition() { ClassConfig = item.Config.ToJSON(), ClassType = item.GetType() };
-                pd.Evaluators.Add(eval);
-            }
+            Evaluators
+                .Select(TypeDefinition.Create)
+                .ToList()
+                .ForEach(pd.Evaluators.Add);
 
             return pd;
 

@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PipelineMLCore
+﻿namespace PipelineMLCore
 {
-    public interface IPipelinePart
+    public interface IPipelinePart : INamed
     {
-        string Name { get; set; }
-
-
-        void Configure(string jsonConfig);
+        void Configure(string rootDirectory, string jsonConfig);
 
         ConfigBase Config { get; set; }
-
     }
 }

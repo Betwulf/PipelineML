@@ -1,16 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using PipelineMLCore.Base;
+using PipelineMLShared.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
@@ -37,7 +31,7 @@ namespace PipelineMLCore
 
         }
 
-        public void Configure(string RootDirectory, string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigWebsiteCSV>(jsonConfig);
             Name = Config.Name;
@@ -54,13 +48,14 @@ namespace PipelineMLCore
                 jsonString = client.DownloadString(ConfigInternal.URL);
             }
             if (jsonString == null) return null;
-            
+
 
             string[] tableData = jsonString.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             var col = from cl in tableData[0].Split(",".ToCharArray())
-                        select new System.Data.DataColumn(cl);
+                      select new System.Data.DataColumn(cl);
             dt.Columns.AddRange(col.ToArray());
-            col.ToList().ForEach(x => {
+            col.ToList().ForEach(x =>
+            {
                 DatasetDescription.ColumnNames.Add(new DataColumn() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
             });
 

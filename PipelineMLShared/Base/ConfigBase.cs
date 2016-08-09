@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
@@ -16,9 +11,10 @@ namespace PipelineMLCore
             return JsonConvert.SerializeObject(this);
         }
 
-        public static ConfigBase FromJSON(string json, Type t)
+        public static T FromJSON<T>(string json)
+            where T : ConfigBase
         {
-            return JsonConvert.DeserializeObject(json, t) as ConfigBase;
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

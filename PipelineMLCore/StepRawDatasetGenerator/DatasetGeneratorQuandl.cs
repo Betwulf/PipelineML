@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
@@ -26,7 +22,7 @@ namespace PipelineMLCore
             Config = new DatasetConfigQuandlMarketData();
         }
 
-        public void Configure(string RootDirectory, string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigQuandlMarketData>(jsonConfig);
             Name = Config.Name;

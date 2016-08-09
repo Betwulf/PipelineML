@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
@@ -23,7 +18,7 @@ namespace PipelineMLCore
             Config = new DataTransformConfigColumns();
         }
 
-        public void Configure(string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigColumns>(jsonConfig);
             Name = Config.Name;
@@ -35,7 +30,7 @@ namespace PipelineMLCore
             foreach (var col in realConfig.ColumnNames)
             {
                 datasetIn.Descriptor.ColumnNames.RemoveAll(x => x.Name == col.Name);
-                for (int i = datasetIn.Table.Columns.Count-1; i >= 0; i--)
+                for (int i = datasetIn.Table.Columns.Count - 1; i >= 0; i--)
                 {
                     var tableCol = datasetIn.Table.Columns[i];
                     if (tableCol != null && tableCol.ColumnName == col.Name)
@@ -43,7 +38,7 @@ namespace PipelineMLCore
                         datasetIn.Table.Columns.Remove(tableCol);
                     }
                 }
-                
+
             }
             return datasetIn;
         }

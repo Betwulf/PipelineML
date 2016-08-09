@@ -1,16 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
     public class TypeDefinition
     {
-        public Type ClassType { get; set; }
+        public Type ClassType { get; }
 
-        public string ClassConfig { get; set; }
+        public string ClassConfig { get; }
 
+        private TypeDefinition(Type type, string config)
+        {
+            ClassType = type;
+            ClassConfig = config;
+        }
+
+        public static TypeDefinition Create(IPipelinePart part)
+        {
+            return new TypeDefinition(part.GetType(), part.Config.ToJSON());
+        }
     }
 }

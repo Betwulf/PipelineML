@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PipelineMLCore.Base;
+using PipelineMLShared.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
@@ -24,7 +23,7 @@ namespace PipelineMLCore
 
         private DatasetConfigYahooMarketData ConfigInternal { get { return Config as DatasetConfigYahooMarketData; } }
 
-        private JsonRepository<YahooMarketDataSeries> Cache;
+        private JsonRepository<YahooMarketDataSeries> cache;
 
         public string FriendlyName { get { return "Yahoo Data Generator"; } }
 
@@ -40,12 +39,12 @@ namespace PipelineMLCore
             Config = new DatasetConfigYahooMarketData();
         }
 
-        public void Configure(string RootDirectory, string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigYahooMarketData>(jsonConfig);
             Name = Config.Name;
-            string fullPath = Path.Combine(RootDirectory, ConfigInternal.SubFolder);
-            Cache = new JsonRepository<YahooMarketDataSeries>(fullPath);
+            string fullPath = Path.Combine(rootDirectory, ConfigInternal.SubFolder);
+            cache = new JsonRepository<YahooMarketDataSeries>(fullPath);
         }
 
         public override string ToString()
@@ -87,7 +86,7 @@ namespace PipelineMLCore
 
         private async void AddToCache(List<YahooMarketData> tickerData, string ticker)
         {
-            var cachedData = Cache.GetById(ticker);
+            var cachedData = cache.GetById(ticker);
             var minDate = tickerData.Min(x => x.PriceDate);
             var maxDate = tickerData.Max(x => x.PriceDate);
             // check if there is cached data
@@ -95,7 +94,7 @@ namespace PipelineMLCore
             {
                 // then save what we have!
                 var newCachedData = new YahooMarketDataSeries() { Ticker = ticker, MarketDataList = tickerData };
-                await Cache.CreateAsync(newCachedData);
+                await cache.CreateAsync(newCachedData);
                 return;
             }
             var minCacheDate = cachedData.MarketDataList.Min(x => x.PriceDate);
@@ -140,7 +139,7 @@ namespace PipelineMLCore
                 futureData.RemoveAll(x => x.PriceDate <= lastMarketData.PriceDate);
                 historicalData.AddRange(futureData);
                 cachedData.MarketDataList = historicalData;
-                await Cache.UpdateAsync(ticker, cachedData);
+                await cache.UpdateAsync(ticker, cachedData);
             }
         }
 
@@ -150,7 +149,7 @@ namespace PipelineMLCore
             string startDateString = GetYahooDate(startdate);
             string endDateString = GetYahooDate(enddate);
 
-            var cachedData = Cache.GetById(ticker);
+            var cachedData = cache.GetById(ticker);
             if (cachedData != null)
             {
                 // then let's try to get data from Cache - check range

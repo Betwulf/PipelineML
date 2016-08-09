@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using PipelineMLCore;
+﻿using PipelineMLCore;
+using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace PipelineML
 {
@@ -24,9 +17,8 @@ namespace PipelineML
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            string[] stocks = new string[] { "SCTY", "SPY", "GOOG", "NFLX" };
-            var dsg = new DatasetGeneratorYahoo();
-            dsg.DatasetDescription = new DatasetDescriptor();
+            string[] stocks = { "SCTY", "SPY", "GOOG", "NFLX" };
+            var dsg = new DatasetGeneratorYahoo { DatasetDescription = new DatasetDescriptor() };
             var dsgconfig = dsg.Config as DatasetConfigYahooMarketData;
             dsgconfig.Name = "Yahoo Market Data";
             dsgconfig.Symbols.AddRange(stocks);
@@ -34,41 +26,45 @@ namespace PipelineML
             dsgconfig.EndDate = DateTime.Parse("1/1/2016");
             var dsgCfg = dsg.Config.ToJSON();
 
-            var transformCfg = GetDataTransformConfig();
+            var transform = GetDataTransformConfig();
 
             var pd = new PipelineDefinition();
             pd.Name = "Test";
-            pd.DatasetGenerator = new TypeDefinition();
-            pd.DatasetGenerator.ClassConfig = dsgCfg;
-            pd.DatasetGenerator.ClassType = dsg.GetType();
-            var tdpreprocess = new TypeDefinition() { ClassConfig = transformCfg, ClassType = typeof(DataTransformRemoveColumns) };
+            pd.DatasetGenerator = TypeDefinition.Create(dsg);
+            var tdpreprocess = TypeDefinition.Create(transform);
             pd.PreprocessDataTransforms.Add(tdpreprocess);
             var jsonPD = dsg.Config.ToJSON();
 
             IDataTransform remove = (IDataTransform)Activator.CreateInstance(tdpreprocess.ClassType);
 
-            remove.Configure(tdpreprocess.ClassConfig);
+            remove.Configure(string.Empty, tdpreprocess.ClassConfig);
             prpGrid.SelectedObject = dsgconfig;
 
             //File.WriteAllText(pdJsonFilename, jsonPD);
 
         }
 
-        string GetDataTransformConfig()
+        IDataTransform GetDataTransformConfig()
         {
             var remove = new DataTransformRemoveColumns();
             var dtConfig = remove.Config as DataTransformConfigColumns;
-            dtConfig.ColumnNames.Add(new PipelineMLCore.DataColumn() { DataType = typeof(System.String), Description = "",
-                Id = 1, IsFeature = true, IsLabel = false, Name = "ID" });
+            dtConfig.ColumnNames.Add(new PipelineMLCore.DataColumn()
+            {
+                DataType = typeof(System.String),
+                Description = "",
+                Id = 1,
+                IsFeature = true,
+                IsLabel = false,
+                Name = "ID"
+            });
             dtConfig.Name = "Remove ID";
-            var configString = dtConfig.ToJSON();
-            return configString;
+            return remove;
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
             string configJson = File.ReadAllText(pdJsonFilename);
-            DatasetConfigYahooMarketData yahooConfig = ConfigBase.FromJSON(configJson, typeof(DatasetConfigYahooMarketData)) as DatasetConfigYahooMarketData;
+            DatasetConfigYahooMarketData yahooConfig = ConfigBase.FromJSON<DatasetConfigYahooMarketData>(configJson);
             prpGrid.SelectedObject = yahooConfig;
         }
 

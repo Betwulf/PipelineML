@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PipelineMLCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace PipelineMLCoreTest
 {
@@ -17,16 +13,17 @@ namespace PipelineMLCoreTest
             string testname = TestConstants.testName;
             string testfile = TestConstants.testFile;
             var pi = new PipelineInstance();
-            var dsgcfg = new DatasetConfigCSVFile();
-            dsgcfg.Name = testname;
-            dsgcfg.Filepath = testfile;
+            var dsgcfg = new DatasetConfigCSVFile
+            {
+                Name = testname,
+                Filepath = testfile
+            };
             pi.DatasetGenerator = new DatasetGeneratorCSVFile();
             pi.DatasetGenerator.Configure(TestConstants.currDirectory, dsgcfg.ToJSON());
-            var predtcfg = new DataTransformConfigColumns();
-            predtcfg.Name = TestConstants.testName;
+            var predtcfg = new DataTransformConfigColumns { Name = TestConstants.testName };
             predtcfg.ColumnNames.Add(TestConstants.testDataColumn);
             var predt = new DataTransformRemoveColumns();
-            predt.Configure(predtcfg.ToJSON());
+            predt.Configure(string.Empty, predtcfg.ToJSON());
             pi.PreprocessDataTransforms.Add(predt);
 
 

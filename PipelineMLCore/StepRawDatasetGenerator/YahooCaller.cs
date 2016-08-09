@@ -55,19 +55,17 @@ namespace PipelineMLCore
                     string yahooWarning = (string)dataObject["query"]["diagnostics"]["warning"];
                     throw new Exception("Yahoo Warning: " + yahooWarning);
                 }
-                else
+
+                JArray jsonArray = (JArray)dataObject["query"]["results"]["quote"];
+                string smallJson = jsonArray.ToString();
+
+                List<YahooMarketData> newList = JsonConvert.DeserializeObject<List<YahooMarketData>>(smallJson);
+
+                foreach (var item in newList)
                 {
-                    JArray jsonArray = (JArray)dataObject["query"]["results"]["quote"];
-                    string smallJson = jsonArray.ToString();
-
-                    List<YahooMarketData> newList = JsonConvert.DeserializeObject<List<YahooMarketData>>(smallJson);
-
-                    foreach (var item in newList)
-                    {
-                        item.Source = "Yahoo";
-                    }
-                    return newList;
+                    item.Source = "Yahoo";
                 }
+                return newList;
             }
         }
     }

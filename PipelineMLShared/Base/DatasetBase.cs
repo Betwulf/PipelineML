@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PipelineMLCore;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PipelineMLCore.Base
+namespace PipelineMLShared.Base
 {
     public class DatasetBase : IDataset
     {
         public IDatasetDescriptor Descriptor { get; set; }
 
-        public string Name { get { return Table?.TableName ; } }
+        public string Name => Table?.TableName;
 
         public DataTable Table { get; set; }
 
