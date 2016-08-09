@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DataColumn
+    public class DataColumnBase
     {
         public int Id { get; set; }
 

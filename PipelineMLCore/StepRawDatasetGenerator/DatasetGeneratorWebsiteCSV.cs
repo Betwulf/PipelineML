@@ -19,7 +19,6 @@ namespace PipelineMLCore
 
         private DatasetConfigWebsiteCSV ConfigInternal { get { return Config as DatasetConfigWebsiteCSV; } }
 
-        private JsonRepository<YahooMarketDataSeries> Cache;
 
         public string FriendlyName { get { return "Website CSV File"; } }
 
@@ -48,11 +47,11 @@ namespace PipelineMLCore
                 jsonString = client.DownloadString(ConfigInternal.URL);
             }
             if (jsonString == null) return null;
-
+            
 
             string[] tableData = jsonString.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             var col = from cl in tableData[0].Split(",".ToCharArray())
-                      select new System.Data.DataColumn(cl);
+                        select new System.Data.DataColumn(cl);
             dt.Columns.AddRange(col.ToArray());
             col.ToList().ForEach(x =>
             {

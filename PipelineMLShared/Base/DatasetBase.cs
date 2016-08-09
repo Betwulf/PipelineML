@@ -1,7 +1,7 @@
 ﻿using PipelineMLCore;
 using System.Data;
 
-namespace PipelineMLShared.Base
+namespace PipelineMLCore
 {
     public class DatasetBase : IDataset
     {

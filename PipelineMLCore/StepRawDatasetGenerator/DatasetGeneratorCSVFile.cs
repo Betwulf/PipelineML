@@ -20,8 +20,6 @@ namespace PipelineMLCore
 
         private DatasetConfigCSVFile ConfigInternal { get { return Config as DatasetConfigCSVFile; } }
 
-        private JsonRepository<YahooMarketDataSeries> Cache;
-
         public string FriendlyName { get { return "CSV File"; } }
 
         public string Description { get { return "Will search on disk for a CSV file. CSV File MUST have column headers."; } }

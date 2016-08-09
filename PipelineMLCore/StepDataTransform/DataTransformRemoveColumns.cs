@@ -8,10 +8,14 @@ namespace PipelineMLCore
         public string Name { get; set; }
 
         public string FriendlyName { get { return "Remove Columns Data Transform"; } }
+
         public string Description { get { return "Will remove selected columns from the dataset"; } }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
+
+        private DataTransformConfigColumns ConfigInternal { get { return Config as DataTransformConfigColumns; } }
+
 
         public DataTransformRemoveColumns()
         {
@@ -26,8 +30,7 @@ namespace PipelineMLCore
 
         public IDataset Transform(IDataset datasetIn)
         {
-            var realConfig = Config as DataTransformConfigColumns;
-            foreach (var col in realConfig.ColumnNames)
+            foreach (var col in ConfigInternal.ColumnNames)
             {
                 datasetIn.Descriptor.ColumnNames.RemoveAll(x => x.Name == col.Name);
                 for (int i = datasetIn.Table.Columns.Count - 1; i >= 0; i--)

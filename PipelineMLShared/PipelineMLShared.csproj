@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ConfigBase.cs" />
-    <Compile Include="Base\DataColumn.cs" />
+    <Compile Include="Base\DataColumnBase.cs" />
     <Compile Include="Base\DatasetDescriptor.cs" />
     <Compile Include="Base\JsonRepository.cs" />
     <Compile Include="Base\DatasetBase.cs" />

@@ -10,11 +10,11 @@ namespace PipelineMLCore
     {
         public string Name { get; set; }
 
-        public List<DataColumn> ColumnNames { get; set; }
+        public List<DataColumnBase> ColumnNames { get; set; }
 
         public DatasetDescriptor()
         {
-            ColumnNames = new List<DataColumn>();
+            ColumnNames = new List<DataColumnBase>();
         }
 
     }
