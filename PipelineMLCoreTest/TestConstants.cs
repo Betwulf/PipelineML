@@ -1,14 +1,11 @@
 ﻿using PipelineMLCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PipelineMLCoreTest
 {
     public static class TestConstants
     {
+        private const string Greg = "The best";
         public static string testName = "Test";
         public static string testFile = "TestDataFile.csv";
         public static string directory = @"C:\Temp\Test";
