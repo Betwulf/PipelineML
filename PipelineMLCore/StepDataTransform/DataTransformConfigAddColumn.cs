@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface IDatasetDescriptor
+    public class DataTransformConfigAddColumn : ConfigBase
     {
-        string Name { get; set; }
+        public DataColumnBase NewColumn { get; set; }
 
-        List<DataColumnBase> ColumnNames { get; set; }
-
+        public string Code { get; set; }
 
     }
 }

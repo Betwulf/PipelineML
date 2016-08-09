@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PipelineMLCore.Base
+namespace PipelineMLCore
 {
     public class DatasetBase : IDataset
     {

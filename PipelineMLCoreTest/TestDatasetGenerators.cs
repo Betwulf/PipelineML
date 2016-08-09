@@ -15,7 +15,7 @@ namespace PipelineMLCoreTest
         [TestMethod]
         public void TestDatasetConfigYahooMarketData()
         {
-            string directory = TestConstants.directory;
+            string dir = TestConstants.directory;
             string filename = TestConstants.yahooFilename;
             string subfolder = TestConstants.subFolder;
             var cfg = new DatasetConfigYahooMarketData();
@@ -26,13 +26,13 @@ namespace PipelineMLCoreTest
             cfg.Name = TestConstants.testName;
 
             var dgy = new DatasetGeneratorYahoo();
-            dgy.Configure(directory, cfg.ToJSON());
+            dgy.Configure(dir, cfg.ToJSON());
             var result = dgy.Generate(Console.WriteLine);
 
-            string filepath = Path.Combine(directory, subfolder, filename);
+            string filepath = Path.Combine(dir, subfolder, filename);
             Console.WriteLine(filepath);
             Assert.IsTrue(result.Table.Columns.Count == 9);
-            Assert.IsTrue(Directory.Exists(directory));
+            Assert.IsTrue(Directory.Exists(dir));
             Assert.IsTrue(File.Exists(filepath));
         }
 

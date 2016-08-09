@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StepDataTransform\DataTransformAddColumn.cs" />
+    <Compile Include="StepDataTransform\DataTransformConfigAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigCSVFile.cs" />

@@ -8,12 +8,12 @@ namespace PipelineMLCore
 {
     public class DataTransformConfigColumns : ConfigBase
     {
-        public List<DataColumn> ColumnNames { get; set; }
+        public List<DataColumnBase> ColumnNames { get; set; }
 
 
         public DataTransformConfigColumns()
         {
-            ColumnNames = new List<DataColumn>();
+            ColumnNames = new List<DataColumnBase>();
         }
     }
 }

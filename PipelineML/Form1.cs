@@ -58,7 +58,7 @@ namespace PipelineML
         {
             var remove = new DataTransformRemoveColumns();
             var dtConfig = remove.Config as DataTransformConfigColumns;
-            dtConfig.ColumnNames.Add(new PipelineMLCore.DataColumn() { DataType = typeof(System.String), Description = "",
+            dtConfig.ColumnNames.Add(new PipelineMLCore.DataColumnBase() { DataType = typeof(System.String), Description = "",
                 Id = 1, IsFeature = true, IsLabel = false, Name = "ID" });
             dtConfig.Name = "Remove ID";
             var configString = dtConfig.ToJSON();

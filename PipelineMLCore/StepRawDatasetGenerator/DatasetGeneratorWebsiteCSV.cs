@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PipelineMLCore.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +24,6 @@ namespace PipelineMLCore
 
         private DatasetConfigWebsiteCSV ConfigInternal { get { return Config as DatasetConfigWebsiteCSV; } }
 
-        private JsonRepository<YahooMarketDataSeries> Cache;
 
         public string FriendlyName { get { return "Website CSV File"; } }
 
@@ -61,7 +59,7 @@ namespace PipelineMLCore
                         select new System.Data.DataColumn(cl);
             dt.Columns.AddRange(col.ToArray());
             col.ToList().ForEach(x => {
-                DatasetDescription.ColumnNames.Add(new DataColumn() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
+                DatasetDescription.ColumnNames.Add(new DataColumnBase() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
             });
 
             foreach (var item in tableData.Skip(1)) { dt.Rows.Add(item.Split(",".ToCharArray())); }
