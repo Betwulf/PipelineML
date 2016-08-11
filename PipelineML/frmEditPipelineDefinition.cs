@@ -98,7 +98,7 @@ namespace PipelineML
 
         private void btnEditDatasetGen_Click(object sender, EventArgs e)
         {
-            prpGrid.SelectedObject = PipelineInst.DatasetGenerator.Config;
+            prpGrid.SelectedObject = PipelineInst.DatasetGenerator?.Config;
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
@@ -113,7 +113,14 @@ namespace PipelineML
 
         private void btnAddPreprocessTransform_Click(object sender, EventArgs e)
         {
-
+            var searchForm = new frmSearchForClass();
+            searchForm.Initialize(typeof(IDataTransform));
+            if (searchForm.ShowDialog() == DialogResult.OK)
+            {
+                IDataTransform preprocTransform = (IDataTransform)Activator.CreateInstance(searchForm.SelectedType);
+                PipelineInst.PreprocessDataTransforms.Add(preprocTransform);
+                prpGrid.SelectedObject = preprocTransform.Config;
+            }
         }
 
         private void btnEditPreprocessTransform_Click(object sender, EventArgs e)

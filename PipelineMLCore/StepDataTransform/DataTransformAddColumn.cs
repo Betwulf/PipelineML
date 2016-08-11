@@ -30,6 +30,7 @@ namespace PipelineMLCore
             using System;
             using System.Collections.Generic;
             using System.ComponentModel;
+            using System.Linq;
             using System.Data;
 
             namespace PipelineMLCore 
@@ -49,33 +50,41 @@ namespace PipelineMLCore
                 }
             }"; }
         }
-        public string CodeStarter
-        {
-            get
-            { return @"var tableOut = new DataTable(); 
-                        tableOut.Columns.Add(" + ConfigInternal?.NewColumn.Name + @", typeof(" + ConfigInternal.NewColumn.DataType.Name + @"));
-                        return tableOut;"; }
-        }
+        public string CodeStarter => @"var tableOut = new DataTable(); 
+            tableOut.Columns.Add(" + "\"" + ConfigInternal?.NewColumn.Name + "\", typeof(" + ConfigInternal.NewColumn.DataType.Name + @"));
+            for (int i = 0; i < datasetIn.Table.Rows.Count; i++)
+            {
+                tableOut.Rows.Add(new object[] { 0 });
+            }
+            return tableOut;";
+        
 
 
-        private static List<string> referencedDlls = new List<string>
+        public static List<string> ReferencedDlls = new List<string>
             {
                 "mscorlib.dll",
                 "System.dll",
                 "System.Core.dll",
                 "System.Xml.dll",
                 "PipelineMLShared.dll",
+                "System.Linq.dll",
                 "System.ComponentModel.dll",
                 "System.Data.dll"
             };
 
 
+        public DataTransformAddColumn()
+        {
+            Config = new DataTransformConfigAddColumn();
+        }
 
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigAddColumn>(jsonConfig);
             Name = Config.Name;
         }
+
+
 
         public IDataset Transform(IDataset datasetIn)
         {
@@ -88,7 +97,7 @@ namespace PipelineMLCore
                 };
             CSharpCodeProvider provider = new CSharpCodeProvider(providerOptions);
 
-            CompilerParameters compilerParams = new CompilerParameters(assemblyNames: referencedDlls.ToArray())
+            CompilerParameters compilerParams = new CompilerParameters(assemblyNames: ReferencedDlls.ToArray())
             {
                 WarningLevel = 0,
                 TreatWarningsAsErrors = false,
@@ -99,7 +108,16 @@ namespace PipelineMLCore
             CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, totalCode);
 
             if (results.Errors.Count != 0)
-                throw new Exception(results.Errors.ToString());
+            {
+                string errorString = $"Errors: {results.Errors.Count} ";
+                foreach (var error in results.Errors)
+                {
+                    errorString += @"
+Error: " + error.ToString();
+                }
+                throw new Exception(errorString);
+            }
+                
 
             object o = results.CompiledAssembly.CreateInstance("PipelineMLCore.TransformDynamic");
             MethodInfo mi = o.GetType().GetMethod("Transform");

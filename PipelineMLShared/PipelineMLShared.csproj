@@ -53,6 +53,7 @@
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Helpers\ExtendCalculations.cs" />
     <Compile Include="Helpers\SearchClasses.cs" />
+    <Compile Include="Helpers\TypeTypeConverter.cs" />
     <Compile Include="Interfaces\IDatasetGeneratorResults.cs" />
     <Compile Include="Interfaces\IDataTransformResults.cs" />
     <Compile Include="Interfaces\IEvaluatorResults.cs" />

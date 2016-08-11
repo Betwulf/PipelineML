@@ -271,6 +271,7 @@
             this.txtRoot.Name = "txtRoot";
             this.txtRoot.Size = new System.Drawing.Size(150, 20);
             this.txtRoot.TabIndex = 11;
+            this.txtRoot.Text = "C:\\";
             this.txtRoot.TextChanged += new System.EventHandler(this.txtRoot_TextChanged);
             // 
             // frmEditPipelineDefinition
