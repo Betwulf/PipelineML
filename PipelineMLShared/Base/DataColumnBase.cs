@@ -21,5 +21,11 @@ namespace PipelineMLCore
         public bool IsFeature { get; set; }
 
         public bool IsLabel { get; set; }
+
+        public bool IsTraining { get; set; }
+
+        public bool IsScore { get; set; }
+
+        public bool IsScoreProbability { get; set; }
     }
 }

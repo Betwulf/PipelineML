@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
+    /// <summary>
+    /// Converts "Type" to a dropdown field for the Windows Forms UI
+    /// </summary>
     public class TypeTypeConverter : TypeConverter
     {
         // Fields  

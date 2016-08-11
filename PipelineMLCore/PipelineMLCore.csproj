@@ -49,10 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StepDataTransform\DataTranformSetTraining.cs" />
     <Compile Include="StepDataTransform\DataTransformAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
+    <Compile Include="StepDataTransform\DataTransformConfigSetTraining.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
+    <Compile Include="StepMachineLearning\MachineLearningConfigDecisionTree.cs" />
+    <Compile Include="StepMachineLearning\MachineLearningDecisionTree.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigCSVFile.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigQuandlMarketData.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigWebsiteCSV.cs" />

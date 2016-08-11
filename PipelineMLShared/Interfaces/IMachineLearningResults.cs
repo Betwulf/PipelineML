@@ -10,6 +10,8 @@ namespace PipelineMLCore
     {
         IMachineLearningProcess FromMLProcess { get; set; }
 
+        DatasetScored DatasetWithScores { get; set; }
+
         DateTime StartTime { get; set; }
 
         DateTime StopTime { get; set; }

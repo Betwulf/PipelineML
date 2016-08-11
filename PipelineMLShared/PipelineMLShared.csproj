@@ -47,11 +47,14 @@
     <Compile Include="Base\ConfigBase.cs" />
     <Compile Include="Base\DataColumnBase.cs" />
     <Compile Include="Base\DatasetDescriptor.cs" />
+    <Compile Include="Base\DatasetScored.cs" />
     <Compile Include="Base\JsonRepository.cs" />
     <Compile Include="Base\DatasetBase.cs" />
+    <Compile Include="Base\MachineLearningResults.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Helpers\ExtendCalculations.cs" />
+    <Compile Include="Helpers\PercentageConverter.cs" />
     <Compile Include="Helpers\SearchClasses.cs" />
     <Compile Include="Helpers\TypeTypeConverter.cs" />
     <Compile Include="Interfaces\IDatasetGeneratorResults.cs" />
