@@ -10,7 +10,7 @@ namespace PipelineMLCore
     {
         string Name { get; set; }
 
-        List<DataColumnBase> ColumnNames { get; set; }
+        List<DataColumnBase> ColumnDescriptions { get; set; }
 
 
     }

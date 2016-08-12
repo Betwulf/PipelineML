@@ -42,7 +42,7 @@ namespace PipelineMLCore.StepDataTransform
                 { Name = "IsTraining", DataType = typeof(bool), Description = "Training Flag",
                 IsFeature = false, IsLabel = false, IsScore = false, IsScoreProbability = false,
                 IsTraining = true, Id = -1 };
-            datasetIn.Descriptor.ColumnNames.Add(trainingColumn);
+            datasetIn.Descriptor.ColumnDescriptions.Add(trainingColumn);
             datasetIn.Table.Columns.Add(trainingColumn.Name, trainingColumn.DataType);
             Random rnd = new Random(datasetIn.Table.Rows.Count*DateTime.Now.Millisecond);
 

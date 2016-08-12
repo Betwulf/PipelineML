@@ -32,7 +32,7 @@ namespace PipelineMLCore
         {
             foreach (var col in ConfigInternal.ColumnNames)
             {
-                datasetIn.Descriptor.ColumnNames.RemoveAll(x => x.Name == col.Name);
+                datasetIn.Descriptor.ColumnDescriptions.RemoveAll(x => x.Name == col.Name);
                 for (int i = datasetIn.Table.Columns.Count - 1; i >= 0; i--)
                 {
                     var tableCol = datasetIn.Table.Columns[i];

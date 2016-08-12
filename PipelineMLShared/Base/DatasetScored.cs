@@ -7,7 +7,7 @@ namespace PipelineMLCore
     {
         public DatasetScored(IDatasetDescriptor descriptor) : base(descriptor)
         {
-            if (!Descriptor.ColumnNames.Exists( x => x.IsScore == true) || !Descriptor.ColumnNames.Exists(x => x.IsScoreProbability == true))
+            if (!Descriptor.ColumnDescriptions.Exists( x => x.IsScore == true) || !Descriptor.ColumnDescriptions.Exists(x => x.IsScoreProbability == true))
             {
                 throw new Exception($"Cannot find any scored columns in the scored Dataset");
             }

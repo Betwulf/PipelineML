@@ -125,7 +125,7 @@ Error: " + error.ToString();
 
 
             // Merge new column into Dataset
-            datasetIn.Descriptor.ColumnNames.Add(ConfigInternal.NewColumn);
+            datasetIn.Descriptor.ColumnDescriptions.Add(ConfigInternal.NewColumn);
             datasetIn.Table.Columns.Add(ConfigInternal.NewColumn.Name, ConfigInternal.NewColumn.DataType);
             // copy over values
             for (int i = 0; i < datasetIn.Table.Rows.Count; i++)

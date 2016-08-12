@@ -14,7 +14,7 @@ namespace PipelineMLCore
         {
             Descriptor = descriptor;
             Table = new DataTable(Descriptor.Name);
-            Descriptor.ColumnNames.ForEach(x => Table.Columns.Add(x.Name, x.DataType));
+            Descriptor.ColumnDescriptions.ForEach(x => Table.Columns.Add(x.Name, x.DataType));
         }
 
     }

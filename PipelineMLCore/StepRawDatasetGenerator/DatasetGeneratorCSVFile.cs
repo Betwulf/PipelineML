@@ -54,7 +54,7 @@ namespace PipelineMLCore
             dt.Columns.AddRange(col.ToArray());
             col.ToList().ForEach(x =>
             {
-                DatasetDescription.ColumnNames.Add(new DataColumnBase() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
+                DatasetDescription.ColumnDescriptions.Add(new DataColumnBase() { Id = x.Ordinal, Name = x.ColumnName, DataType = x.DataType, Description = x.ColumnName, IsFeature = false, IsLabel = false });
             });
 
             foreach (var item in tableData.Skip(1)) { dt.Rows.Add(item.Split(",".ToCharArray())); }
