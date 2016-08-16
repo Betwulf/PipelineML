@@ -1,16 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DataTransformRemoveColumns : IDataTransform, ISearchableClass
+    public class DataTransformRemoveNullRows : IDataTransform, ISearchableClass
     {
         public string Name { get; set; }
 
-        public string FriendlyName { get { return "Remove Columns Data Transform"; } }
+        public string FriendlyName { get { return "Remove rows with Null"; } }
 
-        public string Description { get { return "Will remove selected columns from the dataset"; } }
+        public string Description { get { return "Will remove data rows where selected columns have null values"; } }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
@@ -18,7 +22,7 @@ namespace PipelineMLCore
         private DataTransformConfigColumns ConfigInternal { get { return Config as DataTransformConfigColumns; } }
 
 
-        public DataTransformRemoveColumns()
+        public DataTransformRemoveNullRows()
         {
             Config = new DataTransformConfigColumns();
         }
@@ -31,17 +35,15 @@ namespace PipelineMLCore
 
         public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
         {
-            foreach (var col in ConfigInternal.ColumnNames)
+            for (int i = datasetIn.Table.Rows.Count-1; i >= 0; i--)
             {
-                datasetIn.Descriptor.ColumnDescriptions.RemoveAll(x => x.Name == col.Name);
-                for (int i = datasetIn.Table.Columns.Count - 1; i >= 0; i--)
+                bool deleteRow = false;
+                foreach (var col in ConfigInternal.ColumnNames)
                 {
-                    var tableCol = datasetIn.Table.Columns[i];
-                    if (tableCol != null && tableCol.ColumnName == col.Name)
-                    {
-                        datasetIn.Table.Columns.Remove(tableCol);
-                    }
+                    if (datasetIn.Table.Rows[i][col.Name] == null)
+                        deleteRow = true;
                 }
+                if (deleteRow) datasetIn.Table.Rows.RemoveAt(i);
 
             }
             return datasetIn;

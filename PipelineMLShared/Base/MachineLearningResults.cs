@@ -16,5 +16,8 @@ namespace PipelineMLCore
 
         public DateTime StopTime { get; set; }
 
+        public double Error { get; set; }
+
+        public double TrainingError { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace PipelineMLCore
+﻿using System;
+
+namespace PipelineMLCore
 {
     public interface IDataTransform : IPipelinePart
     {
-        IDataset Transform(IDataset datasetIn);
+        IDataset Transform(IDataset datasetIn, Action<string> updateMessage);
     }
 }

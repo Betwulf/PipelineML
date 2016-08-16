@@ -1,16 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DataTransformRemoveColumns : IDataTransform, ISearchableClass
+    public class DataTransformSetLabel : IDataTransform, ISearchableClass
     {
         public string Name { get; set; }
 
-        public string FriendlyName { get { return "Remove Columns Data Transform"; } }
+        public string FriendlyName { get { return "Set Label Data Transform"; } }
 
-        public string Description { get { return "Will remove selected columns from the dataset"; } }
+        public string Description { get { return "Designates the column that will be used to train the output of the machine learning algorithm"; } }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
@@ -18,7 +22,7 @@ namespace PipelineMLCore
         private DataTransformConfigColumns ConfigInternal { get { return Config as DataTransformConfigColumns; } }
 
 
-        public DataTransformRemoveColumns()
+        public DataTransformSetLabel()
         {
             Config = new DataTransformConfigColumns();
         }
@@ -31,20 +35,16 @@ namespace PipelineMLCore
 
         public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
         {
+            if (ConfigInternal.ColumnNames.Count > 1)
+                throw new PipelineException("Don't set more than one label column please", datasetIn, this);
             foreach (var col in ConfigInternal.ColumnNames)
             {
-                datasetIn.Descriptor.ColumnDescriptions.RemoveAll(x => x.Name == col.Name);
-                for (int i = datasetIn.Table.Columns.Count - 1; i >= 0; i--)
-                {
-                    var tableCol = datasetIn.Table.Columns[i];
-                    if (tableCol != null && tableCol.ColumnName == col.Name)
-                    {
-                        datasetIn.Table.Columns.Remove(tableCol);
-                    }
-                }
-
+                var found = datasetIn.Descriptor.ColumnDescriptions.First(x => x.Name == col.Name);
+                found.IsLabel = true;
+                found.IsFeature = false;
             }
             return datasetIn;
+
         }
     }
 }

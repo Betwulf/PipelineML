@@ -12,6 +12,7 @@ namespace PipelineMLCoreTest
     {
         public static string testName = "Test";
         public static string testFile = "TestDataFile.csv";
+        public static string titanicFile = "titanic.csv";
         public static string directory = @"C:\Temp\Test";
         public static string currDirectory = @"..\";
         public static string yahooFilename = @"PipelineMLCore.YahooMarketDataSeries\MSFT.json";
@@ -21,8 +22,8 @@ namespace PipelineMLCoreTest
         public static string testTableName = "TestTable";
         public static string testColumnName = "TestColumn";
         public static string testColumnNameNew = "TestColumnNew";
-        public static PipelineMLCore.DataColumnBase testDataColumn = new PipelineMLCore.DataColumnBase() { Name = testColumnName, DataType = typeof(int), Description = testColumnName, Id = 0, IsFeature = false, IsLabel = false };
-        public static PipelineMLCore.DataColumnBase testDataColumnNew = new PipelineMLCore.DataColumnBase() { Name = testColumnNameNew, DataType = typeof(int), Description = testColumnNameNew, Id = 1, IsFeature = false, IsLabel = false };
+        public static DataColumnBase testDataColumn = new DataColumnBase() { Name = testColumnName, DataType = typeof(int), Description = testColumnName, Id = 0, IsFeature = false, IsLabel = false };
+        public static DataColumnBase testDataColumnNew = new DataColumnBase() { Name = testColumnNameNew, DataType = typeof(int), Description = testColumnNameNew, Id = 1, IsFeature = false, IsLabel = false };
         public static DataTable testDataTable = new DataTable(testTableName);
         public static string testCode = @"var tableOut = new DataTable(); 
                                     tableOut.Columns.Add(" + "\"" + testColumnNameNew + "\"" + @", typeof(int));
@@ -42,6 +43,45 @@ namespace PipelineMLCoreTest
             dbb.Table.Rows.Add(new object[] { 1 });
             dbb.Table.Rows.Add(new object[] { 1 });
             return dbb;
+        }
+
+        public static List<DataColumnBase> GetTitanicColumnsToRemove()
+        {
+            var lst = new List<DataColumnBase>();
+            lst.Add(new DataColumnBase() { Name = "Cabin", DataType = typeof(string), Description = testColumnName, Id = 10, IsFeature = true, IsLabel = false });
+            lst.Add(new DataColumnBase() { Name = "Ticket", DataType = typeof(string), Description = testColumnName, Id = 8, IsFeature = true, IsLabel = false });
+
+            return lst;
+        }
+
+
+        public static List<DataColumnBase> GetTitanicColumnToLabel()
+        {
+            var lst = new List<DataColumnBase>();
+            lst.Add(new DataColumnBase() { Name = "Survived", DataType = typeof(string), Description = testColumnName, Id = 1, IsFeature = false, IsLabel = true });
+
+            return lst;
+        }
+
+
+
+        public static List<DataColumnBase> GetTitanicColumnsToIgnore()
+        {
+            var lst = new List<DataColumnBase>();
+            lst.Add(new DataColumnBase() { Name = "PassengerId", DataType = typeof(string), Description = testColumnName, Id = 0, IsFeature = false, IsLabel = true });
+            lst.Add(new DataColumnBase() { Name = "Name", DataType = typeof(string), Description = testColumnName, Id = 3, IsFeature = false, IsLabel = true });
+
+            return lst;
+        }
+
+
+
+        public static List<DataColumnBase> GetTitanicColumnWithNullValues()
+        {
+            var lst = new List<DataColumnBase>();
+            lst.Add(new DataColumnBase() { Name = "Age", DataType = typeof(string), Description = testColumnName, Id = 0, IsFeature = true, IsLabel = false });
+
+            return lst;
         }
     }
 }

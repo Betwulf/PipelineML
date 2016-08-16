@@ -14,9 +14,15 @@ namespace PipelineMLCore
 
         public string Name { get; set; }
 
-        public double[][] Inputs { get; set; }
 
-        public double[] Label { get; set; }
+        public double[][] TrainingInputs { get; set; }
+
+        public int[] TrainingLabel { get; set; }
+
+
+        public double[][] TestingInputs { get; set; }
+
+        public int[] TestingLabel { get; set; }
 
         /// <summary>
         /// number of possible values in the label series

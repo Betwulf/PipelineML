@@ -57,6 +57,7 @@
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Helpers\ExtendCalculations.cs" />
+    <Compile Include="Helpers\ExtendData.cs" />
     <Compile Include="Helpers\PercentageConverter.cs" />
     <Compile Include="Helpers\SearchClasses.cs" />
     <Compile Include="Helpers\TypeTypeConverter.cs" />

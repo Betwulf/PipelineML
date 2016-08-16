@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PipelineMLCore.StepDataTransform
+namespace PipelineMLCore
 {
     public class DataTranformSetTraining : IDataTransform, ISearchableClass
     {
@@ -35,11 +35,11 @@ namespace PipelineMLCore.StepDataTransform
 
 
 
-        public IDataset Transform(IDataset datasetIn)
+        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
         {
             // Create new column
             var trainingColumn = new DataColumnBase()
-                { Name = "IsTraining", DataType = typeof(bool), Description = "Training Flag",
+                { Name = nameof(DataColumnBase.IsTraining), DataType = typeof(bool), Description = "Training Flag",
                 IsFeature = false, IsLabel = false, IsScore = false, IsScoreProbability = false,
                 IsTraining = true, Id = -1 };
             datasetIn.Descriptor.ColumnDescriptions.Add(trainingColumn);

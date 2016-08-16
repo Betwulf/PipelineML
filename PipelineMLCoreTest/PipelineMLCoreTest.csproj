@@ -55,6 +55,7 @@
     <Compile Include="TestDatasetGenerators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDataTransforms.cs" />
+    <Compile Include="TestMachineLearning.cs" />
     <Compile Include="TestPipelineConstruction.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TestDataFile.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="titanic.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

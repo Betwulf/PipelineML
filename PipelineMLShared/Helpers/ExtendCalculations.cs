@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PipelineMLCore.Helpers
+namespace PipelineMLCore
 {
     /// <summary>
     /// Collection of extension methods to assist in calculations

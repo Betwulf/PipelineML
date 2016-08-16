@@ -86,7 +86,7 @@ namespace PipelineMLCore
 
 
 
-        public IDataset Transform(IDataset datasetIn)
+        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
         {
             // Compile and run Dynamic Code
             // TODO: filter code for bad behavior
