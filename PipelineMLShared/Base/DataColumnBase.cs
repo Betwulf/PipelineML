@@ -29,5 +29,6 @@ namespace PipelineMLCore
         public bool IsScoreProbability { get; set; }
 
         public bool IsCategory { get; set; }
+
     }
 }

@@ -15,7 +15,7 @@ namespace PipelineMLCore
     {
         public string Name { get; set; }
 
-        public IDatasetDescriptor DatasetDescription { get; set; }
+        public DatasetDescriptorBase DatasetDescription { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
@@ -51,9 +51,9 @@ namespace PipelineMLCore
             return Name;
         }
 
-        public IDataset Generate(Action<string> updateMessage)
+        public DatasetBase Generate(Action<string> updateMessage)
         {
-            DatasetDescription = new DatasetDescriptor();
+            DatasetDescription = new DatasetDescriptorBase();
             DatasetDescription.Name = "Yahoo Financial Market Data";
             DatasetDescription.ColumnDescriptions.Add(new DataColumnBase() { Id = 1, Name = "Ticker", DataType = typeof(string), Description = "The stock ticker", IsFeature = false, IsLabel = false });
             DatasetDescription.ColumnDescriptions.Add(new DataColumnBase() { Id = 2, Name = "Date", DataType = typeof(DateTime), Description = "Date of the prices", IsFeature = false, IsLabel = false });

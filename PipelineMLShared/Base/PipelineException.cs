@@ -8,11 +8,11 @@ namespace PipelineMLCore
 {
     public class PipelineException : Exception
     {
-        public IDataset CurrentDataset { get; set; }
+        public DatasetBase CurrentDataset { get; set; }
 
         public IPipelinePart CurrentPipelinePart { get; set; }
 
-        public PipelineException(string message, IDataset currentDataset, IPipelinePart currentPart) : base(message)
+        public PipelineException(string message, DatasetBase currentDataset, IPipelinePart currentPart) : base(message)
         {
             CurrentDataset = currentDataset;
             CurrentPipelinePart = currentPart;

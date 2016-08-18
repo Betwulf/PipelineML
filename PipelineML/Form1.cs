@@ -18,7 +18,7 @@ namespace PipelineML
         private void btnTest_Click(object sender, EventArgs e)
         {
             string[] stocks = { "SCTY", "SPY", "GOOG", "NFLX" };
-            var dsg = new DatasetGeneratorYahoo { DatasetDescription = new DatasetDescriptor() };
+            var dsg = new DatasetGeneratorYahoo { DatasetDescription = new DatasetDescriptorBase() };
             var dsgconfig = dsg.Config as DatasetConfigYahooMarketData;
             dsgconfig.Name = "Yahoo Market Data";
             dsgconfig.Symbols.AddRange(stocks);

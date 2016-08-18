@@ -2,6 +2,6 @@
 {
     public interface IEvaluator : IPipelinePart
     {
-        IEvaluatorResults Evaluate(IMachineLearningResults mlResults, IDataset datasetIn);
+        IEvaluatorResults Evaluate(IMachineLearningResults mlResults, DatasetBase datasetIn);
     }
 }

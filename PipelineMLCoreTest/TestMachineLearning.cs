@@ -64,6 +64,7 @@ namespace PipelineMLCoreTest
             // Create Decision Tree
             var treecfg = new MachineLearningConfigDecisionTree();
             treecfg.Name = TestConstants.testName;
+            treecfg.IncludeTrainingDataInTestingData = true;
             var tree = new MachineLearningDecisionTree();
             tree.Configure(TestConstants.currDirectory, treecfg.ToJSON());
 

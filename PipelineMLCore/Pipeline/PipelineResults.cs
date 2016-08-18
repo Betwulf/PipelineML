@@ -4,7 +4,7 @@ namespace PipelineMLCore
 {
     public class PipelineResults
     {
-        public IDatasetGeneratorResults DataSetGeneratorResult { get; set; }
+        public DatasetBaseGeneratorResults DataSetGeneratorResult { get; set; }
 
         public List<IDataTransformResults> PreprocessTransformOutput { get; set; }
 

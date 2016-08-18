@@ -4,8 +4,8 @@ namespace PipelineMLCore
 {
     public interface IDatasetGenerator : IPipelinePart
     {
-        IDatasetDescriptor DatasetDescription { get; set; }
+        DatasetDescriptorBase DatasetDescription { get; set; }
 
-        IDataset Generate(Action<string> updateMessage);
+        DatasetBase Generate(Action<string> updateMessage);
     }
 }

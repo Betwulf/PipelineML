@@ -46,7 +46,10 @@
   <ItemGroup>
     <Compile Include="Base\ConfigBase.cs" />
     <Compile Include="Base\DataColumnBase.cs" />
-    <Compile Include="Base\DatasetDescriptor.cs" />
+    <Compile Include="Base\DataColumnML.cs" />
+    <Compile Include="Base\DatasetDescriptorBase.cs" />
+    <Compile Include="Base\DatasetDescriptorML.cs" />
+    <Compile Include="Base\DatasetML.cs" />
     <Compile Include="Base\DatasetScored.cs" />
     <Compile Include="Base\JsonRepository.cs" />
     <Compile Include="Base\DatasetBase.cs" />
@@ -70,8 +73,6 @@
     <Compile Include="Interfaces\IEvaluator.cs" />
     <Compile Include="Interfaces\IMachineLearningProcess.cs" />
     <Compile Include="Interfaces\IPipelinePart.cs" />
-    <Compile Include="Interfaces\IDataset.cs" />
-    <Compile Include="Interfaces\IDatasetDescriptor.cs" />
     <Compile Include="Interfaces\IDatasetGenerator.cs" />
     <Compile Include="Interfaces\ISearchableClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

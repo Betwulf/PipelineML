@@ -8,9 +8,13 @@ namespace PipelineMLCore
 {
     public class MachineLearningData
     {
-        public IDataset Source { get; set; }
+        public DatasetBase Source { get; set; }
 
-        public DatasetDescriptor InputDescriptor { get; set; }
+        public DatasetBase TrainingData { get; set; }
+
+        public DatasetBase TestingData { get; set; }
+
+        public DatasetDescriptorBase InputDescriptor { get; set; }
 
         public string Name { get; set; }
 
@@ -29,11 +33,11 @@ namespace PipelineMLCore
         /// </summary>
         public int LabelCategoryCount { get; set; }
 
-        public MachineLearningData(IDataset datasetIn)
+        public MachineLearningData(DatasetBase datasetIn)
         {
             Name = datasetIn.Name;
             Source = datasetIn;
-            InputDescriptor = new DatasetDescriptor();
+            InputDescriptor = new DatasetDescriptorBase();
         }
     }
 }

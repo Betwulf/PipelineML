@@ -29,7 +29,7 @@ namespace PipelineMLCore
             Name = Config.Name;
         }
 
-        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
+        public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)
         {
             foreach (var col in ConfigInternal.ColumnNames)
             {

@@ -33,7 +33,7 @@ namespace PipelineMLCore
             Name = Config.Name;
         }
 
-        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
+        public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)
         {
             for (int i = datasetIn.Table.Rows.Count-1; i >= 0; i--)
             {

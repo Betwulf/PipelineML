@@ -3,15 +3,15 @@ using System.Data;
 
 namespace PipelineMLCore
 {
-    public class DatasetScored : DatasetBase, IDataset
+    public class DatasetScored : DatasetML
     {
-        public DatasetScored(IDatasetDescriptor descriptor) : base(descriptor)
+        public DatasetScored(DatasetML mlData) : base(mlData.Descriptor)
         {
-            if (!Descriptor.ColumnDescriptions.Exists( x => x.IsScore == true) || !Descriptor.ColumnDescriptions.Exists(x => x.IsScoreProbability == true))
-            {
-                throw new Exception($"Cannot find any scored columns in the scored Dataset");
-            }
+            Table = mlData.Table;
+            Table.Columns.Add(nameof(DataColumnBase.IsScore), typeof(int));
+            Table.Columns.Add(nameof(DataColumnBase.IsScoreProbability), typeof(double));
+            Descriptor.ColumnDescriptions.Add(new DataColumnML() { Name = nameof(DataColumnBase.IsScore), DataType = typeof(int), IsScore = true });
+            Descriptor.ColumnDescriptions.Add(new DataColumnML() { Name = nameof(DataColumnBase.IsScoreProbability), DataType = typeof(double), IsScoreProbability = true });
         }
-
     }
 }

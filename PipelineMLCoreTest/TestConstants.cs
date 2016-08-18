@@ -34,9 +34,9 @@ namespace PipelineMLCoreTest
 
                                     return tableOut;";
 
-        public static IDataset GetIDataset()
+        public static DatasetBase GetDatasetBase()
         {
-            var dsd = new DatasetDescriptor();
+            var dsd = new DatasetDescriptorBase();
             dsd.ColumnDescriptions.Add(testDataColumn);
             dsd.Name = testTableName;
             var dbb = new DatasetBase(dsd);

@@ -15,7 +15,7 @@ namespace PipelineMLCore
             throw new NotImplementedException();
         }
 
-        public IMachineLearningResults TrainML(IDataset datasetIn)
+        public IMachineLearningResults TrainML(DatasetBase datasetIn)
         {
             throw new NotImplementedException();
         }

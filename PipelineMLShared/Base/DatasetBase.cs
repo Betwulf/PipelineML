@@ -2,19 +2,22 @@
 
 namespace PipelineMLCore
 {
-    public class DatasetBase : IDataset
+    public class DatasetBase
     {
-        public IDatasetDescriptor Descriptor { get; set; }
+        public DatasetDescriptorBase Descriptor { get; set; }
 
         public string Name => Table?.TableName;
 
         public DataTable Table { get; set; }
 
-        public DatasetBase(IDatasetDescriptor descriptor)
+        public DatasetBase(DatasetDescriptorBase descriptor)
         {
-            Descriptor = descriptor;
-            Table = new DataTable(Descriptor.Name);
-            Descriptor.ColumnDescriptions.ForEach(x => Table.Columns.Add(x.Name, x.DataType));
+            if (descriptor != null)
+            {
+                Descriptor = descriptor;
+                Table = new DataTable(Descriptor.Name);
+                Descriptor.ColumnDescriptions.ForEach(x => Table.Columns.Add(x.Name, x.DataType));
+            }
         }
 
     }

@@ -11,7 +11,7 @@ namespace PipelineMLCore
     {
         public List<DecisionVariable> DecisionVariables { get; set; }
 
-        public MachineLearningDataDecisionTree(IDataset datasetIn) : base(datasetIn)
+        public MachineLearningDataDecisionTree(DatasetBase datasetIn) : base(datasetIn)
         {
             DecisionVariables = new List<DecisionVariable>();
         }

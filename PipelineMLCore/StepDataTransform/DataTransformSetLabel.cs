@@ -33,7 +33,7 @@ namespace PipelineMLCore
             Name = Config.Name;
         }
 
-        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
+        public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)
         {
             if (ConfigInternal.ColumnNames.Count > 1)
                 throw new PipelineException("Don't set more than one label column please", datasetIn, this);

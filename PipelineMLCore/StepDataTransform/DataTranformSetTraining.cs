@@ -35,7 +35,7 @@ namespace PipelineMLCore
 
 
 
-        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
+        public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)
         {
             // Create new column
             var trainingColumn = new DataColumnBase()

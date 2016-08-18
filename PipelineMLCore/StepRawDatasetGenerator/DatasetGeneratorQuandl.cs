@@ -8,7 +8,7 @@ namespace PipelineMLCore
     {
         public string Name { get; set; }
 
-        public IDatasetDescriptor DatasetDescription { get; set; }
+        public DatasetDescriptorBase DatasetDescription { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
@@ -33,7 +33,7 @@ namespace PipelineMLCore
             return Name;
         }
 
-        public IDataset Generate(Action<string> updateMessage)
+        public DatasetBase Generate(Action<string> updateMessage)
         {
             return null;
         }

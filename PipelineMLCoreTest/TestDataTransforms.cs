@@ -15,7 +15,7 @@ namespace PipelineMLCoreTest
             dtcfg.Name = TestConstants.testName;
             dtcfg.NewColumn = TestConstants.testDataColumnNew;
             dt.Configure(string.Empty, dtcfg.ToJSON());
-            IDataset dsIn = TestConstants.GetIDataset();
+            DatasetBase dsIn = TestConstants.GetDatasetBase();
             var result = dt.Transform(dsIn, System.Console.WriteLine);
             Assert.IsTrue(result.Table.Columns.Count == 2);
             Assert.IsTrue((int)result.Table.Rows[0][TestConstants.testColumnNameNew] == 2);

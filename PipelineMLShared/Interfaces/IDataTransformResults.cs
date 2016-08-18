@@ -10,9 +10,9 @@ namespace PipelineMLCore
     {
         IDataTransform FromDataTransform { get; set; }
 
-        IDataset SampleDataset { get; set; }
+        DatasetBase SampleDataset { get; set; }
 
-        IDatasetDescriptor DatasetDescriptor { get; set; }
+        DatasetDescriptorBase DatasetDescriptor { get; set; }
 
         DateTime StartTime { get; set; }
 

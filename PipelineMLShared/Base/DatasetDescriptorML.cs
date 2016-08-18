@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DatasetDescriptor : IDatasetDescriptor
+    public class DatasetDescriptorML
     {
         public string Name { get; set; }
 
-        public List<DataColumnBase> ColumnDescriptions { get; set; }
+        public List<DataColumnML> ColumnDescriptions { get; set; }
 
-        public DatasetDescriptor()
+
+        public DatasetDescriptorML()
         {
-            ColumnDescriptions = new List<DataColumnBase>();
+            ColumnDescriptions = new List<DataColumnML>();
         }
 
     }

@@ -37,7 +37,7 @@ namespace PipelineMLCore
             {
                 public class TransformDynamic
                 {
-                    public DataTable Transform(IDataset datasetIn)
+                    public DataTable Transform(DatasetBase datasetIn)
                     {";
             }
         }
@@ -86,7 +86,7 @@ namespace PipelineMLCore
 
 
 
-        public IDataset Transform(IDataset datasetIn, Action<string> updateMessage)
+        public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)
         {
             // Compile and run Dynamic Code
             // TODO: filter code for bad behavior
