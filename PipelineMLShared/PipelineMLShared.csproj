@@ -54,7 +54,6 @@
     <Compile Include="Base\JsonRepository.cs" />
     <Compile Include="Base\DatasetBase.cs" />
     <Compile Include="Base\MachineLearningBase.cs" />
-    <Compile Include="Base\MachineLearningData.cs" />
     <Compile Include="Base\MachineLearningResults.cs" />
     <Compile Include="Base\PipelineException.cs" />
     <Compile Include="Base\TypeDefinition.cs" />

@@ -72,12 +72,12 @@
     <Compile Include="StepDataTransform\DataTransformConfigAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigSetTraining.cs" />
+    <Compile Include="StepDataTransform\DataTransformConvertColumnDataType.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveColumns.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveFeature.cs" />
     <Compile Include="StepDataTransform\DataTransformRemoveNullRows.cs" />
     <Compile Include="StepDataTransform\DataTransformSetLabel.cs" />
     <Compile Include="StepMachineLearning\MachineLearningConfigDecisionTree.cs" />
-    <Compile Include="StepMachineLearning\MachineLearningDataDecisionTree.cs" />
     <Compile Include="StepMachineLearning\MachineLearningDecisionTree.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigCSVFile.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigQuandlMarketData.cs" />

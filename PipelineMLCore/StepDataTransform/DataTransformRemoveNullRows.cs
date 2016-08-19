@@ -40,7 +40,7 @@ namespace PipelineMLCore
                 bool deleteRow = false;
                 foreach (var col in ConfigInternal.ColumnNames)
                 {
-                    if (datasetIn.Table.Rows[i][col.Name] == null)
+                    if (datasetIn.Table.Rows[i][col.Name] == null || datasetIn.Table.Rows[i][col.Name].ToString() == "")
                         deleteRow = true;
                 }
                 if (deleteRow) datasetIn.Table.Rows.RemoveAt(i);

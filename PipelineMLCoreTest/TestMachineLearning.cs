@@ -53,24 +53,33 @@ namespace PipelineMLCoreTest
             dt4.Configure(TestConstants.currDirectory, dtcfg4.ToJSON());
             var nullRowsRemoved = dt4.Transform(columnsIgnored, Console.WriteLine);
 
-            // set Training data
-            var dtcfg5 = new DataTransformConfigSetTraining();
-            dtcfg5.PercentOfTrainingData = 0.8;
-            var dt5 = new DataTranformSetTraining();
+
+            // convertdatacolumn from string to num
+            var dtcfg5 = new DataTransformConfigColumns();
+            dtcfg5.ColumnNames = TestConstants.GetTitanicColumnWithNullValues();
+            var dt5 = new DataTransformConvertColumnDataType();
             dt5.Configure(TestConstants.currDirectory, dtcfg5.ToJSON());
-            var trainingDataSet = dt5.Transform(nullRowsRemoved, Console.WriteLine);
+            var columnConverted = dt5.Transform(nullRowsRemoved, Console.WriteLine);
+            
+
+            // set Training data
+            var dtcfg6 = new DataTransformConfigSetTraining();
+            dtcfg6.PercentOfTrainingData = 0.8;
+            var dt6 = new DataTranformSetTraining();
+            dt6.Configure(TestConstants.currDirectory, dtcfg6.ToJSON());
+            var trainingDataSet = dt6.Transform(columnConverted, Console.WriteLine);
 
 
             // Create Decision Tree
             var treecfg = new MachineLearningConfigDecisionTree();
             treecfg.Name = TestConstants.testName;
-            treecfg.IncludeTrainingDataInTestingData = true;
+            treecfg.IncludeTrainingDataInTestingData = false;
             var tree = new MachineLearningDecisionTree();
             tree.Configure(TestConstants.currDirectory, treecfg.ToJSON());
 
             // Train Tree
             var mlResults = tree.TrainML(trainingDataSet);
-            mlResults.DatasetWithScores.Table.WriteToCsvFile(@"C:\Temp\datasetWithScores.csv");
+            //mlResults.DatasetWithScores.Table.WriteToCsvFile(@"C:\Temp\datasetWithScores.csv");
             Assert.IsTrue(mlResults.Error < 0.4);
             Assert.IsNotNull(tree);
             //throw new PipelineException("NO", columnsIgnored, tree);

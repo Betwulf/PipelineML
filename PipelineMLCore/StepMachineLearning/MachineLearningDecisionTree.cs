@@ -215,7 +215,7 @@ namespace PipelineMLCore
             int scoreCounter = 0;
             foreach (DataRow row in results.DatasetWithScores.Table.Rows)
             {
-                if (ConfigInternal.IncludeTrainingDataInTestingData || (bool)row[trainingColName])
+                if (ConfigInternal.IncludeTrainingDataInTestingData || !(bool)row[trainingColName])
                 {
                     int score = tree.Compute((double[])row[mlColName]);
                     row[scoreColName] = score;

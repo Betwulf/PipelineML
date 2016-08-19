@@ -79,7 +79,7 @@ namespace PipelineMLCoreTest
         public static List<DataColumnBase> GetTitanicColumnWithNullValues()
         {
             var lst = new List<DataColumnBase>();
-            lst.Add(new DataColumnBase() { Name = "Age", DataType = typeof(string), Description = testColumnName, Id = 0, IsFeature = true, IsLabel = false });
+            lst.Add(new DataColumnBase() { Name = "Age", DataType = typeof(double), Description = testColumnName, Id = 0, IsFeature = true, IsLabel = false, IsCategory = false });
 
             return lst;
         }
