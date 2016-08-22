@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Serilog;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -73,8 +74,15 @@ namespace PipelineMLCore
                 var tickerData = new List<YahooMarketData>();
                 for (int i = 1; i < dates.Count; i++)
                 {
-                    var newData = GetYahooMarketData(dates[i - 1], dates[i], ticker, updateMessage);
-                    tickerData.AddRange(newData);
+                    try
+                    {
+                        var newData = GetYahooMarketData(dates[i - 1], dates[i], ticker, updateMessage);
+                        tickerData.AddRange(newData);
+                    }
+                    catch (Exception ex)
+                    {
+                        updateMessage(ex.Message);
+                    }
                 }
                 AddToCache(tickerData, ticker);
                 allData.AddRange(tickerData);
@@ -182,6 +190,7 @@ namespace PipelineMLCore
                 if (queryCount == 0)
                 {
                     string yahooWarning = (string)dataObject["query"]["diagnostics"]["warning"];
+                    Log.Logger.Warning("Yahoo {warning}", yahooWarning);
                     throw new Exception("Yahoo Warning: " + yahooWarning);
                 }
                 else

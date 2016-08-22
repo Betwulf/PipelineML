@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace PipelineMLCore
 
         public PipelineException(string message, DatasetBase currentDataset, IPipelinePart currentPart) : base(message)
         {
+            Log.Logger.Error("{message} {currentDataset} {currentPart}", message, currentDataset, currentPart);
             CurrentDataset = currentDataset;
             CurrentPipelinePart = currentPart;
         }

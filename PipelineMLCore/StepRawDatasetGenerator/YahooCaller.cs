@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Serilog;
 
 namespace PipelineMLCore
 {
@@ -17,6 +18,7 @@ namespace PipelineMLCore
             var rnd = new Random();
             var delayTime = rnd.Next(3000, 6000);
             updateMessage("Task.Delay for: " + delayTime);
+            Log.Logger.Information("YahooWait for {delayTime}", delayTime);
             Thread.Sleep(delayTime);
         }
 

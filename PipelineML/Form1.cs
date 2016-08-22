@@ -21,8 +21,9 @@ namespace PipelineML
             var dsg = new DatasetGeneratorYahoo { DatasetDescription = new DatasetDescriptorBase() };
             var dsgconfig = dsg.Config as DatasetConfigYahooMarketData;
             dsgconfig.Name = "Yahoo Market Data";
+            dsgconfig.SubFolder = "yahoo\\";
             dsgconfig.Symbols.AddRange(stocks);
-            dsgconfig.StartDate = DateTime.Parse("1/1/2010");
+            dsgconfig.StartDate = DateTime.Parse("1/1/2011");
             dsgconfig.EndDate = DateTime.Parse("1/1/2016");
             var dsgCfg = dsg.Config.ToJSON();
 
@@ -30,16 +31,29 @@ namespace PipelineML
 
             var pd = new PipelineDefinition();
             pd.Name = "Test";
+            pd.RootDirectory = "C:\\";
             pd.DatasetGenerator = TypeDefinition.Create(dsg);
             var tdpreprocess = TypeDefinition.Create(transform);
             pd.PreprocessDataTransforms.Add(tdpreprocess);
             var jsonPD = dsg.Config.ToJSON();
+
+            var pi = pd.CreateInstance();
+            var dataset = pi.DatasetGenerator.Generate(Console.WriteLine);
+
 
             IDataTransform remove = (IDataTransform)Activator.CreateInstance(tdpreprocess.ClassType);
 
             remove.Configure(string.Empty, tdpreprocess.ClassConfig);
             prpGrid.SelectedObject = dsgconfig;
 
+            try
+            {
+                throw new PipelineException("NO", dataset, pi.DatasetGenerator);
+            }
+            catch (PipelineException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             //File.WriteAllText(pdJsonFilename, jsonPD);
 
         }

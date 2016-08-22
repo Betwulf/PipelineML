@@ -1,5 +1,6 @@
 ﻿using Microsoft.CSharp;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -112,6 +113,7 @@ namespace PipelineMLCore
                 string errorString = $"Errors: {results.Errors.Count} ";
                 foreach (var error in results.Errors)
                 {
+                    Log.Logger.Error("CompileResultsError: {ErrorMessage}", error.ToString());
                     errorString += @"
 Error: " + error.ToString();
                 }

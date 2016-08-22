@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Serilog;
 
 namespace PipelineML
 {
@@ -15,6 +16,8 @@ namespace PipelineML
         [STAThread]
         static void Main()
         {
+            Log.Logger = new LoggerConfiguration().ReadFrom.AppSettings().CreateLogger();
+            Log.Logger.Information("Application Startup {time}", DateTime.Now);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmMain());
