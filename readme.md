@@ -1,5 +1,6 @@
-PipelineML ![Logo](pipelineML.png)
+![Logo](pipelineML.png)
 
+PipelineML 
 ==========
 
 PipelineML is a C# project designed to help manage the machine learning process. Machine learning requires a lot of experimentation with altering input data, data pre-processing and 
