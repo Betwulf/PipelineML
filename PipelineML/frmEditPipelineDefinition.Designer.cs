@@ -51,6 +51,7 @@
             this.lblRoot = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtRoot = new System.Windows.Forms.TextBox();
+            this.btnRun = new System.Windows.Forms.Button();
             this.flwDatasetGen.SuspendLayout();
             this.flwPreprocess.SuspendLayout();
             this.flwMain.SuspendLayout();
@@ -274,11 +275,23 @@
             this.txtRoot.Text = "C:\\";
             this.txtRoot.TextChanged += new System.EventHandler(this.txtRoot_TextChanged);
             // 
+            // btnRun
+            // 
+            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRun.Location = new System.Drawing.Point(222, 717);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(99, 32);
+            this.btnRun.TabIndex = 12;
+            this.btnRun.Text = "Run...";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
+            // 
             // frmEditPipelineDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(842, 761);
+            this.Controls.Add(this.btnRun);
             this.Controls.Add(this.txtRoot);
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.lblRoot);
@@ -331,5 +344,6 @@
         private System.Windows.Forms.Label lblRoot;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtRoot;
+        private System.Windows.Forms.Button btnRun;
     }
 }

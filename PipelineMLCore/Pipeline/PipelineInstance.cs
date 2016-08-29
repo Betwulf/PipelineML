@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -64,12 +65,16 @@ namespace PipelineMLCore
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public IDatasetGenerator DatasetGenerator { get; set; }
 
+        [TypeConverter(typeof(CollectionEditor))]
         public List<IDataTransform> PreprocessDataTransforms { get; set; }
 
+        [TypeConverter(typeof(CollectionEditor))]
         public List<IMachineLearningProcess> MLList { get; set; }
 
+        [TypeConverter(typeof(CollectionEditor))]
         public List<IDataTransform> PostprocessDataTransforms { get; set; }
 
+        [TypeConverter(typeof(CollectionEditor))]
         public List<IEvaluator> Evaluators { get; set; }
 
     }

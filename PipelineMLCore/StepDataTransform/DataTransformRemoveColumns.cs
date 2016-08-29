@@ -6,7 +6,7 @@ namespace PipelineMLCore
 {
     public class DataTransformRemoveColumns : IDataTransform, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public string FriendlyName { get { return "Remove Columns Data Transform"; } }
 
@@ -26,7 +26,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigColumns>(jsonConfig);
-            Name = Config.Name;
         }
 
         public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)

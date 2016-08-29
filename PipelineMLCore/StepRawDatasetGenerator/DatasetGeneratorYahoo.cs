@@ -14,7 +14,7 @@ namespace PipelineMLCore
 {
     public class DatasetGeneratorYahoo : IDatasetGenerator, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public DatasetDescriptorBase DatasetDescription { get; set; }
 
@@ -42,7 +42,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigYahooMarketData>(jsonConfig);
-            Name = Config.Name;
             string fullPath = Path.Combine(rootDirectory, ConfigInternal.SubFolder);
             cache = new JsonRepository<YahooMarketDataSeries>(fullPath);
         }

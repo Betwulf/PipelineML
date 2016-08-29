@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.btnTest = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.prpGrid = new System.Windows.Forms.PropertyGrid();
@@ -107,6 +108,7 @@
             this.Controls.Add(this.prpGrid);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.btnTest);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.Text = "Pipeline ML";
             this.ResumeLayout(false);

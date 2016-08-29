@@ -17,7 +17,7 @@ namespace PipelineMLCore
     {
         // Fields  
         private static Type[] types = new Type[] {
-            typeof(bool), typeof(int), typeof(decimal), typeof(string), typeof(DateTime)
+            typeof(bool), typeof(int), typeof(decimal), typeof(string), typeof(double), typeof(DateTime)
         };
 
         private StandardValuesCollection values;

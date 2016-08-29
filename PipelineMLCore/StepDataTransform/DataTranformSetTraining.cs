@@ -10,7 +10,7 @@ namespace PipelineMLCore
 {
     public class DataTranformSetTraining : IDataTransform, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public string FriendlyName { get { return "Set Training Data Transform"; } }
 
@@ -30,7 +30,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigSetTraining>(jsonConfig);
-            Name = Config.Name;
         }
 
 

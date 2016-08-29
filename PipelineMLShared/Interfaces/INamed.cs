@@ -8,7 +8,7 @@ namespace PipelineMLCore
 {
     public interface INamed
     {
-        string Name { get; set; }
+        string Name { get; }
 
     }
 }

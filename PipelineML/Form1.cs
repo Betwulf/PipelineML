@@ -31,7 +31,7 @@ namespace PipelineML
 
             var pd = new PipelineDefinition();
             pd.Name = "Test";
-            pd.RootDirectory = "C:\\";
+            pd.RootDirectory = "C:\\Temp\\";
             pd.DatasetGenerator = TypeDefinition.Create(dsg);
             var tdpreprocess = TypeDefinition.Create(transform);
             pd.PreprocessDataTransforms.Add(tdpreprocess);

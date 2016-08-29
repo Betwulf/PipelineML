@@ -6,7 +6,7 @@ namespace PipelineMLCore
 {
     public class DatasetGeneratorQuandl : IDatasetGenerator, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public DatasetDescriptorBase DatasetDescription { get; set; }
 
@@ -25,7 +25,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigQuandlMarketData>(jsonConfig);
-            Name = Config.Name;
         }
 
         public override string ToString()

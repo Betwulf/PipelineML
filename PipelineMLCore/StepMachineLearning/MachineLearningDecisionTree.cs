@@ -36,7 +36,6 @@ namespace PipelineMLCore
         public new void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<MachineLearningConfigDecisionTree>(jsonConfig);
-            Name = Config.Name;
         }
 
 

@@ -8,7 +8,7 @@ namespace PipelineMLCore
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public void Configure(string rootDirectory, string jsonConfig)
         {

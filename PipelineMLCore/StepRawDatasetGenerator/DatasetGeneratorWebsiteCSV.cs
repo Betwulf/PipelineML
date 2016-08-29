@@ -9,7 +9,7 @@ namespace PipelineMLCore
 {
     public class DatasetGeneratorWebsiteCSV : IDatasetGenerator, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public DatasetDescriptorBase DatasetDescription { get; set; }
 
@@ -32,7 +32,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigWebsiteCSV>(jsonConfig);
-            Name = Config.Name;
         }
 
         public DatasetBase Generate(Action<string> updateMessage)

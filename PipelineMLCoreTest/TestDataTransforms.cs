@@ -20,5 +20,13 @@ namespace PipelineMLCoreTest
             Assert.IsTrue(result.Table.Columns.Count == 2);
             Assert.IsTrue((int)result.Table.Rows[0][TestConstants.testColumnNameNew] == 2);
         }
+
+        [TestMethod]
+        public void TestCodeStarter()
+        {
+            var dt = new DataTransformAddColumn();
+            var str = dt.CodeStarter;
+            Assert.IsNotNull(str);
+        }
     }
 }

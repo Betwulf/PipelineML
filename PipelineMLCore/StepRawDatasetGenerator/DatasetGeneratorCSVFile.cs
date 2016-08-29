@@ -11,7 +11,7 @@ namespace PipelineMLCore
 {
     public class DatasetGeneratorCSVFile : IDatasetGenerator, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public DatasetDescriptorBase DatasetDescription { get; set; }
 
@@ -33,7 +33,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigCSVFile>(jsonConfig);
-            Name = Config.Name;
         }
 
         public DatasetBase Generate(Action<string> updateMessage)

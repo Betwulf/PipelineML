@@ -19,7 +19,6 @@ namespace PipelineMLCore
 
         public string RootDirectory { get; set; }
 
-        [TypeConverter(typeof(ExpandableObjectConverter))]
         public TypeDefinition DatasetGenerator { get; set; }
 
         public ICollection<TypeDefinition> PreprocessDataTransforms { get; set; }
