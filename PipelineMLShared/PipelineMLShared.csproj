@@ -64,6 +64,7 @@
     <Compile Include="Base\ConfigBase.cs" />
     <Compile Include="Base\DataColumnBase.cs" />
     <Compile Include="Base\DataColumnML.cs" />
+    <Compile Include="Base\DatasetBaseGeneratorResults.cs" />
     <Compile Include="Base\DatasetDescriptorBase.cs" />
     <Compile Include="Base\DatasetDescriptorML.cs" />
     <Compile Include="Base\DatasetML.cs" />

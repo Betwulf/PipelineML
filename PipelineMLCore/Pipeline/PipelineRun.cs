@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PipelineMLCore
 {
@@ -11,9 +13,18 @@ namespace PipelineMLCore
             Instance = pi;
         }
 
-        public List<PipelineResults> Run()
+        public PipelineResults Run(Action<string> updateMessage)
         {
-            return null;
+            var results = new PipelineResults();
+
+            // Run DatasetGenerator
+            results.DataSetGeneratorResult = new DatasetBaseGeneratorResults();
+            results.DataSetGeneratorResult.StartTime = DateTime.Now;
+            results.DataSetGeneratorResult.FromDatasetGenerator = Instance.DatasetGenerator;
+            var dataset = Instance.DatasetGenerator.Generate(updateMessage);
+            results.DataSetGeneratorResult.SampleResults = dataset.GenerateSample();
+            results.DataSetGeneratorResult.StopTime = DateTime.Now;
+            return results;
         }
     }
 }

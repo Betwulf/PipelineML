@@ -20,5 +20,15 @@ namespace PipelineMLCore
             }
         }
 
+        public DatasetBase GenerateSample()
+        {
+            var sample = new DatasetBase(Descriptor);
+            sample.Table = Table.Clone();
+            for (int i = 0; i < 100; i++)
+            {
+                sample.Table.Rows.Add(Table.Rows[i].ItemArray);
+            }
+            return sample;
+        }
     }
 }
