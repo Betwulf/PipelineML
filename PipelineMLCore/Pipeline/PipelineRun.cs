@@ -21,9 +21,27 @@ namespace PipelineMLCore
             results.DataSetGeneratorResult = new DatasetBaseGeneratorResults();
             results.DataSetGeneratorResult.StartTime = DateTime.Now;
             results.DataSetGeneratorResult.FromDatasetGenerator = Instance.DatasetGenerator;
-            var dataset = Instance.DatasetGenerator.Generate(updateMessage);
+            var dataset = Instance.DatasetGenerator.Generate(results.DataSetGeneratorResult.GetLoggedUpdateMessage(updateMessage));
             results.DataSetGeneratorResult.SampleResults = dataset.GenerateSample();
             results.DataSetGeneratorResult.StopTime = DateTime.Now;
+            results.DataSetGeneratorResult.RowCount = dataset.Table.Rows.Count;
+            results.DataSetGeneratorResult.LogUpdateResults(updateMessage);
+
+            // Run Preprocessors
+            results.PreprocessTransformOutput = new List<IDataTransformResults>();
+            foreach (var dt in Instance.PreprocessDataTransforms)
+            {
+                var presults = new DataTransformResults();
+                presults.StartTime = DateTime.Now;
+                presults.FromDataTransform = dt;
+                dataset = dt.Transform(dataset, presults.GetLoggedUpdateMessage(updateMessage));
+                presults.SampleResults = dataset.GenerateSample();
+                presults.StopTime = DateTime.Now;
+                presults.RowCount = dataset.Table.Rows.Count;
+                presults.LogUpdateResults(updateMessage);
+                results.PreprocessTransformOutput.Add(presults);
+            }
+
             return results;
         }
     }

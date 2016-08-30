@@ -41,7 +41,7 @@ namespace PipelineMLCore
             return System.IO.Path.Combine(GetDir, name + ".json");
         }
 
-        public async Task<T> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity, Action<string> updateMessage)
         {
             await Task.Run(() =>
             {
@@ -51,13 +51,13 @@ namespace PipelineMLCore
                 pathString = GetFilename(entity.Name);
                 if (!File.Exists(pathString))
                 {
-                    Console.WriteLine("Saving New File \"{0}\" .", pathString);
+                    updateMessage($"Saving New File \"{pathString}\" .");
                     File.WriteAllText(pathString, JsonConvert.SerializeObject(entity));
                     if (isCached) DocStore.Add(entity.Name, entity);
                 }
                 else
                 {
-                    Console.WriteLine("Overwriting File \"{0}\" .", pathString);
+                    updateMessage($"Overwriting File \"{pathString}\" .");
                     File.WriteAllText(pathString, JsonConvert.SerializeObject(entity));
                     if (isCached)
                     {
@@ -147,9 +147,9 @@ namespace PipelineMLCore
             }
         }
 
-        public async Task<T> UpdateAsync(string id, T entity)
+        public async Task<T> UpdateAsync(string id, T entity, Action<string> updateMessage)
         {
-            return await CreateAsync(entity);
+            return await CreateAsync(entity, updateMessage);
         }
 
         public void DeleteDatabase()

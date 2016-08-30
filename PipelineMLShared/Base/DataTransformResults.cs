@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DatasetBaseGeneratorResults : ResultsBase, IDatasetBaseGeneratorResults
+    public class DataTransformResults : ResultsBase, IDataTransformResults
     {
-        public DatasetBaseGeneratorResults()
-        {
-            Log = new StringBuilder();
-        }
-        public IDatasetGenerator FromDatasetGenerator { get; set; }
+        public IDataTransform FromDataTransform { get; set; }
 
         public DatasetBase SampleResults { get; set; }
 
@@ -20,14 +16,21 @@ namespace PipelineMLCore
 
         public DateTime StopTime { get; set; }
 
+
+        public DataTransformResults()
+        {
+            Log = new StringBuilder();
+        }
+
         public int RowCount { get; set; }
+
 
 
         public void LogUpdateResults(Action<string> updateMessage)
         {
-            Action<string> updateAll = x => { updateMessage(x); Log.Append(x); };
-            updateAll($"DatasetGenerator {FromDatasetGenerator.Name}({FromDatasetGenerator.GetType()}) - Results");
-            updateAll($"Time Elapsed: {(StartTime-StopTime)}");
+            Action<string> updateAll = GetLoggedUpdateMessage(updateMessage);
+            updateAll($"DataTransform {FromDataTransform.Name}({FromDataTransform.GetType()}) - Results");
+            updateAll($"Time Elapsed: {(StartTime - StopTime)}");
             updateAll($"Row Count: {RowCount}");
             updateAll($"Columns:");
 

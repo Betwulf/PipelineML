@@ -16,5 +16,16 @@ namespace PipelineMLCore
 
         DateTime StopTime { get; set; }
 
+        StringBuilder Log { get; set; }
+
+        int RowCount { get; set; }
+
+        Action<string> GetLoggedUpdateMessage(Action<string> updateMessage);
+
+        void LogUpdateResults(Action<string> updateMessage);
+
+
+
+
     }
 }

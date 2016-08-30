@@ -83,14 +83,14 @@ namespace PipelineMLCore
                         updateMessage(ex.Message);
                     }
                 }
-                AddToCache(tickerData, ticker);
+                AddToCache(tickerData, ticker, updateMessage);
                 allData.AddRange(tickerData);
             }
             return ConvertListToDataTable(allData);
         }
 
 
-        private async void AddToCache(List<YahooMarketData> tickerData, string ticker)
+        private async void AddToCache(List<YahooMarketData> tickerData, string ticker, Action<string> updateMessage)
         {
             var cachedData = cache.GetById(ticker);
             var minDate = tickerData.Min(x => x.PriceDate);
@@ -100,7 +100,7 @@ namespace PipelineMLCore
             {
                 // then save what we have!
                 var newCachedData = new YahooMarketDataSeries() { Ticker = ticker, MarketDataList = tickerData };
-                await cache.CreateAsync(newCachedData);
+                await cache.CreateAsync(newCachedData, updateMessage);
                 return;
             }
             var minCacheDate = cachedData.MarketDataList.Min(x => x.PriceDate);
@@ -145,7 +145,7 @@ namespace PipelineMLCore
                 futureData.RemoveAll(x => x.PriceDate <= lastMarketData.PriceDate);
                 historicalData.AddRange(futureData);
                 cachedData.MarketDataList = historicalData;
-                await cache.UpdateAsync(ticker, cachedData);
+                await cache.UpdateAsync(ticker, cachedData, updateMessage);
             }
         }
 

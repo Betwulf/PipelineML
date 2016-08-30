@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace PipelineMLCore
 {
@@ -20,13 +22,26 @@ namespace PipelineMLCore
             }
         }
 
+        
+
+
         public DatasetBase GenerateSample()
         {
+            int MaxSampleCount = Math.Min(100,Table.Rows.Count);
+            List<int> shuffledRowIndexes = new List<int>();
+            var rnd = new Random();
+            for (int i = 0; i < MaxSampleCount; i++)
+            {
+                int randomNum = rnd.Next(0, Table.Rows.Count);
+                if (!shuffledRowIndexes.Contains(randomNum)) { shuffledRowIndexes.Add(randomNum); }
+                else { i--; }
+            }
             var sample = new DatasetBase(Descriptor);
             sample.Table = Table.Clone();
-            for (int i = 0; i < 100; i++)
+
+            for (int i = 0; i < MaxSampleCount; i++)
             {
-                sample.Table.Rows.Add(Table.Rows[i].ItemArray);
+                sample.Table.Rows.Add(Table.Rows[shuffledRowIndexes[i]].ItemArray);
             }
             return sample;
         }

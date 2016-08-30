@@ -10,13 +10,19 @@ namespace PipelineMLCore
     {
         IDataTransform FromDataTransform { get; set; }
 
-        DatasetBase SampleDataset { get; set; }
-
-        DatasetDescriptorBase DatasetDescriptor { get; set; }
+        DatasetBase SampleResults { get; set; }
 
         DateTime StartTime { get; set; }
 
         DateTime StopTime { get; set; }
+
+        StringBuilder Log { get; set; }
+
+        int RowCount { get; set; }
+
+        Action<string> GetLoggedUpdateMessage(Action<string> updateMessage);
+
+        void LogUpdateResults(Action<string> updateMessage);
 
     }
 }

@@ -40,16 +40,20 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRunOutput.BackColor = System.Drawing.Color.Black;
+            this.txtRunOutput.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRunOutput.ForeColor = System.Drawing.Color.LawnGreen;
             this.txtRunOutput.Location = new System.Drawing.Point(12, 12);
             this.txtRunOutput.Multiline = true;
             this.txtRunOutput.Name = "txtRunOutput";
-            this.txtRunOutput.Size = new System.Drawing.Size(622, 516);
+            this.txtRunOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtRunOutput.Size = new System.Drawing.Size(1048, 539);
             this.txtRunOutput.TabIndex = 0;
             // 
             // btnOK
             // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(535, 546);
+            this.btnOK.Location = new System.Drawing.Point(961, 569);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(99, 32);
             this.btnOK.TabIndex = 1;
@@ -59,7 +63,8 @@
             // 
             // btnRun
             // 
-            this.btnRun.Location = new System.Drawing.Point(12, 546);
+            this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRun.Location = new System.Drawing.Point(12, 569);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(99, 32);
             this.btnRun.TabIndex = 2;
@@ -72,7 +77,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(646, 590);
+            this.ClientSize = new System.Drawing.Size(1072, 613);
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtRunOutput);
