@@ -1,6 +1,6 @@
 ﻿using Accord.MachineLearning.DecisionTrees;
 using Accord.MachineLearning.DecisionTrees.Learning;
-using AForge;
+using Accord;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
