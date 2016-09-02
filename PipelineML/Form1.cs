@@ -7,88 +7,11 @@ namespace PipelineML
 {
     public partial class frmMain : Form
     {
-        private string pdJsonFilename;
-
         public frmMain()
         {
             InitializeComponent();
-            pdJsonFilename = "pd.json";
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            string[] stocks = { "SCTY", "SPY", "GOOG", "NFLX" };
-            var dsg = new DatasetGeneratorYahoo { DatasetDescription = new DatasetDescriptorBase() };
-            var dsgconfig = dsg.Config as DatasetConfigYahooMarketData;
-            dsgconfig.Name = "Yahoo Market Data";
-            dsgconfig.SubFolder = "yahoo\\";
-            dsgconfig.Symbols.AddRange(stocks);
-            dsgconfig.StartDate = DateTime.Parse("1/1/2011");
-            dsgconfig.EndDate = DateTime.Parse("1/1/2016");
-            var dsgCfg = dsg.Config.ToJSON();
-
-            var transform = GetDataTransformConfig();
-
-            var pd = new PipelineDefinition();
-            pd.Name = "Test";
-            pd.RootDirectory = "C:\\Temp\\";
-            pd.DatasetGenerator = TypeDefinition.Create(dsg);
-            var tdpreprocess = TypeDefinition.Create(transform);
-            pd.PreprocessDataTransforms.Add(tdpreprocess);
-            var jsonPD = dsg.Config.ToJSON();
-
-            var pi = pd.CreateInstance();
-            var dataset = pi.DatasetGenerator.Generate(Console.WriteLine);
-
-
-            IDataTransform remove = (IDataTransform)Activator.CreateInstance(tdpreprocess.ClassType);
-
-            remove.Configure(string.Empty, tdpreprocess.ClassConfig);
-            prpGrid.SelectedObject = dsgconfig;
-
-            try
-            {
-                throw new PipelineException("NO", dataset, pi.DatasetGenerator);
-            }
-            catch (PipelineException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            //File.WriteAllText(pdJsonFilename, jsonPD);
-
-        }
-
-        IDataTransform GetDataTransformConfig()
-        {
-            var remove = new DataTransformRemoveColumns();
-            var dtConfig = remove.Config as DataTransformConfigColumns;
-            dtConfig.ColumnNames.Add(new PipelineMLCore.DataColumnBase()
-            {
-                DataType = typeof(System.String),
-                Description = "",
-                Id = 1,
-                IsFeature = true,
-                IsLabel = false,
-                Name = "ID"
-            });
-            dtConfig.Name = "Remove ID";
-            return remove;
-        }
-
-        private void btnOpen_Click(object sender, EventArgs e)
-        {
-            string configJson = File.ReadAllText(pdJsonFilename);
-            DatasetConfigYahooMarketData yahooConfig = ConfigBase.FromJSON<DatasetConfigYahooMarketData>(configJson);
-            prpGrid.SelectedObject = yahooConfig;
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            DatasetConfigYahooMarketData pd = prpGrid.SelectedObject as DatasetConfigYahooMarketData;
-            var jsonPD = pd.ToJSON();
-            File.WriteAllText(pdJsonFilename, jsonPD);
-
-        }
 
         private void btnLaunchEditor_Click(object sender, EventArgs e)
         {

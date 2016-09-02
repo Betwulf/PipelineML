@@ -14,5 +14,10 @@ namespace PipelineMLCore
         [TypeConverter(typeof(ActivationFunctionTypeConverter))]
         public Type ActivationFunction { get; set; }
 
+        public int HiddenLayerNeurons { get; set; }
+
+        [TypeConverter(typeof(NeuralNetworkTeacherTypeConverter))]
+        public Type LearningAlgorithm { get; set; }
+
     }
 }

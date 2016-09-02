@@ -78,11 +78,10 @@ namespace PipelineMLCoreTest
             tree.Configure(TestConstants.currDirectory, treecfg.ToJSON());
 
             // Train Tree
-            var mlResults = tree.TrainML(trainingDataSet);
+            var mlResults = tree.TrainML(trainingDataSet, Console.WriteLine);
             //mlResults.DatasetWithScores.Table.WriteToCsvFile(@"C:\Temp\datasetWithScores.csv");
             Assert.IsTrue(mlResults.Error < 0.4);
             Assert.IsNotNull(tree);
-            //throw new PipelineException("NO", columnsIgnored, tree);
         }
     }
 }

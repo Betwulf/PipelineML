@@ -42,7 +42,7 @@
             this.lvwClasses.Location = new System.Drawing.Point(12, 12);
             this.lvwClasses.MultiSelect = false;
             this.lvwClasses.Name = "lvwClasses";
-            this.lvwClasses.Size = new System.Drawing.Size(514, 353);
+            this.lvwClasses.Size = new System.Drawing.Size(666, 353);
             this.lvwClasses.TabIndex = 0;
             this.lvwClasses.UseCompatibleStateImageBehavior = false;
             this.lvwClasses.View = System.Windows.Forms.View.Details;
@@ -52,7 +52,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(427, 386);
+            this.btnOK.Location = new System.Drawing.Point(579, 386);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(99, 32);
             this.btnOK.TabIndex = 1;
@@ -64,7 +64,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(322, 386);
+            this.btnCancel.Location = new System.Drawing.Point(474, 386);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(99, 32);
             this.btnCancel.TabIndex = 2;
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(538, 430);
+            this.ClientSize = new System.Drawing.Size(690, 430);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.lvwClasses);

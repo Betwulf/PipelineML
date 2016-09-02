@@ -33,7 +33,7 @@ namespace PipelineMLCore
 
 
 
-        public new IMachineLearningResults TrainML(DatasetBase datasetIn)
+        public new IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
         {
             // ActivationNetwork network = new ActivationNetwork();
             return null;

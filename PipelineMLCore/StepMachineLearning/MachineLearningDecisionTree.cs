@@ -14,15 +14,13 @@ namespace PipelineMLCore
     {
         protected struct TrainingData
         {
-            public int LabelValueCount { get; set; }
-            public double[][] inputs { get; set; }
-            public int[] labels { get; set; }
+
             public List<DecisionVariable> DecisionVariables { get; set; }
         }
 
         public string FriendlyName { get { return "Decision Tree"; } }
 
-        public string Description { get { return "Uses a simple decision Tree algorithm"; } }
+        public string Description { get { return "Uses a simple decision Tree algorithm with a c45 learning algorithm"; } }
 
 
         private MachineLearningConfigDecisionTree ConfigInternal { get { return Config as MachineLearningConfigDecisionTree; } }
@@ -41,11 +39,11 @@ namespace PipelineMLCore
 
 
 
-        public new IMachineLearningResults TrainML(DatasetBase datasetIn)
+        public new IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
         {
             DateTime startTime = DateTime.Now;
-            DatasetML mlData = PrepareDataset(datasetIn);
-            TrainingData trainingData = GetTrainingData(mlData);
+            DatasetML mlData = PrepareDataset(datasetIn, updateMessage);
+            TrainingData trainingData = GetTrainingData(mlData, updateMessage);
             // define columns for decision tree
 
             // Create the discrete Decision tree
@@ -56,10 +54,10 @@ namespace PipelineMLCore
 
             // Learn the decision tree using C4.5
             double TrainingError = c45.Run(trainingData.inputs, trainingData.labels);
-            Console.WriteLine($"TrainingError: {TrainingError}");
+            updateMessage($"TrainingError: {TrainingError}"); // or throw?
 
             // Now that we have trained our decision tree, let's score it
-            MachineLearningResults results = ScoreTestData(mlData, tree);
+            MachineLearningResults results = ScoreTestData(mlData, tree, updateMessage);
             results.StartTime = startTime;
             results.TrainingError = TrainingError;
             return results;
@@ -70,32 +68,24 @@ namespace PipelineMLCore
         
 
 
-        protected TrainingData GetTrainingData(DatasetML mlData)
+        protected TrainingData GetTrainingData(DatasetML mlData, Action<string> updateMessage)
         {
             // get column that is the label
             DataColumnML labelCol = mlData.Descriptor.ColumnDescriptions.Find(x => x.IsLabel == true);
 
-            // find the column that has the generated ml input data
-            string mlColName = nameof(DataColumnML.IsMLData);
-
             // create training data
             var trainingData = new TrainingData();
-            trainingData.LabelValueCount = labelCol.ColumnSet.Count();
             var trainingRows = mlData.Table.Select($"{nameof(DataColumnBase.IsTraining)} = true");
             int trainingRowCount = trainingRows.Count();
-            trainingData.inputs = new double[trainingRowCount][];
-            trainingData.labels = new int[trainingRowCount];
-            for (int i = 0; i < trainingRowCount; i++)
-            {
-                // Map label to ml data
-                trainingData.labels[i] = labelCol.ColumnMap[trainingRows[i][labelCol.Name]];
-                trainingData.inputs[i] = (double[])trainingRows[i][mlColName];
-            }
 
             // create decisionVariables
             trainingData.DecisionVariables = new List<DecisionVariable>();
+            bool foundLabelColumn = false;
             foreach (var col in mlData.Descriptor.ColumnDescriptions)
             {
+                if (foundLabelColumn == true)
+                    throw new PipelineException($"Column {col.Name} : Dataset cannot have more than one label column", mlData, this, updateMessage);
+                if (col.IsLabel) foundLabelColumn = true;
                 if (col.IsFeature && (col.DataType != typeof(double) || col.IsCategory))
                 {
                     trainingData.DecisionVariables.Add(new DecisionVariable(col.Name, new IntRange() { Min = (int)col.MinRange, Max = (int)col.MaxRange }));
@@ -109,96 +99,8 @@ namespace PipelineMLCore
         }
 
 
-        protected DatasetML PrepareDataset(DatasetBase datasetIn)
-        {
-            if (datasetIn.Descriptor.ColumnDescriptions.Find(x => x.IsTraining == true) == null)
-            { throw new PipelineException("Cannot find Training rows in dataset. Please set training data before machine learning", datasetIn, this); }
 
-            // preprocess columns
-            int numberOfFeatures = 0;
-            bool foundLabelColumn = false; // use to ensure there is only one label column
-            DatasetML mlData = new DatasetML(new DatasetDescriptorML() { ColumnDescriptions = new List<DataColumnML>(), Name = datasetIn.Name });
-            foreach (var col in datasetIn.Descriptor.ColumnDescriptions)
-            {
-                var newCol = new DataColumnML(col);
-                mlData.Descriptor.ColumnDescriptions.Add(newCol);
-
-                if (newCol.IsFeature || newCol.IsLabel)
-                {
-                    newCol.ColumnSet = (from row in datasetIn.Table.AsEnumerable()
-                                        select row[col.Name]).Distinct();
-                    newCol.MinRange = 0.0;
-                    if ((col.DataType != typeof(double)) || (col.IsCategory))
-                    {
-                        newCol.MaxRange = newCol.ColumnSet.Count();
-                    }
-                    else
-                    {
-                        // the column is a double and max range is what it is, no mapping needed
-                        // the double multiplier is to give the tree room for unexpected higher double values in non-training data
-                        newCol.MaxRange = ((double)newCol.ColumnSet.Max()) * 2.0;
-                    }
-
-                    // generate a map of existing values to numerical categories
-                    newCol.ColumnMap = new Dictionary<object, int>();
-                    for (int i = 0; i < newCol.ColumnSet.Count(); i++)
-                    {
-                        newCol.ColumnMap.Add(newCol.ColumnSet.ElementAt(i), i);
-                    }
-                    if (col.IsLabel)
-                    {
-                        if (foundLabelColumn == true)
-                            throw new PipelineException($"Column {col.Name} : Dataset cannot have more than one label column", datasetIn, this);
-                        if (col.IsFeature)
-                            throw new PipelineException($"Column {col.Name} cannot be both a feature and a label column", datasetIn, this);
-                        if (newCol.MaxRange > 10)
-                            throw new PipelineException($"Trying to predict {newCol.MaxRange} number of possible outcomes is too many. Reduce the distinct values of your label column {col.Name}.", datasetIn, this);
-                        foundLabelColumn = true;
-                    }
-                    else if (col.IsFeature)
-                    { numberOfFeatures++; }
-                }
-            }
-            mlData.NumberOfFeatures = numberOfFeatures;
-            // Add a column to store the ml data for the entire row
-            var MLDataColumn = new DataColumnML() { Name = nameof(DataColumnML.IsMLData), Description = nameof(DataColumnML.IsMLData), DataType = typeof(double[]), IsMLData = true };
-            mlData.Descriptor.ColumnDescriptions.Add(MLDataColumn);
-            datasetIn.Table.Columns.Add(MLDataColumn.Name, MLDataColumn.DataType);
-
-            // filter only the columns that are features or labels to be sent to the ml algorithm
-            foreach (DataRow row in datasetIn.Table.Rows)
-            {
-                row[MLDataColumn.Name] = new double[numberOfFeatures];
-                int colnum = 0;
-                foreach (var col in mlData.Descriptor.ColumnDescriptions)
-                {
-                    // check if we have to categorize the input for ml
-                    if (col.IsLabel || !col.IsFeature)
-                    {
-                        // Don't increment colnum, only features are input columns
-                    }
-                    else if ((col.DataType != typeof(double)) || (col.IsCategory))
-                    {
-                        // if it isn't already a double, convert it
-                        ((double[])row[MLDataColumn.Name])[colnum] = col.ColumnMap[row[col.Name]];
-                        colnum++;
-                    }
-                    else
-                    {
-                        // Then the data is a double already and is not indicated to be a category, so take it in as is.
-                        ((double[])row[MLDataColumn.Name])[colnum] = (double)row[col.Name];
-                        colnum++;
-                    }
-                }
-            }
-            mlData.Table = datasetIn.Table;
-            return mlData;
-        }
-
-        
-
-
-        protected MachineLearningResults ScoreTestData(DatasetML mlData, DecisionTree tree)
+        protected MachineLearningResults ScoreTestData(DatasetML mlData, DecisionTree tree, Action<string> updateMessage)
         {
             var results = new MachineLearningResults();
             results.DatasetWithScores = new DatasetScored(mlData);
@@ -216,7 +118,7 @@ namespace PipelineMLCore
             {
                 if (ConfigInternal.IncludeTrainingDataInTestingData || !(bool)row[trainingColName])
                 {
-                    int score = tree.Compute((double[])row[mlColName]);
+                    int score = tree.Decide((double[])row[mlColName]);
                     row[scoreColName] = score;
                     row[scoreProbabilityName] = 1.0; // decisiontree gives no probability? :(
 
@@ -229,7 +131,7 @@ namespace PipelineMLCore
                 }
             }
             if (scoreCounter == 0)
-                throw new PipelineException($"found zero scores.", results.DatasetWithScores, this);
+                throw new PipelineException($"found zero scores.", results.DatasetWithScores, this, updateMessage);
 
             results.Error = scoreCounter;
             results.Error = (results.Error - correct) / results.Error;
