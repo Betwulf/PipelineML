@@ -52,6 +52,8 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtRoot = new System.Windows.Forms.TextBox();
             this.btnRun = new System.Windows.Forms.Button();
+            this.btnAddML = new System.Windows.Forms.Button();
+            this.btnEditML = new System.Windows.Forms.Button();
             this.flwDatasetGen.SuspendLayout();
             this.flwPreprocess.SuspendLayout();
             this.flwMain.SuspendLayout();
@@ -159,6 +161,8 @@
             // 
             this.flwML.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flwML.Controls.Add(this.lblML);
+            this.flwML.Controls.Add(this.btnAddML);
+            this.flwML.Controls.Add(this.btnEditML);
             this.flwML.Location = new System.Drawing.Point(3, 113);
             this.flwML.Name = "flwML";
             this.flwML.Size = new System.Drawing.Size(189, 104);
@@ -286,6 +290,26 @@
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
+            // btnAddML
+            // 
+            this.btnAddML.Location = new System.Drawing.Point(3, 16);
+            this.btnAddML.Name = "btnAddML";
+            this.btnAddML.Size = new System.Drawing.Size(99, 32);
+            this.btnAddML.TabIndex = 6;
+            this.btnAddML.Text = "Add...";
+            this.btnAddML.UseVisualStyleBackColor = true;
+            this.btnAddML.Click += new System.EventHandler(this.btnAddML_Click);
+            // 
+            // btnEditML
+            // 
+            this.btnEditML.Location = new System.Drawing.Point(3, 54);
+            this.btnEditML.Name = "btnEditML";
+            this.btnEditML.Size = new System.Drawing.Size(99, 32);
+            this.btnEditML.TabIndex = 7;
+            this.btnEditML.Text = "Edit...";
+            this.btnEditML.UseVisualStyleBackColor = true;
+            this.btnEditML.Click += new System.EventHandler(this.btnEditML_Click);
+            // 
             // frmEditPipelineDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -345,5 +369,7 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtRoot;
         private System.Windows.Forms.Button btnRun;
+        private System.Windows.Forms.Button btnAddML;
+        private System.Windows.Forms.Button btnEditML;
     }
 }

@@ -42,6 +42,15 @@ namespace PipelineMLCore
                 results.PreprocessTransformOutput.Add(presults);
             }
 
+            // Run ML
+            results.MachineLearningResults = new List<IMachineLearningResults>();
+            foreach (var ml in Instance.MLList)
+            {
+                var mlout = ml.TrainML(dataset, updateMessage);
+                mlout.LogUpdateResults(updateMessage);
+                results.MachineLearningResults.Add(mlout);
+            }
+
             return results;
         }
     }

@@ -20,5 +20,10 @@ namespace PipelineMLCore
 
         double TrainingError { get; set; }
 
+        Action<string> GetLoggedUpdateMessage(Action<string> updateMessage);
+
+        void LogUpdateResults(Action<string> updateMessage);
+
+
     }
 }

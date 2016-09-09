@@ -149,5 +149,23 @@ namespace PipelineML
             var frmRun = new frmRunPipeline(PipelineInst);
             frmRun.ShowDialog();
         }
+
+        private void btnAddML_Click(object sender, EventArgs e)
+        {
+            var searchForm = new frmSearchForClass();
+            searchForm.Initialize(typeof(IMachineLearningProcess));
+            if (searchForm.ShowDialog() == DialogResult.OK)
+            {
+                IMachineLearningProcess mlProcess = (IMachineLearningProcess)Activator.CreateInstance(searchForm.SelectedType);
+                PipelineInst.MLList.Add(mlProcess);
+                prpGrid.SelectedObject = mlProcess.Config;
+            }
+        }
+
+        private void btnEditML_Click(object sender, EventArgs e)
+        {
+            var wrap = new WrapCollection<IMachineLearningProcess>(PipelineInst.MLList);
+            prpGrid.SelectedObject = wrap;
+        }
     }
 }

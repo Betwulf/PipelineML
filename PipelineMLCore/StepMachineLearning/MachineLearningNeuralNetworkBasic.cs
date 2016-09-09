@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace PipelineMLCore
 {
-    public class MachineLearningNeuralNetworkBasic : MachineLearningBase, ISearchableClass
+    public class MachineLearningNeuralNetworkBasic : MachineLearningBase, ISearchableClass, IMachineLearningProcess
     {
 
         public string FriendlyName { get { return "Basic Neural Network"; } }
@@ -25,7 +25,7 @@ namespace PipelineMLCore
             Config = new MachineLearningConfigNeuralNetworkBasic();
         }
 
-        public new void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<MachineLearningConfigNeuralNetworkBasic>(jsonConfig);
         }
@@ -33,7 +33,7 @@ namespace PipelineMLCore
 
 
 
-        public new IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
+        public IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
         {
             // ActivationNetwork network = new ActivationNetwork();
             return null;

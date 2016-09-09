@@ -20,8 +20,12 @@ namespace PipelineMLCore
         // the map of raw data values to ML values (This may not work for all ML, only DecisionTrees known so far, and not needed for some columns like non category columns that are double, or label columns, or non feature columns)
         public Dictionary<object, int> ColumnMap { get; set; }
 
-        // is this column containing the converted ml data for the whole row
-        public bool IsMLData { get; set; }
+        // is this column containing the converted ml input data for the whole row
+        public bool IsMLInputData { get; set; }
+
+        public bool IsMLLabelData { get; set; }
+
+
 
         public DataColumnML()
         {

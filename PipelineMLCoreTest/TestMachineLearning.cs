@@ -79,7 +79,6 @@ namespace PipelineMLCoreTest
 
             // Train Tree
             var mlResults = tree.TrainML(trainingDataSet, Console.WriteLine);
-            //mlResults.DatasetWithScores.Table.WriteToCsvFile(@"C:\Temp\datasetWithScores.csv");
             Assert.IsTrue(mlResults.Error < 0.4);
             Assert.IsNotNull(tree);
         }

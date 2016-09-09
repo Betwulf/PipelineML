@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace PipelineMLCore
 {
-    public class MachineLearningDecisionTree : MachineLearningBase, ISearchableClass
+    public class MachineLearningDecisionTree : MachineLearningBase, ISearchableClass, IMachineLearningProcess
     {
-        protected struct TrainingData
+        protected struct TrainingDecisionVariables
         {
 
             public List<DecisionVariable> DecisionVariables { get; set; }
@@ -31,7 +31,7 @@ namespace PipelineMLCore
             Config = new MachineLearningConfigDecisionTree();
         }
 
-        public new void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<MachineLearningConfigDecisionTree>(jsonConfig);
         }
@@ -39,26 +39,31 @@ namespace PipelineMLCore
 
 
 
-        public new IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
+        public IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
         {
-            DateTime startTime = DateTime.Now;
-            DatasetML mlData = PrepareDataset(datasetIn, updateMessage);
-            TrainingData trainingData = GetTrainingData(mlData, updateMessage);
+            var results = new MachineLearningResults();
+            results.StartTime = DateTime.Now;
+            var internalUpdate = results.GetLoggedUpdateMessage(updateMessage);
+            DatasetML mlData = PrepareDataset(datasetIn, internalUpdate, this);
+            TrainingDecisionVariables trainingData = GetDecisionTreeTrainingData(mlData, internalUpdate);
             // define columns for decision tree
+            int LabelValueCount = (from col in mlData.Descriptor.ColumnDescriptions where col.IsLabel == true select col.ColumnSet).FirstOrDefault().Count();
+
+
 
             // Create the discrete Decision tree
-            var tree = new DecisionTree(trainingData.DecisionVariables, trainingData.LabelValueCount);
+            var tree = new DecisionTree(trainingData.DecisionVariables, LabelValueCount);
 
             // Create the C4.5 learning algorithm
             C45Learning c45 = new C45Learning(tree);
 
             // Learn the decision tree using C4.5
-            double TrainingError = c45.Run(trainingData.inputs, trainingData.labels);
-            updateMessage($"TrainingError: {TrainingError}"); // or throw?
+            int[] outputs = mlData.labels.Select(x => (int)x[0]).ToArray();
+            double TrainingError = c45.Run(mlData.inputs, outputs);
+            internalUpdate($"Decision Tree Trained. TrainingError: {TrainingError}"); // or throw?
 
             // Now that we have trained our decision tree, let's score it
-            MachineLearningResults results = ScoreTestData(mlData, tree, updateMessage);
-            results.StartTime = startTime;
+            results = ScoreTestData(mlData, tree, results, internalUpdate);
             results.TrainingError = TrainingError;
             return results;
         }
@@ -68,13 +73,23 @@ namespace PipelineMLCore
         
 
 
-        protected TrainingData GetTrainingData(DatasetML mlData, Action<string> updateMessage)
+        protected TrainingDecisionVariables GetDecisionTreeTrainingData(DatasetML mlData, Action<string> updateMessage)
         {
+            if (mlData.NumberOfLabels != 1)
+            {
+                throw new PipelineException($"Need exactly 1 label, not {mlData.NumberOfLabels} label(s).", mlData, this, updateMessage);
+            }
+
             // get column that is the label
             DataColumnML labelCol = mlData.Descriptor.ColumnDescriptions.Find(x => x.IsLabel == true);
+            if (labelCol.DataType != typeof(int))
+            {
+                throw new PipelineException($"Label for a decision Tree must be an int, not {labelCol.DataType} .", mlData, this, updateMessage);
+            }
+
 
             // create training data
-            var trainingData = new TrainingData();
+            var trainingData = new TrainingDecisionVariables();
             var trainingRows = mlData.Table.Select($"{nameof(DataColumnBase.IsTraining)} = true");
             int trainingRowCount = trainingRows.Count();
 
@@ -83,9 +98,12 @@ namespace PipelineMLCore
             bool foundLabelColumn = false;
             foreach (var col in mlData.Descriptor.ColumnDescriptions)
             {
-                if (foundLabelColumn == true)
-                    throw new PipelineException($"Column {col.Name} : Dataset cannot have more than one label column", mlData, this, updateMessage);
-                if (col.IsLabel) foundLabelColumn = true;
+                if (col.IsLabel)
+                {
+                    if (foundLabelColumn == true)
+                        throw new PipelineException($"Column {col.Name} : Dataset cannot have more than one label column", mlData, this, updateMessage);
+                    foundLabelColumn = true;
+                }
                 if (col.IsFeature && (col.DataType != typeof(double) || col.IsCategory))
                 {
                     trainingData.DecisionVariables.Add(new DecisionVariable(col.Name, new IntRange() { Min = (int)col.MinRange, Max = (int)col.MaxRange }));
@@ -100,15 +118,14 @@ namespace PipelineMLCore
 
 
 
-        protected MachineLearningResults ScoreTestData(DatasetML mlData, DecisionTree tree, Action<string> updateMessage)
+        protected MachineLearningResults ScoreTestData(DatasetML mlData, DecisionTree tree, MachineLearningResults results, Action<string> updateMessage)
         {
-            var results = new MachineLearningResults();
             results.DatasetWithScores = new DatasetScored(mlData);
 
             // get column that is the label
             DataColumnML labelCol = results.DatasetWithScores.Descriptor.ColumnDescriptions.Find(x => x.IsLabel == true);
             // find the column that has the generated ml input data
-            string mlColName = nameof(DataColumnML.IsMLData);
+            string mlColName = nameof(DataColumnML.IsMLInputData);
             string scoreColName = nameof(DataColumnBase.IsScore);
             string trainingColName = nameof(DataColumnBase.IsTraining);
             string scoreProbabilityName = nameof(DataColumnBase.IsScoreProbability);
@@ -131,7 +148,7 @@ namespace PipelineMLCore
                 }
             }
             if (scoreCounter == 0)
-                throw new PipelineException($"found zero scores.", results.DatasetWithScores, this, updateMessage);
+                throw new PipelineException($"found zero scores.", results.DatasetWithScores, this, results.GetLoggedUpdateMessage(updateMessage));
 
             results.Error = scoreCounter;
             results.Error = (results.Error - correct) / results.Error;

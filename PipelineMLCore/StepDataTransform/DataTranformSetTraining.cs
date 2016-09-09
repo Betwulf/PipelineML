@@ -43,7 +43,8 @@ namespace PipelineMLCore
                 IsTraining = true, Id = -1 };
             datasetIn.Descriptor.ColumnDescriptions.Add(trainingColumn);
             datasetIn.Table.Columns.Add(trainingColumn.Name, trainingColumn.DataType);
-            Random rnd = new Random(datasetIn.Table.Rows.Count*DateTime.Now.Millisecond);
+            if (ConfigInternal.RandomSeed == 0) ConfigInternal.RandomSeed = datasetIn.Table.Rows.Count * DateTime.Now.Millisecond;
+            Random rnd = new Random(ConfigInternal.RandomSeed);
 
             // create training values
             for (int i = 0; i < datasetIn.Table.Rows.Count; i++)

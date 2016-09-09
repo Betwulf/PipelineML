@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class MachineLearningResults : IMachineLearningResults
+    public class MachineLearningResults : ResultsBase, IMachineLearningResults
     {
         public IMachineLearningProcess FromMLProcess { get; set; }
 
@@ -19,5 +19,37 @@ namespace PipelineMLCore
         public double Error { get; set; }
 
         public double TrainingError { get; set; }
+
+        public MachineLearningResults()
+        {
+            Log = new StringBuilder();
+        }
+
+        public void LogUpdateResults(Action<string> updateMessage)
+        {
+            Action<string> updateAll = GetLoggedUpdateMessage(updateMessage);
+            updateAll($"DataTransform {FromMLProcess.Name}({FromMLProcess.GetType()}) - Results");
+            updateAll($"Time Elapsed: {(StartTime - StopTime)}");
+            updateAll($"Training Error: {TrainingError}");
+            updateAll($"Error: {Error}");
+            updateAll($"Columns:");
+
+            foreach (var col in DatasetWithScores.Descriptor.ColumnDescriptions)
+            {
+                updateAll(GetColumnDetails(col));
+            }
+
+
+
+            updateAll($"Dataset With Scores --------------- ");
+
+            updateAll(string.Join(", ", DatasetWithScores.Descriptor.ColumnDescriptions.Select(GetColumnName).ToArray()));
+            for (int i = 0; i < 10; i++)
+            {
+                updateAll($"Data: {string.Join(", ", DatasetWithScores.Table.Rows[i].ItemArray)}");
+            }
+
+            updateAll($"");
+        }
     }
 }

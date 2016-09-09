@@ -6,23 +6,13 @@ using System.Linq;
 
 namespace PipelineMLCore
 {
-    public abstract class MachineLearningBase : IMachineLearningProcess
+    public abstract class MachineLearningBase 
     {
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
 
         public string Name { get { return Config.Name; } }
-
-        public void Configure(string rootDirectory, string jsonConfig)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMachineLearningResults TrainML(DatasetBase datasetIn, Action<string> updateMessage)
-        {
-            throw new NotImplementedException();
-        }
-
+        
 
 
 
@@ -34,15 +24,16 @@ namespace PipelineMLCore
         /// </summary>
         /// <param name="datasetIn"></param>
         /// <returns>prepped ML dataset</returns>
-        protected DatasetML PrepareDataset(DatasetBase datasetIn, Action<string> updateMessage)
+        protected DatasetML PrepareDataset(DatasetBase datasetIn, Action<string> updateMessage, IMachineLearningProcess self)
         {
             if (datasetIn.Descriptor.ColumnDescriptions.Find(x => x.IsTraining == true) == null)
-            { throw new PipelineException("Cannot find Training rows in dataset. Please set training data before machine learning", datasetIn, this, updateMessage); }
+            { throw new PipelineException("Cannot find Training rows in dataset. Please set training data before machine learning", datasetIn, self, updateMessage); }
 
             // preprocess columns
             DatasetML mlData = new DatasetML(new DatasetDescriptorML() { ColumnDescriptions = new List<DataColumnML>(), Name = datasetIn.Name });
             mlData.NumberOfFeatures = 0;
             mlData.NumberOfLabels = 0;
+            mlData.Table = datasetIn.Table;
             foreach (var col in datasetIn.Descriptor.ColumnDescriptions)
             {
                 var newCol = new DataColumnML(col);
@@ -55,7 +46,7 @@ namespace PipelineMLCore
                     newCol.MinRange = 0.0;
                     if ((col.DataType != typeof(double)) || (col.IsCategory))
                     {
-                        newCol.MaxRange = newCol.ColumnSet.Count();
+                        newCol.MaxRange = newCol.ColumnSet.Count() - 1;
                     }
                     else
                     {
@@ -74,27 +65,40 @@ namespace PipelineMLCore
                     {
                         mlData.NumberOfLabels++;
                         if (col.IsFeature)
-                            throw new PipelineException($"Column {col.Name} cannot be both a feature and a label column", datasetIn, this, updateMessage);
+                            throw new PipelineException($"Column {col.Name} cannot be both a feature and a label column", datasetIn, self, updateMessage);
                         if (newCol.MaxRange > 10)
-                            throw new PipelineException($"Trying to predict {newCol.MaxRange} number of possible outcomes is too many. Reduce the distinct values of your label column {col.Name}.", datasetIn, this, updateMessage);
+                            throw new PipelineException($"Trying to predict {newCol.MaxRange} number of possible outcomes is too many. Reduce the distinct values of your label column {col.Name}.", datasetIn, self, updateMessage);
                     }
                     else if (col.IsFeature)
                     { mlData.NumberOfFeatures++; }
                 }
             }
             if (mlData.NumberOfFeatures == 0)
-                throw new PipelineException($"There are no columns designated as a feature. Please add a preprocessor to have at least one feature to input into the ML algorithm", datasetIn, this, updateMessage);
-            // Add a column to store the ml data for the entire row
-            var MLDataColumn = new DataColumnML() { Name = nameof(DataColumnML.IsMLData), Description = nameof(DataColumnML.IsMLData), DataType = typeof(double[]), IsMLData = true };
-            mlData.Descriptor.ColumnDescriptions.Add(MLDataColumn);
-            datasetIn.Table.Columns.Add(MLDataColumn.Name, MLDataColumn.DataType);
+                throw new PipelineException($"There are no columns designated as a feature. Please add a preprocessor to have at least one feature to input into the ML algorithm", datasetIn, self, updateMessage);
 
+            // Add a column to store the ml input data for the entire row
+            var MLInputDataColumn = new DataColumnML() { Name = nameof(DataColumnML.IsMLInputData), Description = nameof(DataColumnML.IsMLInputData), DataType = typeof(double[]), IsMLInputData = true };
+            var MLLabelDataColumn = new DataColumnML() { Name = nameof(DataColumnML.IsMLLabelData), Description = nameof(DataColumnML.IsMLLabelData), DataType = typeof(double[]), IsMLLabelData = true };
+            mlData.Descriptor.ColumnDescriptions.Add(MLInputDataColumn);
+            mlData.Descriptor.ColumnDescriptions.Add(MLLabelDataColumn);
+            datasetIn.Table.Columns.Add(MLInputDataColumn.Name, MLInputDataColumn.DataType);
+            datasetIn.Table.Columns.Add(MLLabelDataColumn.Name, MLLabelDataColumn.DataType);
+            string mlColInputName = nameof(DataColumnML.IsMLInputData);
+            string mlColLabelName = nameof(DataColumnML.IsMLLabelData);
+
+            // setup training data rows
+            var trainingRows = mlData.Table.Select($"{nameof(DataColumnBase.IsTraining)} = true");
+            int trainingRowCount = trainingRows.Count();
+            mlData.labels = new double[trainingRowCount][];
+            mlData.inputs = new double[trainingRowCount][];
+
+            // populate the ml column (type double[]) for each row, with each column's interpreted data for input
             // filter only the columns that are features or labels to be sent to the ml algorithm
             int rowNum = 0;
             foreach (DataRow row in datasetIn.Table.Rows)
             {
-                row[MLDataColumn.Name] = new double[mlData.NumberOfFeatures];
-                mlData.labels[rowNum] = new double[mlData.NumberOfLabels];
+                row[MLInputDataColumn.Name] = new double[mlData.NumberOfFeatures];
+                row[MLLabelDataColumn.Name] = new double[mlData.NumberOfLabels];
                 int featureColNum = 0;
                 int labelColNum = 0;
                 foreach (var col in mlData.Descriptor.ColumnDescriptions)
@@ -105,20 +109,20 @@ namespace PipelineMLCore
                         // Don't increment colnum, only features are input columns
                         if (col.IsLabel)
                         {
-                            mlData.labels[rowNum][labelColNum] = col.ColumnMap[row[col.Name]];
+                            ((double[])row[MLLabelDataColumn.Name])[labelColNum] = col.ColumnMap[row[col.Name]];
                             labelColNum++;
                         }
                     }
                     else if ((col.DataType != typeof(double)) || (col.IsCategory))
                     {
                         // if it isn't already a double, convert it
-                        ((double[])row[MLDataColumn.Name])[featureColNum] = col.ColumnMap[row[col.Name]];
+                        ((double[])row[MLInputDataColumn.Name])[featureColNum] = col.ColumnMap[row[col.Name]];
                         featureColNum++;
                     }
                     else
                     {
                         // Then the data is a double already and is not indicated to be a category, so take it in as is.
-                        ((double[])row[MLDataColumn.Name])[featureColNum] = (double)row[col.Name];
+                        ((double[])row[MLInputDataColumn.Name])[featureColNum] = (double)row[col.Name];
                         featureColNum++;
                     }
                 }
@@ -128,15 +132,11 @@ namespace PipelineMLCore
 
 
             // find the column that has the generated ml input data
-            string mlColName = nameof(DataColumnML.IsMLData);
-
-            var trainingRows = mlData.Table.Select($"{nameof(DataColumnBase.IsTraining)} = true");
-            int trainingRowCount = trainingRows.Count();
-            mlData.inputs = new double[trainingRowCount][];
             for (int i = 0; i < trainingRowCount; i++)
             {
                 // Map inputs to ml data
-                mlData.inputs[i] = (double[])trainingRows[i][mlColName];
+                mlData.labels[i] = (double[])trainingRows[i][mlColLabelName];
+                mlData.inputs[i] = (double[])trainingRows[i][mlColInputName];
             }
 
             return mlData;
