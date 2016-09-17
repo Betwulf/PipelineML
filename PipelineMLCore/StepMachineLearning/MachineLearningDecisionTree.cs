@@ -12,9 +12,9 @@ namespace PipelineMLCore
 {
     public class MachineLearningDecisionTree : MachineLearningBase, ISearchableClass, IMachineLearningProcess
     {
+        // Nested Class to handle Decision Tree Variables
         protected struct TrainingDecisionVariables
         {
-
             public List<DecisionVariable> DecisionVariables { get; set; }
         }
 
@@ -60,7 +60,7 @@ namespace PipelineMLCore
             // Learn the decision tree using C4.5
             int[] outputs = mlData.labels.Select(x => (int)x[0]).ToArray();
             double TrainingError = c45.Run(mlData.inputs, outputs);
-            internalUpdate($"Decision Tree Trained. TrainingError: {TrainingError}"); // or throw?
+            internalUpdate($"Decision Tree Trained. TrainingError: {TrainingError}");
 
             // Now that we have trained our decision tree, let's score it
             results = ScoreTestData(mlData, tree, results, internalUpdate);

@@ -1,4 +1,5 @@
 ﻿using Accord.Neuro;
+using Accord.Neuro.Learning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ namespace PipelineMLCore
     {
         // Fields  
         private static Type[] types = new Type[] {
-            typeof(SigmoidFunction), typeof(BipolarSigmoidFunction), typeof(ThresholdFunction)
+            typeof(BackPropagationLearning), typeof(BipolarSigmoidFunction), typeof(ThresholdFunction)
         };
 
         private StandardValuesCollection values;
