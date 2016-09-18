@@ -37,6 +37,7 @@ namespace PipelineML
 
         private void btnRun_Click(object sender, EventArgs e)
         {
+            btnRun.Enabled = false;
             Task.Run(() => { run.Run(UpdateTextout); });
         }
 

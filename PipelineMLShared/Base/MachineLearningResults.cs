@@ -20,6 +20,8 @@ namespace PipelineMLCore
 
         public double TrainingError { get; set; }
 
+        public int TrainingIterations { get; set; }
+
         public MachineLearningResults()
         {
             Log = new StringBuilder();
@@ -28,8 +30,9 @@ namespace PipelineMLCore
         public void LogUpdateResults(Action<string> updateMessage)
         {
             Action<string> updateAll = GetLoggedUpdateMessage(updateMessage);
-            updateAll($"DataTransform {FromMLProcess.Name}({FromMLProcess.GetType()}) - Results");
+            updateAll($"Machine Learning Results - {FromMLProcess.Name}({FromMLProcess.GetType()})");
             updateAll($"Time Elapsed: {(StartTime - StopTime)}");
+            updateAll($"Training Iterations: {TrainingIterations}");
             updateAll($"Training Error: {TrainingError}");
             updateAll($"Error: {Error}");
             updateAll($"Columns:");

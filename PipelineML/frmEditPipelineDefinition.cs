@@ -147,6 +147,7 @@ namespace PipelineML
         private void btnRun_Click(object sender, EventArgs e)
         {
             var frmRun = new frmRunPipeline(PipelineInst);
+            frmRun.WindowState = FormWindowState.Maximized;
             frmRun.ShowDialog();
         }
 

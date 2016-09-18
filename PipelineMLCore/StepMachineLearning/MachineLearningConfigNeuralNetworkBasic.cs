@@ -15,9 +15,11 @@ namespace PipelineMLCore
         {
             ActivationFunction = typeof(SigmoidFunction);
             ActivationFunctionAlpha = 2.0;
-            TrainUntilError = 1e-5;
+            TrainUntilError = 0.10;
             HiddenLayerNeurons = 4;
             LearningAlgorithm = typeof(BackPropagationLearning);
+            MinTrainingIterations = 100;
+            MaxTrainingIterations = 10000;
         }
 
         /// <summary>
@@ -30,6 +32,12 @@ namespace PipelineMLCore
         /// The maximum number of training iterations, may iterate fewer times depending on error achieved
         /// </summary>
         public int MaxTrainingIterations { get; set; }
+
+
+        /// <summary>
+        /// The maximum number of training iterations, may iterate fewer times depending on error achieved
+        /// </summary>
+        public int MinTrainingIterations { get; set; }
 
 
         /// <summary>

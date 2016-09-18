@@ -63,12 +63,15 @@ namespace PipelineMLCore
             {
                 BackPropagationLearning teacher = new BackPropagationLearning(network);
                 double trainingError = 1.0;
-                for (int i = 0; i < 100000; i++)
+                int i;
+                for (i = 0; i < ConfigInternal.MaxTrainingIterations; i++)
                 {
                     trainingError = teacher.RunEpoch(mlData.inputs, mlData.labels);
-                    if (trainingError > ConfigInternal.TrainUntilError)
+                    trainingError = trainingError / mlData.inputs.Length;
+                    if (trainingError < ConfigInternal.TrainUntilError && i > ConfigInternal.MinTrainingIterations)
                         break;
                 }
+                results.TrainingIterations = i;
                 results.TrainingError = trainingError;
             }
             else
@@ -79,6 +82,30 @@ namespace PipelineMLCore
             return results;
         }
 
+        /// <summary>
+        /// Returns the squared error
+        /// </summary>
+        /// <param name="output"></param>
+        /// <param name="desiredOutput"></param>
+        /// <returns>the squared error</returns>
+        protected double GetError(double[] output, double[] desiredOutput)
+        {
+            double error = 0;
+            
+            if (output.Length != desiredOutput.Length)
+            {
+                throw new IndexOutOfRangeException($"Output Length: {output.Length} does not match desired output length: {desiredOutput.Length}");
+            }
+            for (int i = 0; i < output.Length; i++)
+            {
+                // error of the neuron
+                double currentError = desiredOutput[i] - output[i];
+                // square the error and sum it
+                error += (currentError * currentError);
+            }
+            // return squared error of the last layer divided by 2
+            return error / 2.0;
+        }
 
 
         protected MachineLearningResults ScoreTestData(DatasetML mlData, ActivationNetwork network, MachineLearningResults results, Action<string> updateMessage)
@@ -92,32 +119,27 @@ namespace PipelineMLCore
             string trainingColName = nameof(DataColumnBase.IsTraining);
             string probabilityColName = nameof(DataColumnBase.IsScoreProbability);
             double runningError = 0;
-            int scoreCounter = 0;
+            bool foundData = false;
             foreach (DataRow row in results.DatasetWithScores.Table.Rows)
             {
                 // if this is not a training row, let's calculate it's output
                 if (ConfigInternal.IncludeTrainingDataInTestingData || !(bool)row[trainingColName])
                 {
+                    foundData = true;
                     double[] scores = network.Compute((double[])row[inputColName]);
                     row[scoreColName] = scores;
 
                     // Assess correctness of output versus expected
-                    double runningErrorRow = 0;
                     var labels = (double[])row[labelColName];
-                    for (int i = 0; i < scores.Count(); i++)
-                    {
-
-                        runningErrorRow += Math.Abs(labels[i] - scores[i]);
-                    }
-                    row[probabilityColName] = runningErrorRow;
-                    runningError += runningErrorRow;
-                    scoreCounter++;
+                    double rowError = GetError(scores, labels);
+                    row[probabilityColName] = rowError;
+                    runningError += rowError;
                 }
             }
-            if (scoreCounter == 0)
+            if (!foundData)
                 throw new PipelineException($"found zero scores.", results.DatasetWithScores, this, results.GetLoggedUpdateMessage(updateMessage));
 
-            results.Error = (scoreCounter - runningError) / scoreCounter;
+            results.Error = runningError / results.DatasetWithScores.Table.Rows.Count;
             results.FromMLProcess = this;
             results.StopTime = DateTime.Now;
             return results;
