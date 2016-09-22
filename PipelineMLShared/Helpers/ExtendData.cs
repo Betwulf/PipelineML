@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,14 @@ namespace PipelineMLCore
             retval += " }";
             return retval;
         }
+
+
+        public static double RangeLimit(this double input, double min, double max)
+        {
+            return Math.Min(Math.Max(input, min), max);
+        }
+
+
         public static void WriteToCsvFile(this DataTable dataTable, string filePath)
         {
             StringBuilder sb = new StringBuilder();

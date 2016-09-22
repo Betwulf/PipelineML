@@ -68,7 +68,6 @@ namespace PipelineMLCore
                 for (i = 0; i < ConfigInternal.MaxTrainingIterations; i++)
                 {
                     trainingError = teacher.RunEpoch(mlData.inputs, mlData.labels);
-                    trainingError = trainingError / mlData.inputs.Length;
                     if (trainingError < ConfigInternal.TrainUntilError && i > ConfigInternal.MinTrainingIterations)
                         break;
                 }

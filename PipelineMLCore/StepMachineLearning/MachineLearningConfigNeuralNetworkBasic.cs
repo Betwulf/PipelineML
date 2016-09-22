@@ -15,10 +15,11 @@ namespace PipelineMLCore
         {
             ActivationFunction = typeof(SigmoidFunction);
             ActivationFunctionAlpha = 2.0;
-            TrainUntilError = 0.10;
+            TrainUntilError = 0.01;
             HiddenLayerNeurons = 4;
             LearningAlgorithm = typeof(BackPropagationLearning);
-            LearningRate = 0.1;
+            LearningRate = 0.2;
+            Momentum = 0.1;
             MinTrainingIterations = 100;
             MaxTrainingIterations = 10000;
         }
@@ -69,10 +70,22 @@ namespace PipelineMLCore
         [TypeConverter(typeof(NeuralNetworkTeacherTypeConverter))]
         public Type LearningAlgorithm { get; set; }
 
+        private double learningRate;
         /// <summary>
         /// Choose a value between [0-1] exclusive of the extents
         /// </summary>
-        public double LearningRate { get; set; }
+        public double LearningRate
+        {
+            get { return learningRate; }
+            set { learningRate = value.RangeLimit(0, 1); }
+        }
+
+        private double momentum;
+        public double Momentum
+        {
+            get { return momentum; }
+            set { momentum = value.RangeLimit(0, 1); }
+        }
 
     }
 }
