@@ -44,9 +44,9 @@ namespace PipelineMLCore
             updateAll($"Sample Data --------------- ");
 
             updateAll(string.Join(", ", SampleResults.Descriptor.ColumnDescriptions.Select(GetColumnName).ToArray()));
-            for (int i = 0; i < 10; i++)
+            for (int r = 0; r < Math.Min(100, SampleResults.Table.Rows.Count); r++)
             {
-                updateAll($"Data: {string.Join(", ", SampleResults.Table.Rows[i].ItemArray)}");
+                updateAll($"Data: {string.Join(", ", SampleResults.Table.Rows[r].ItemArray)}");
             }
 
             updateAll($"");

@@ -92,7 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StepDataTransform\DataTranformSetTraining.cs" />
+    <Compile Include="StepDataTransform\DataTransformSetTraining.cs" />
     <Compile Include="StepDataTransform\DataTransformAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigColumns.cs" />
@@ -108,6 +108,7 @@
     <Compile Include="StepMachineLearning\MachineLearningDecisionTree.cs" />
     <Compile Include="StepMachineLearning\MachineLearningNeuralNetworkBasic.cs" />
     <Compile Include="StepMachineLearning\NeuralNetworkTeacherTypeConverter.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetConfigBlank.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigCSVFile.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigQuandlMarketData.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetConfigWebsiteCSV.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="StepRawDatasetGenerator\DatasetGeneratorCSVFile.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetGeneratorQuandl.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetGeneratorWebsiteCSV.cs" />
+    <Compile Include="StepRawDatasetGenerator\DatasetGeneratorXorData.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetGeneratorYahoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepRawDatasetGenerator\YahooCaller.cs" />

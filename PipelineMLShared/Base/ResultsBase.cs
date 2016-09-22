@@ -20,7 +20,7 @@ namespace PipelineMLCore
 
         protected string GetColumnName(DataColumnBase col)
         {
-            return $"{col.Name}({col.DataType})";
+            return $"{col.Name}";
         }
 
         protected string GetColumnDetails(DataColumnBase col)

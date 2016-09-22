@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DataTranformSetTraining : IDataTransform, ISearchableClass
+    public class DataTransformSetTraining : IDataTransform, ISearchableClass
     {
         public string Name { get { return Config.Name; } }
 
@@ -22,7 +22,7 @@ namespace PipelineMLCore
         private DataTransformConfigSetTraining ConfigInternal { get { return Config as DataTransformConfigSetTraining; } }
 
 
-        public DataTranformSetTraining()
+        public DataTransformSetTraining()
         {
             Config = new DataTransformConfigSetTraining();
         }

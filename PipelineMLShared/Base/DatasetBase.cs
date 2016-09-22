@@ -45,5 +45,21 @@ namespace PipelineMLCore
             }
             return sample;
         }
+
+        public DatasetBase Copy()
+        {
+            DatasetDescriptorBase copyDescriptor = new DatasetDescriptorBase();
+            copyDescriptor.Name = Descriptor.Name;
+            foreach (var col in Descriptor.ColumnDescriptions)
+            {
+                copyDescriptor.ColumnDescriptions.Add(new DataColumnBase() { Id = col.Id, Name = col.Name, DataType = col.DataType, Description = col.Description, IsCategory = col.IsCategory, IsFeature = col.IsFeature, IsLabel = col.IsLabel, IsTraining = col.IsTraining, IsScore = col.IsScore, IsScoreProbability = col.IsScoreProbability });
+            }
+            DatasetBase copyDataset = new DatasetBase(copyDescriptor);
+            for (int r = 0; r < Table.Rows.Count; r++)
+            {
+                copyDataset.Table.Rows.Add(Table.Rows[r].ItemArray);
+            }
+            return copyDataset;
+        }
     }
 }

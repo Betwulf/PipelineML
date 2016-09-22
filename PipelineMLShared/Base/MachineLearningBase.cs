@@ -12,7 +12,32 @@ namespace PipelineMLCore
         public ConfigBase Config { get; set; }
 
         public string Name { get { return Config.Name; } }
-        
+
+
+
+
+
+        /// <summary>
+        /// Returns the differences between the output and expected output
+        /// </summary>
+        /// <param name="output"></param>
+        /// <param name="desiredOutput"></param>
+        /// <returns>the squared error</returns>
+        protected double[] GetErrorVector(double[] output, double[] desiredOutput)
+        {
+
+            if (output.Length != desiredOutput.Length)
+            {
+                throw new IndexOutOfRangeException($"Output Length: {output.Length} does not match desired output length: {desiredOutput.Length}");
+            }
+            double[] errorVector = new double[output.Length];
+            for (int i = 0; i < output.Length; i++)
+            {
+                errorVector[i] = output[i] - desiredOutput[i];
+            }
+            return errorVector;
+        }
+
 
 
 

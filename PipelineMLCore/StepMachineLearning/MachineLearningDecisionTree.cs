@@ -125,33 +125,39 @@ namespace PipelineMLCore
             // get column that is the label
             DataColumnML labelCol = results.DatasetWithScores.Descriptor.ColumnDescriptions.Find(x => x.IsLabel == true);
             // find the column that has the generated ml input data
-            string mlColName = nameof(DataColumnML.IsMLInputData);
+            string inputColName = nameof(DataColumnML.IsMLInputData);
+            string labelColName = nameof(DataColumnML.IsMLLabelData);
             string scoreColName = nameof(DataColumnBase.IsScore);
             string trainingColName = nameof(DataColumnBase.IsTraining);
-            string scoreProbabilityName = nameof(DataColumnBase.IsScoreProbability);
-            int correct = 0;
-            int scoreCounter = 0;
+            string probabilityColName = nameof(DataColumnBase.IsScoreProbability);
+            double sumMeanSquaredError = 0;
+            double sumError = 0;
+            int rowCount = 0;
             foreach (DataRow row in results.DatasetWithScores.Table.Rows)
             {
                 if (ConfigInternal.IncludeTrainingDataInTestingData || !(bool)row[trainingColName])
                 {
-                    int score = tree.Decide((double[])row[mlColName]);
-                    row[scoreColName] = score;
-                    row[scoreProbabilityName] = 1.0; // decisiontree gives no probability? :(
+                    int score = tree.Decide((double[])row[inputColName]);
+                    double[] doubleScore = new double[1];
+                    doubleScore[0] = score.To<double>();
+                    row[scoreColName] = doubleScore;
 
-                    if (score == -1) { Console.WriteLine("WTF"); }
-                    if ((int)row[labelCol.Name] == score)
-                    {
-                        correct++;
-                    }
-                    scoreCounter++;
+
+                    var labels = (double[])row[labelColName];
+                    double[] errorVector = GetErrorVector(doubleScore, labels);
+                    sumError += errorVector.Sum(x => Math.Abs(x));
+                    var meanSquareError = errorVector.MeanSquareError();
+                    row[probabilityColName] = 1 - errorVector.Sum(x => Math.Abs(x));
+                    sumMeanSquaredError += meanSquareError;
+                    rowCount++;
                 }
             }
-            if (scoreCounter == 0)
+            if (rowCount == 0)
                 throw new PipelineException($"found zero scores.", results.DatasetWithScores, this, results.GetLoggedUpdateMessage(updateMessage));
 
-            results.Error = scoreCounter;
-            results.Error = (results.Error - correct) / results.Error;
+            results.Error = sumError / rowCount / mlData.NumberOfLabels;
+            results.MeanSquareError = sumMeanSquaredError / rowCount;
+            results.RootMeanSquareDeviation = Math.Sqrt(results.MeanSquareError);
             results.FromMLProcess = this;
             results.StopTime = DateTime.Now;
             return results;

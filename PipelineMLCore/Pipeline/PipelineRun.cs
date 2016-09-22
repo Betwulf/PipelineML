@@ -46,7 +46,8 @@ namespace PipelineMLCore
             results.MachineLearningResults = new List<IMachineLearningResults>();
             foreach (var ml in Instance.MLList)
             {
-                var mlout = ml.TrainML(dataset, updateMessage);
+                DatasetBase copiedDataset = dataset.Copy();
+                var mlout = ml.TrainML(copiedDataset, updateMessage);
                 mlout.LogUpdateResults(updateMessage);
                 results.MachineLearningResults.Add(mlout);
             }

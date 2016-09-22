@@ -18,6 +18,7 @@ namespace PipelineMLCore
             TrainUntilError = 0.10;
             HiddenLayerNeurons = 4;
             LearningAlgorithm = typeof(BackPropagationLearning);
+            LearningRate = 0.1;
             MinTrainingIterations = 100;
             MaxTrainingIterations = 10000;
         }
@@ -67,6 +68,11 @@ namespace PipelineMLCore
         /// </summary>
         [TypeConverter(typeof(NeuralNetworkTeacherTypeConverter))]
         public Type LearningAlgorithm { get; set; }
+
+        /// <summary>
+        /// Choose a value between [0-1] exclusive of the extents
+        /// </summary>
+        public double LearningRate { get; set; }
 
     }
 }

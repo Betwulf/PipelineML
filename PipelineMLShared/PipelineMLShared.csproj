@@ -77,6 +77,7 @@
     <Compile Include="Base\PipelineException.cs" />
     <Compile Include="Base\ResultsBase.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
+    <Compile Include="Data\XorData.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
     <Compile Include="Helpers\ExtendCalculations.cs" />
     <Compile Include="Helpers\ExtendData.cs" />

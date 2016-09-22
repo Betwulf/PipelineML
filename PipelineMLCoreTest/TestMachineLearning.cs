@@ -65,7 +65,7 @@ namespace PipelineMLCoreTest
             // set Training data
             var dtcfg6 = new DataTransformConfigSetTraining();
             dtcfg6.PercentOfTrainingData = 0.8;
-            var dt6 = new DataTranformSetTraining();
+            var dt6 = new DataTransformSetTraining();
             dt6.Configure(TestConstants.currDirectory, dtcfg6.ToJSON());
             var trainingDataSet = dt6.Transform(columnConverted, Console.WriteLine);
 
