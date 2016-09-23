@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 
 namespace PipelineMLCore
 {
@@ -16,16 +17,25 @@ namespace PipelineMLCore
         public PipelineResults Run(Action<string> updateMessage)
         {
             var results = new PipelineResults();
+            DatasetBase dataset = null;
 
             // Run DatasetGenerator
-            results.DataSetGeneratorResult = new DatasetBaseGeneratorResults();
-            results.DataSetGeneratorResult.StartTime = DateTime.Now;
-            results.DataSetGeneratorResult.FromDatasetGenerator = Instance.DatasetGenerator;
-            var dataset = Instance.DatasetGenerator.Generate(results.DataSetGeneratorResult.GetLoggedUpdateMessage(updateMessage));
-            results.DataSetGeneratorResult.SampleResults = dataset.GenerateSample();
-            results.DataSetGeneratorResult.StopTime = DateTime.Now;
-            results.DataSetGeneratorResult.RowCount = dataset.Table.Rows.Count;
-            results.DataSetGeneratorResult.LogUpdateResults(updateMessage);
+            try
+            {
+                results.DataSetGeneratorResult = new DatasetBaseGeneratorResults();
+                results.DataSetGeneratorResult.StartTime = DateTime.Now;
+                results.DataSetGeneratorResult.FromDatasetGenerator = Instance.DatasetGenerator;
+                dataset = Instance.DatasetGenerator.Generate(results.DataSetGeneratorResult.GetLoggedUpdateMessage(updateMessage));
+                results.DataSetGeneratorResult.SampleResults = dataset.GenerateSample();
+                results.DataSetGeneratorResult.StopTime = DateTime.Now;
+                results.DataSetGeneratorResult.RowCount = dataset.Table.Rows.Count;
+                results.DataSetGeneratorResult.LogUpdateResults(updateMessage);
+            }
+            catch (Exception ex)
+            {
+                updateMessage($"Failure running Dataset Generator: {ex.Message}");
+                Log.Logger.Error("Failure running Dataset Generator: {Message}", ex.Message);
+            }
 
             // Run Preprocessors
             results.PreprocessTransformOutput = new List<IDataTransformResults>();

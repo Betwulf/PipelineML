@@ -53,7 +53,7 @@ namespace PipelineMLCore
             updateAll($"Dataset With Scores --------------- ");
 
             updateAll(string.Join(", ", DatasetWithScores.Descriptor.ColumnDescriptions.Select(GetColumnName).ToArray()));
-            for (int r = 0; r < Math.Min(100, DatasetWithScores.Table.Rows.Count); r++)
+            for (int r = 0; r < Math.Min(20, DatasetWithScores.Table.Rows.Count); r++)
             {
                 List<string> StringList = new List<string>();
                 for (int c = 0; c < DatasetWithScores.Table.Columns.Count; c++)
