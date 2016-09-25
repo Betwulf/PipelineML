@@ -31,6 +31,13 @@ namespace PipelineMLCore
         }
 
 
+
+        public static int RangeLimit(this int input, int min, int max)
+        {
+            return Math.Min(Math.Max(input, min), max);
+        }
+
+
         public static void WriteToCsvFile(this DataTable dataTable, string filePath)
         {
             StringBuilder sb = new StringBuilder();

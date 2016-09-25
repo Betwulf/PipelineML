@@ -80,12 +80,26 @@ namespace PipelineMLCore
             set { learningRate = value.RangeLimit(0, 1); }
         }
 
-        private double momentum;
+        /// <summary>
+        /// For BackPropagation Only - Represents how much of the previous iteration of learning to mix in with the current.
+        /// </summary>
         public double Momentum
         {
             get { return momentum; }
             set { momentum = value.RangeLimit(0, 1); }
         }
+        private double momentum;
+
+        /// <summary>
+        /// For Evolutionary Learning Only, choose a population of chromosones for the genetic learning algorithm
+        /// </summary>
+        public int Population
+        {
+            get { return population; }
+            set { population = value.RangeLimit(2, 100000); }
+        }
+        private int population;
+
 
     }
 }

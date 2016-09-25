@@ -16,7 +16,7 @@ namespace PipelineMLCore
     {
         // Fields  
         private static Type[] types = new Type[] {
-            typeof(BackPropagationLearning), typeof(BipolarSigmoidFunction), typeof(ThresholdFunction)
+            typeof(BackPropagationLearning), typeof (ResilientBackpropagationLearning), typeof(EvolutionaryLearning)
         };
 
         private StandardValuesCollection values;

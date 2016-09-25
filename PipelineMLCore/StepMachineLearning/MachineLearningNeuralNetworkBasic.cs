@@ -63,6 +63,36 @@ namespace PipelineMLCore
             {
                 BackPropagationLearning teacher = new BackPropagationLearning(network);
                 teacher.LearningRate = ConfigInternal.LearningRate;
+                teacher.Momentum = ConfigInternal.Momentum;
+                double trainingError = 1.0;
+                int i;
+                for (i = 0; i < ConfigInternal.MaxTrainingIterations; i++)
+                {
+                    trainingError = teacher.RunEpoch(mlData.inputs, mlData.labels);
+                    if (trainingError < ConfigInternal.TrainUntilError && i > ConfigInternal.MinTrainingIterations)
+                        break;
+                }
+                results.TrainingIterations = i;
+                results.TrainingError = trainingError;
+            }
+            else if (ConfigInternal.LearningAlgorithm == typeof(ResilientBackpropagationLearning))
+            {
+                ResilientBackpropagationLearning teacher = new ResilientBackpropagationLearning(network);
+                teacher.LearningRate = ConfigInternal.LearningRate;
+                double trainingError = 1.0;
+                int i;
+                for (i = 0; i < ConfigInternal.MaxTrainingIterations; i++)
+                {
+                    trainingError = teacher.RunEpoch(mlData.inputs, mlData.labels);
+                    if (trainingError < ConfigInternal.TrainUntilError && i > ConfigInternal.MinTrainingIterations)
+                        break;
+                }
+                results.TrainingIterations = i;
+                results.TrainingError = trainingError;
+            }
+            else if (ConfigInternal.LearningAlgorithm == typeof(EvolutionaryLearning))
+            {
+                EvolutionaryLearning teacher = new EvolutionaryLearning(network, ConfigInternal.Population);
                 double trainingError = 1.0;
                 int i;
                 for (i = 0; i < ConfigInternal.MaxTrainingIterations; i++)
