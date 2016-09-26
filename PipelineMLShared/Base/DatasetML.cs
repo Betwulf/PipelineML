@@ -9,9 +9,15 @@ namespace PipelineMLCore
 {
     public class DatasetML : DatasetBase
     {
+        public double[][] inputs { get; set; }
+
+        public double[][] labels { get; set; }
+
         public new DatasetDescriptorML Descriptor { get; set; }
 
         public int NumberOfFeatures { get; set; }
+
+        public int NumberOfLabels { get; set; }
 
         public DatasetML(DatasetDescriptorML descriptor) : base(null)
         {

@@ -12,6 +12,26 @@ namespace PipelineMLCore
     public static class ExtendCalculations
     {
 
+        public static double RootMeanSquareDeviation(this double[] x)
+        {
+            double sum = 0;
+            for (int i = 0; i < x.Length; i++)
+            {
+                sum += (x[i] * x[i]);
+            }
+            return Math.Sqrt(sum / x.Length);
+        }
+
+        public static double MeanSquareError(this double[] x)
+        {
+            double sum = 0;
+            for (int i = 0; i < x.Length; i++)
+            {
+                sum += (x[i] * x[i]);
+            }
+            return sum / x.Length;
+        }
+
 
         public static DateTime NextBusinessDay(this DateTime currDate)
         {

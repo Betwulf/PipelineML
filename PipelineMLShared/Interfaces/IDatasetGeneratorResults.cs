@@ -6,17 +6,26 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface DatasetBaseGeneratorResults
+    public interface IDatasetBaseGeneratorResults
     {
         IDatasetGenerator FromDatasetGenerator { get; set; }
 
         DatasetBase SampleResults { get; set; }
 
-        DatasetDescriptorBase DatasetDescriptor { get; set; }
-
         DateTime StartTime { get; set; }
 
         DateTime StopTime { get; set; }
+
+        StringBuilder Log { get; set; }
+
+        int RowCount { get; set; }
+
+        Action<string> GetLoggedUpdateMessage(Action<string> updateMessage);
+
+        void LogUpdateResults(Action<string> updateMessage);
+
+
+
 
     }
 }

@@ -8,6 +8,11 @@ namespace PipelineMLCore
 {
     public class MachineLearningConfigDecisionTree : ConfigBase
     {
+        public MachineLearningConfigDecisionTree()
+        {
+            IncludeTrainingDataInTestingData = false;
+        }
+
         public bool IncludeTrainingDataInTestingData { get; set; }
     }
 }

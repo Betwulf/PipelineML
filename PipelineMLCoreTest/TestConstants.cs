@@ -15,6 +15,7 @@ namespace PipelineMLCoreTest
         public static string titanicFile = "titanic.csv";
         public static string directory = @"C:\Temp\Test";
         public static string currDirectory = @"..\";
+        public static string yahooStock = "MSFT";
         public static string yahooFilename = @"PipelineMLCore.YahooMarketDataSeries\MSFT.json";
         public static string subFolder = @"yahoo\";
         public static DateTime startDate = DateTime.Parse("2014/01/02");

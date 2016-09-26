@@ -12,7 +12,7 @@ namespace PipelineMLCore
 {
     public class DataTransformAddColumn : IDataTransform, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public string FriendlyName { get { return "Add Column Data Transform"; } }
 
@@ -51,14 +51,25 @@ namespace PipelineMLCore
                 }
             }"; }
         }
-        public string CodeStarter => @"var tableOut = new DataTable(); 
-            tableOut.Columns.Add(" + "\"" + ConfigInternal?.NewColumn.Name + "\", typeof(" + ConfigInternal.NewColumn.DataType.Name + @"));
+
+        public string CodeStarter
+        {
+            get
+            {
+                if (ConfigInternal?.NewColumn?.Name != null && ConfigInternal?.NewColumn?.DataType.Name != null)
+                {
+                    return @"var tableOut = new DataTable(); 
+            tableOut.Columns.Add(" + "\"" + ConfigInternal?.NewColumn?.Name + "\", typeof(" + ConfigInternal?.NewColumn?.DataType.Name + @"));
             for (int i = 0; i < datasetIn.Table.Rows.Count; i++)
             {
                 tableOut.Rows.Add(new object[] { 0 });
             }
             return tableOut;";
-        
+                }
+                else return "";
+            }
+        }
+
 
 
         public static List<string> ReferencedDlls = new List<string>
@@ -82,7 +93,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigAddColumn>(jsonConfig);
-            Name = Config.Name;
         }
 
 

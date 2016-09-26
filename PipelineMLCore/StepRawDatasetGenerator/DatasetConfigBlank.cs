@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public interface INamed
+    public class DatasetConfigBlank : ConfigBase
     {
-        string Name { get; }
-
+        public DatasetConfigBlank()
+        {
+            Name = "no config needed";
+        }
     }
 }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    public class DataTranformSetTraining : IDataTransform, ISearchableClass
+    public class DataTransformSetTraining : IDataTransform, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public string FriendlyName { get { return "Set Training Data Transform"; } }
 
@@ -22,7 +22,7 @@ namespace PipelineMLCore
         private DataTransformConfigSetTraining ConfigInternal { get { return Config as DataTransformConfigSetTraining; } }
 
 
-        public DataTranformSetTraining()
+        public DataTransformSetTraining()
         {
             Config = new DataTransformConfigSetTraining();
         }
@@ -30,7 +30,6 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigSetTraining>(jsonConfig);
-            Name = Config.Name;
         }
 
 
@@ -44,7 +43,8 @@ namespace PipelineMLCore
                 IsTraining = true, Id = -1 };
             datasetIn.Descriptor.ColumnDescriptions.Add(trainingColumn);
             datasetIn.Table.Columns.Add(trainingColumn.Name, trainingColumn.DataType);
-            Random rnd = new Random(datasetIn.Table.Rows.Count*DateTime.Now.Millisecond);
+            if (ConfigInternal.RandomSeed == 0) ConfigInternal.RandomSeed = datasetIn.Table.Rows.Count * DateTime.Now.Millisecond;
+            Random rnd = new Random(ConfigInternal.RandomSeed);
 
             // create training values
             for (int i = 0; i < datasetIn.Table.Rows.Count; i++)

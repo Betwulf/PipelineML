@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accord.Neuro;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
@@ -10,14 +11,11 @@ using System.Threading.Tasks;
 
 namespace PipelineMLCore
 {
-    /// <summary>
-    /// Converts "Type" to a dropdown field for the Windows Forms UI
-    /// </summary>
-    public class TypeTypeConverter : TypeConverter
+    public class ActivationFunctionTypeConverter : TypeConverter
     {
         // Fields  
         private static Type[] types = new Type[] {
-            typeof(bool), typeof(int), typeof(decimal), typeof(string), typeof(double), typeof(DateTime)
+            typeof(SigmoidFunction), typeof(BipolarSigmoidFunction), typeof(ThresholdFunction)
         };
 
         private StandardValuesCollection values;

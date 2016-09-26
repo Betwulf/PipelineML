@@ -13,8 +13,9 @@ namespace PipelineMLCore
 
         public IPipelinePart CurrentPipelinePart { get; set; }
 
-        public PipelineException(string message, DatasetBase currentDataset, IPipelinePart currentPart) : base(message)
+        public PipelineException(string message, DatasetBase currentDataset, IPipelinePart currentPart, Action<string> updateMessage) : base(message)
         {
+            updateMessage($"ERROR: {message} --- from {nameof(currentPart)}");
             Log.Logger.Error("{message} {currentDataset} {currentPart}", message, currentDataset, currentPart);
             CurrentDataset = currentDataset;
             CurrentPipelinePart = currentPart;

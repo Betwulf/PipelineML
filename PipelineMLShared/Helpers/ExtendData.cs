@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,35 @@ namespace PipelineMLCore
 {
     public static class ExtendData
     {
+        public static string ToExpandedString(this double[] x)
+        {
+            if (x.Length == 0) return "'{}";
+            string retval = "{ ";
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (i == x.Length - 1)
+                    retval += x[i].ToString();
+                else
+                    retval += x[i].ToString() + " | ";
+            }
+            retval += " }";
+            return retval;
+        }
+
+
+        public static double RangeLimit(this double input, double min, double max)
+        {
+            return Math.Min(Math.Max(input, min), max);
+        }
+
+
+
+        public static int RangeLimit(this int input, int min, int max)
+        {
+            return Math.Min(Math.Max(input, min), max);
+        }
+
+
         public static void WriteToCsvFile(this DataTable dataTable, string filePath)
         {
             StringBuilder sb = new StringBuilder();

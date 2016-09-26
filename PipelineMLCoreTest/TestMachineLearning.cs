@@ -65,7 +65,7 @@ namespace PipelineMLCoreTest
             // set Training data
             var dtcfg6 = new DataTransformConfigSetTraining();
             dtcfg6.PercentOfTrainingData = 0.8;
-            var dt6 = new DataTranformSetTraining();
+            var dt6 = new DataTransformSetTraining();
             dt6.Configure(TestConstants.currDirectory, dtcfg6.ToJSON());
             var trainingDataSet = dt6.Transform(columnConverted, Console.WriteLine);
 
@@ -78,11 +78,9 @@ namespace PipelineMLCoreTest
             tree.Configure(TestConstants.currDirectory, treecfg.ToJSON());
 
             // Train Tree
-            var mlResults = tree.TrainML(trainingDataSet);
-            //mlResults.DatasetWithScores.Table.WriteToCsvFile(@"C:\Temp\datasetWithScores.csv");
+            var mlResults = tree.TrainML(trainingDataSet, Console.WriteLine);
             Assert.IsTrue(mlResults.Error < 0.4);
             Assert.IsNotNull(tree);
-            //throw new PipelineException("NO", columnsIgnored, tree);
         }
     }
 }

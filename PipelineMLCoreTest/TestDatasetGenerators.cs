@@ -22,7 +22,7 @@ namespace PipelineMLCoreTest
             cfg.StartDate = TestConstants.startDate;
             cfg.EndDate = TestConstants.endDate;
             cfg.SubFolder = subfolder;
-            cfg.Symbols = new List<string>() { "MSFT" };
+            cfg.Symbols = new List<string>() { TestConstants.yahooStock };
             cfg.Name = TestConstants.testName;
 
             var dgy = new DatasetGeneratorYahoo();

@@ -40,6 +40,8 @@
             this.flwMain = new System.Windows.Forms.FlowLayoutPanel();
             this.flwML = new System.Windows.Forms.FlowLayoutPanel();
             this.lblML = new System.Windows.Forms.Label();
+            this.btnAddML = new System.Windows.Forms.Button();
+            this.btnEditML = new System.Windows.Forms.Button();
             this.flwPostprocess = new System.Windows.Forms.FlowLayoutPanel();
             this.lblPostprocess = new System.Windows.Forms.Label();
             this.flwEvaluate = new System.Windows.Forms.FlowLayoutPanel();
@@ -51,6 +53,7 @@
             this.lblRoot = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtRoot = new System.Windows.Forms.TextBox();
+            this.btnRun = new System.Windows.Forms.Button();
             this.flwDatasetGen.SuspendLayout();
             this.flwPreprocess.SuspendLayout();
             this.flwMain.SuspendLayout();
@@ -149,15 +152,17 @@
             this.flwMain.Controls.Add(this.flwML);
             this.flwMain.Controls.Add(this.flwPostprocess);
             this.flwMain.Controls.Add(this.flwEvaluate);
-            this.flwMain.Location = new System.Drawing.Point(12, 39);
+            this.flwMain.Location = new System.Drawing.Point(12, 88);
             this.flwMain.Name = "flwMain";
-            this.flwMain.Size = new System.Drawing.Size(404, 648);
+            this.flwMain.Size = new System.Drawing.Size(404, 661);
             this.flwMain.TabIndex = 4;
             // 
             // flwML
             // 
             this.flwML.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flwML.Controls.Add(this.lblML);
+            this.flwML.Controls.Add(this.btnAddML);
+            this.flwML.Controls.Add(this.btnEditML);
             this.flwML.Location = new System.Drawing.Point(3, 113);
             this.flwML.Name = "flwML";
             this.flwML.Size = new System.Drawing.Size(189, 104);
@@ -171,6 +176,26 @@
             this.lblML.Size = new System.Drawing.Size(123, 13);
             this.lblML.TabIndex = 1;
             this.lblML.Text = "3) Machine Learning List";
+            // 
+            // btnAddML
+            // 
+            this.btnAddML.Location = new System.Drawing.Point(3, 16);
+            this.btnAddML.Name = "btnAddML";
+            this.btnAddML.Size = new System.Drawing.Size(99, 32);
+            this.btnAddML.TabIndex = 6;
+            this.btnAddML.Text = "Add...";
+            this.btnAddML.UseVisualStyleBackColor = true;
+            this.btnAddML.Click += new System.EventHandler(this.btnAddML_Click);
+            // 
+            // btnEditML
+            // 
+            this.btnEditML.Location = new System.Drawing.Point(3, 54);
+            this.btnEditML.Name = "btnEditML";
+            this.btnEditML.Size = new System.Drawing.Size(99, 32);
+            this.btnEditML.TabIndex = 7;
+            this.btnEditML.Text = "Edit...";
+            this.btnEditML.UseVisualStyleBackColor = true;
+            this.btnEditML.Click += new System.EventHandler(this.btnEditML_Click);
             // 
             // flwPostprocess
             // 
@@ -212,15 +237,14 @@
             // 
             this.prpGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.prpGrid.Location = new System.Drawing.Point(422, 39);
+            this.prpGrid.Location = new System.Drawing.Point(422, 88);
             this.prpGrid.Name = "prpGrid";
-            this.prpGrid.Size = new System.Drawing.Size(408, 710);
+            this.prpGrid.Size = new System.Drawing.Size(408, 661);
             this.prpGrid.TabIndex = 5;
             // 
             // btnSave
             // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSave.Location = new System.Drawing.Point(12, 717);
+            this.btnSave.Location = new System.Drawing.Point(117, 12);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(99, 32);
             this.btnSave.TabIndex = 6;
@@ -230,8 +254,7 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOpen.Location = new System.Drawing.Point(117, 717);
+            this.btnOpen.Location = new System.Drawing.Point(12, 12);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(99, 32);
             this.btnOpen.TabIndex = 7;
@@ -242,7 +265,7 @@
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(12, 17);
+            this.lblName.Location = new System.Drawing.Point(35, 67);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(38, 13);
             this.lblName.TabIndex = 8;
@@ -251,7 +274,7 @@
             // lblRoot
             // 
             this.lblRoot.AutoSize = true;
-            this.lblRoot.Location = new System.Drawing.Point(207, 17);
+            this.lblRoot.Location = new System.Drawing.Point(230, 67);
             this.lblRoot.Name = "lblRoot";
             this.lblRoot.Size = new System.Drawing.Size(33, 13);
             this.lblRoot.TabIndex = 9;
@@ -259,7 +282,7 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(54, 13);
+            this.txtName.Location = new System.Drawing.Point(77, 63);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(150, 20);
             this.txtName.TabIndex = 10;
@@ -267,18 +290,29 @@
             // 
             // txtRoot
             // 
-            this.txtRoot.Location = new System.Drawing.Point(243, 12);
+            this.txtRoot.Location = new System.Drawing.Point(266, 62);
             this.txtRoot.Name = "txtRoot";
             this.txtRoot.Size = new System.Drawing.Size(150, 20);
             this.txtRoot.TabIndex = 11;
             this.txtRoot.Text = "C:\\";
             this.txtRoot.TextChanged += new System.EventHandler(this.txtRoot_TextChanged);
             // 
+            // btnRun
+            // 
+            this.btnRun.Location = new System.Drawing.Point(222, 12);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(99, 32);
+            this.btnRun.TabIndex = 12;
+            this.btnRun.Text = "Run...";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
+            // 
             // frmEditPipelineDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(842, 761);
+            this.Controls.Add(this.btnRun);
             this.Controls.Add(this.txtRoot);
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.lblRoot);
@@ -331,5 +365,8 @@
         private System.Windows.Forms.Label lblRoot;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtRoot;
+        private System.Windows.Forms.Button btnRun;
+        private System.Windows.Forms.Button btnAddML;
+        private System.Windows.Forms.Button btnEditML;
     }
 }

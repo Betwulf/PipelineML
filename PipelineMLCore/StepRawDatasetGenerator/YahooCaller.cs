@@ -7,8 +7,12 @@ using System.Text;
 using System.Threading;
 using Serilog;
 
+
 namespace PipelineMLCore
 {
+    /// <summary>
+    /// class deprecated?
+    /// </summary>
     public class YahooCaller
     {
 

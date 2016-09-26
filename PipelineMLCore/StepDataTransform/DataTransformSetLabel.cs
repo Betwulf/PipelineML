@@ -10,7 +10,7 @@ namespace PipelineMLCore
 {
     public class DataTransformSetLabel : IDataTransform, ISearchableClass
     {
-        public string Name { get; set; }
+        public string Name { get { return Config.Name; } }
 
         public string FriendlyName { get { return "Set Label Data Transform"; } }
 
@@ -30,13 +30,12 @@ namespace PipelineMLCore
         public void Configure(string rootDirectory, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigColumns>(jsonConfig);
-            Name = Config.Name;
         }
 
         public DatasetBase Transform(DatasetBase datasetIn, Action<string> updateMessage)
         {
             if (ConfigInternal.ColumnNames.Count > 1)
-                throw new PipelineException("Don't set more than one label column please", datasetIn, this);
+                throw new PipelineException("Don't set more than one label column please", datasetIn, this, updateMessage);
             foreach (var col in ConfigInternal.ColumnNames)
             {
                 var found = datasetIn.Descriptor.ColumnDescriptions.First(x => x.Name == col.Name);

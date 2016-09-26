@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -12,8 +13,20 @@ using System.Windows.Forms;
 
 namespace PipelineML
 {
+    
+
     public partial class frmEditPipelineDefinition : Form
     {
+        public class WrapCollection<T>
+        {
+            public WrapCollection(List<T> collection)
+            {
+                Collection = collection;
+            }
+            [TypeConverter(typeof(CollectionEditor))]
+            public List<T> Collection { get; set; }
+        }
+
         public string DefaultLoadLocation { get; set; }
 
         public string DefaultFileExtension { get; set; }
@@ -125,7 +138,35 @@ namespace PipelineML
 
         private void btnEditPreprocessTransform_Click(object sender, EventArgs e)
         {
-            prpGrid.SelectedObject = PipelineInst.PreprocessDataTransforms;
+            var wrap = new WrapCollection<IDataTransform>(PipelineInst.PreprocessDataTransforms);
+            prpGrid.SelectedObject = wrap;
+        }
+
+
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            var frmRun = new frmRunPipeline(PipelineInst);
+            frmRun.WindowState = FormWindowState.Maximized;
+            frmRun.ShowDialog();
+        }
+
+        private void btnAddML_Click(object sender, EventArgs e)
+        {
+            var searchForm = new frmSearchForClass();
+            searchForm.Initialize(typeof(IMachineLearningProcess));
+            if (searchForm.ShowDialog() == DialogResult.OK)
+            {
+                IMachineLearningProcess mlProcess = (IMachineLearningProcess)Activator.CreateInstance(searchForm.SelectedType);
+                PipelineInst.MLList.Add(mlProcess);
+                prpGrid.SelectedObject = mlProcess.Config;
+            }
+        }
+
+        private void btnEditML_Click(object sender, EventArgs e)
+        {
+            var wrap = new WrapCollection<IMachineLearningProcess>(PipelineInst.MLList);
+            prpGrid.SelectedObject = wrap;
         }
     }
 }

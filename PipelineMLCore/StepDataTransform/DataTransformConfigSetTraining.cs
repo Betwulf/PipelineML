@@ -10,9 +10,11 @@ namespace PipelineMLCore
     {
         public double PercentOfTrainingData { get; set; }
 
+        public int RandomSeed { get; set; }
 
         public DataTransformConfigSetTraining()
         {
+            RandomSeed = 0;
             PercentOfTrainingData = .5;
         }
     }
