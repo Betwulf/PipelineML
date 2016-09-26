@@ -26,7 +26,6 @@ namespace PipelineMLCoreTest
             predt.Configure(string.Empty, predtcfg.ToJSON());
             pi.PreprocessDataTransforms.Add(predt);
 
-
             // convert to definition
             var pd = pi.CreateDefinition();
 
