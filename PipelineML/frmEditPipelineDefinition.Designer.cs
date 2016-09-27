@@ -54,6 +54,8 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtRoot = new System.Windows.Forms.TextBox();
             this.btnRun = new System.Windows.Forms.Button();
+            this.btnAddPostProcessTransform = new System.Windows.Forms.Button();
+            this.btnEditPostProcessTransform = new System.Windows.Forms.Button();
             this.flwDatasetGen.SuspendLayout();
             this.flwPreprocess.SuspendLayout();
             this.flwMain.SuspendLayout();
@@ -201,6 +203,8 @@
             // 
             this.flwPostprocess.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flwPostprocess.Controls.Add(this.lblPostprocess);
+            this.flwPostprocess.Controls.Add(this.btnAddPostProcessTransform);
+            this.flwPostprocess.Controls.Add(this.btnEditPostProcessTransform);
             this.flwPostprocess.Location = new System.Drawing.Point(198, 113);
             this.flwPostprocess.Name = "flwPostprocess";
             this.flwPostprocess.Size = new System.Drawing.Size(189, 104);
@@ -307,6 +311,26 @@
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
+            // btnAddPostProcessTransform
+            // 
+            this.btnAddPostProcessTransform.Location = new System.Drawing.Point(3, 16);
+            this.btnAddPostProcessTransform.Name = "btnAddPostProcessTransform";
+            this.btnAddPostProcessTransform.Size = new System.Drawing.Size(99, 32);
+            this.btnAddPostProcessTransform.TabIndex = 8;
+            this.btnAddPostProcessTransform.Text = "Add...";
+            this.btnAddPostProcessTransform.UseVisualStyleBackColor = true;
+            this.btnAddPostProcessTransform.Click += new System.EventHandler(this.btnAddPostProcessTransform_Click);
+            // 
+            // btnEditPostProcessTransform
+            // 
+            this.btnEditPostProcessTransform.Location = new System.Drawing.Point(3, 54);
+            this.btnEditPostProcessTransform.Name = "btnEditPostProcessTransform";
+            this.btnEditPostProcessTransform.Size = new System.Drawing.Size(99, 32);
+            this.btnEditPostProcessTransform.TabIndex = 9;
+            this.btnEditPostProcessTransform.Text = "Edit...";
+            this.btnEditPostProcessTransform.UseVisualStyleBackColor = true;
+            this.btnEditPostProcessTransform.Click += new System.EventHandler(this.btnEditPostProcessTransform_Click);
+            // 
             // frmEditPipelineDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -368,5 +392,7 @@
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Button btnAddML;
         private System.Windows.Forms.Button btnEditML;
+        private System.Windows.Forms.Button btnAddPostProcessTransform;
+        private System.Windows.Forms.Button btnEditPostProcessTransform;
     }
 }

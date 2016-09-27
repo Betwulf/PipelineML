@@ -83,8 +83,11 @@ namespace PipelineMLCore
                         updateMessage(ex.Message);
                     }
                 }
-                AddToCache(tickerData, ticker, updateMessage);
-                allData.AddRange(tickerData);
+                if (tickerData.Count > 0)
+                {
+                    AddToCache(tickerData, ticker, updateMessage);
+                    allData.AddRange(tickerData);
+                }
             }
             return ConvertListToDataTable(allData);
         }
@@ -96,7 +99,7 @@ namespace PipelineMLCore
             var minDate = tickerData.Min(x => x.PriceDate);
             var maxDate = tickerData.Max(x => x.PriceDate);
             // check if there is cached data
-            if (cachedData == null)
+            if (cachedData == null || cachedData.MarketDataList.Min(x => x.PriceDate.Year == 1))
             {
                 // then save what we have!
                 var newCachedData = new YahooMarketDataSeries() { Ticker = ticker, MarketDataList = tickerData };
@@ -164,8 +167,9 @@ namespace PipelineMLCore
                 if (startdate >= minDate && enddate <= maxDate)
                 {
                     // Then cache contains the date range! 
-                    // I could try to check for overlaps between a subset of the cache values and 
+                    // TODO: I could try to check for overlaps between a subset of the cache values and 
                     // what the requested date range is... but not now.
+                    updateMessage($"Yahoo found cached data for {ticker} between {startdate} and {enddate}");
                     return cachedData.MarketDataList;
                 }
             }
@@ -183,6 +187,7 @@ namespace PipelineMLCore
             YahooWait(updateMessage);
             using (var client = new WebClient())
             {
+                updateMessage($"Yahoo Call to get historical data for {ticker} between {startdate} and {enddate}");
                 var json = client.DownloadString(theWebAddress.ToString());
                 JObject dataObject = JObject.Parse(json);
                 int queryCount = (int)dataObject["query"]["count"];
@@ -226,7 +231,7 @@ namespace PipelineMLCore
                 row["Open"] = x.Open;
                 row["Low"] = x.Low;
                 row["Volume"] = x.Volume;
-                row["Source"] = "Yahoo";
+                row["Source"] = x.Source;
                 dt.Table.Rows.Add(row);
             });
             return dt;
@@ -255,7 +260,7 @@ namespace PipelineMLCore
             // Wait so Yahoo doesn't get mad
             var rnd = new Random();
             var delayTime = rnd.Next(3000, 6000);
-            updateMessage("Task.Delay for: " + delayTime);
+            updateMessage($"Yahoo requires a delay for: {delayTime}");
             Thread.Sleep(delayTime);
         }
 

@@ -35,32 +35,78 @@ namespace PipelineMLCore
             {
                 updateMessage($"Failure running Dataset Generator: {ex.Message}");
                 Log.Logger.Error("Failure running Dataset Generator: {Message}", ex.Message);
+                return results;
             }
 
             // Run Preprocessors
-            results.PreprocessTransformOutput = new List<IDataTransformResults>();
-            foreach (var dt in Instance.PreprocessDataTransforms)
+            try
             {
-                var presults = new DataTransformResults();
-                presults.StartTime = DateTime.Now;
-                presults.FromDataTransform = dt;
-                dataset = dt.Transform(dataset, presults.GetLoggedUpdateMessage(updateMessage));
-                presults.SampleResults = dataset.GenerateSample();
-                presults.StopTime = DateTime.Now;
-                presults.RowCount = dataset.Table.Rows.Count;
-                presults.LogUpdateResults(updateMessage);
-                results.PreprocessTransformOutput.Add(presults);
+                results.PreprocessTransformOutput = new List<IDataTransformResults>();
+                foreach (var dt in Instance.PreprocessDataTransforms)
+                {
+                    var presults = new DataTransformResults();
+                    presults.StartTime = DateTime.Now;
+                    presults.FromDataTransform = dt;
+                    dataset = dt.Transform(dataset, presults.GetLoggedUpdateMessage(updateMessage));
+                    presults.SampleResults = dataset.GenerateSample();
+                    presults.StopTime = DateTime.Now;
+                    presults.RowCount = dataset.Table.Rows.Count;
+                    presults.LogUpdateResults(updateMessage);
+                    results.PreprocessTransformOutput.Add(presults);
+                }
+            }
+            catch (Exception ex)
+            {
+                updateMessage($"Failure running Preprocessors: {ex.Message}");
+                Log.Logger.Error("Failure running Preprocessors: {Message}", ex.Message);
+                return results;
             }
 
             // Run ML
-            results.MachineLearningResults = new List<IMachineLearningResults>();
-            foreach (var ml in Instance.MLList)
+            try
             {
-                DatasetBase copiedDataset = dataset.Copy();
-                var mlout = ml.TrainML(copiedDataset, updateMessage);
-                mlout.LogUpdateResults(updateMessage);
-                results.MachineLearningResults.Add(mlout);
+                results.MachineLearningResults = new List<IMachineLearningResults>();
+                foreach (var ml in Instance.MLList)
+                {
+                    DatasetBase copiedDataset = dataset.Copy();
+                    var mlout = ml.TrainML(copiedDataset, updateMessage);
+                    mlout.LogUpdateResults(updateMessage);
+                    results.MachineLearningResults.Add(mlout);
+                }
             }
+            catch (Exception ex)
+            {
+                updateMessage($"Failure running ML: {ex.Message}");
+                Log.Logger.Error("Failure running ML: {Message}", ex.Message);
+                return results;
+            }
+
+
+            // Run Postprocessors
+            try
+            {
+                results.PostprocessTransformOutput = new List<IDataTransformResults>();
+                foreach (var dt in Instance.PostprocessDataTransforms)
+                {
+                    var presults = new DataTransformResults();
+                    presults.StartTime = DateTime.Now;
+                    presults.FromDataTransform = dt;
+                    dataset = dt.Transform(dataset, presults.GetLoggedUpdateMessage(updateMessage));
+                    presults.SampleResults = dataset.GenerateSample();
+                    presults.StopTime = DateTime.Now;
+                    presults.RowCount = dataset.Table.Rows.Count;
+                    presults.LogUpdateResults(updateMessage);
+                    results.PreprocessTransformOutput.Add(presults);
+                }
+            }
+            catch (Exception ex)
+            {
+                updateMessage($"Failure running Postprocessors: {ex.Message}");
+                Log.Logger.Error("Failure running Postprocessors: {Message}", ex.Message);
+                return results;
+            }
+
+
 
 
             return results;

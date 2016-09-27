@@ -13,7 +13,7 @@ namespace PipelineMLCore
     /// <summary>
     /// class deprecated?
     /// </summary>
-    public class YahooCaller
+    public class YahooCaller2
     {
 
         private void YahooWait(Action<string> updateMessage)
@@ -21,8 +21,7 @@ namespace PipelineMLCore
             // Wait so Yahoo/DocumentDB doesn't get mad
             var rnd = new Random();
             var delayTime = rnd.Next(3000, 6000);
-            updateMessage("Task.Delay for: " + delayTime);
-            Log.Logger.Information("YahooWait for {delayTime}", delayTime);
+            updateMessage("Yahoo requires a delay for: " + delayTime);
             Thread.Sleep(delayTime);
         }
 
@@ -36,6 +35,7 @@ namespace PipelineMLCore
 
         public List<YahooMarketData> GetHistoricalData(string aTicker, DateTime startdate, DateTime enddate, Action<string> updateMessage)
         {
+            updateMessage($"Yahoo Call to get historical data for {aTicker} between {startdate} and {enddate}");
             string startDateString = GetYahooDate(startdate);
             string endDateString = GetYahooDate(enddate);
 
@@ -43,7 +43,7 @@ namespace PipelineMLCore
             StringBuilder theWebAddress = new StringBuilder();
             theWebAddress.Append("http://query.yahooapis.com/v1/public/yql?");
 
-            string yquery = "select * from yahoo.finance.historicaldata where symbol = '" + aTicker + "' and startDate = '" + startDateString + "' and endDate = '" + endDateString + "'";
+            string yquery = $"select * from yahoo.finance.historicaldata where symbol = '{aTicker}' and startDate = '{startDateString}' and endDate = '{endDateString}'";
             theWebAddress.Append("q=" + System.Web.HttpUtility.UrlEncode(yquery));
             theWebAddress.Append("&format=json");
             theWebAddress.Append("&diagnostics=true");
@@ -59,7 +59,7 @@ namespace PipelineMLCore
                 if (queryCount == 0)
                 {
                     string yahooWarning = (string)dataObject["query"]["diagnostics"]["warning"];
-                    throw new Exception("Yahoo Warning: " + yahooWarning);
+                    throw new Exception($"Yahoo Warning: {yahooWarning}");
                 }
 
                 JArray jsonArray = (JArray)dataObject["query"]["results"]["quote"];

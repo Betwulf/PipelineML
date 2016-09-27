@@ -143,10 +143,32 @@ namespace PipelineML
         }
 
 
+        private void btnAddPostProcessTransform_Click(object sender, EventArgs e)
+        {
+            var searchForm = new frmSearchForClass();
+            searchForm.Initialize(typeof(IDataTransform));
+            if (searchForm.ShowDialog() == DialogResult.OK)
+            {
+                IDataTransform postProcTransform = (IDataTransform)Activator.CreateInstance(searchForm.SelectedType);
+                PipelineInst.PostprocessDataTransforms.Add(postProcTransform);
+                prpGrid.SelectedObject = postProcTransform.Config;
+            }
+        }
+
+        private void btnEditPostProcessTransform_Click(object sender, EventArgs e)
+        {
+            var wrap = new WrapCollection<IDataTransform>(PipelineInst.PostprocessDataTransforms);
+            prpGrid.SelectedObject = wrap;
+        }
+
+
 
         private void btnRun_Click(object sender, EventArgs e)
         {
-            var frmRun = new frmRunPipeline(PipelineInst);
+            // Go through the hydration routine to ensure proper config proliferation... 
+            var tempPipelineDef = PipelineInst.CreateDefinition();
+            var newPipelineInstance = tempPipelineDef.CreateInstance();
+            var frmRun = new frmRunPipeline(newPipelineInstance);
             frmRun.WindowState = FormWindowState.Maximized;
             frmRun.ShowDialog();
         }
@@ -168,5 +190,6 @@ namespace PipelineML
             var wrap = new WrapCollection<IMachineLearningProcess>(PipelineInst.MLList);
             prpGrid.SelectedObject = wrap;
         }
+
     }
 }
