@@ -127,7 +127,6 @@
     <Compile Include="StepRawDatasetGenerator\DatasetGeneratorXorData.cs" />
     <Compile Include="StepRawDatasetGenerator\DatasetGeneratorYahoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StepRawDatasetGenerator\YahooCaller.cs" />
     <Compile Include="StepRawDatasetGenerator\YahooMarketData.cs" />
     <Compile Include="StepRawDatasetGenerator\YahooMarketDataSeries.cs" />
   </ItemGroup>

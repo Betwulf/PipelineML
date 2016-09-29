@@ -195,7 +195,7 @@ namespace PipelineMLCore
                 {
                     string yahooWarning = (string)dataObject["query"]["diagnostics"]["warning"];
                     Log.Logger.Warning("Yahoo {warning}", yahooWarning);
-                    throw new Exception("Yahoo Warning: " + yahooWarning);
+                    throw new Exception($"Yahoo Warning: {yahooWarning}");
                 }
                 else
                 {
@@ -203,10 +203,11 @@ namespace PipelineMLCore
                     string smallJson = jsonArray.ToString();
 
                     List<YahooMarketData> newList = JsonConvert.DeserializeObject<List<YahooMarketData>>(smallJson);
-
-                    foreach (var item in newList)
+                    newList.ForEach(x => x.Source = "Yahoo");
+                    if (newList.Any(x => x.PriceDate.Year == 1))
                     {
-                        item.Source = "Yahoo";
+                        Log.Logger.Warning("Yahoo {ticker} - {warning}", ticker, "Found Bad data returned from Yahoo. Failing the call. Try again.");
+                        throw new Exception($"Yahoo Warning: Found Bad data for {ticker} returned from Yahoo. Failing the call. Try again.");
                     }
                     return newList;
                 }

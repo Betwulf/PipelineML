@@ -39,10 +39,10 @@ namespace PipelineMLCore
             }
 
             // Run Preprocessors
-            try
+            results.PreprocessTransformOutput = new List<IDataTransformResults>();
+            foreach (var dt in Instance.PreprocessDataTransforms)
             {
-                results.PreprocessTransformOutput = new List<IDataTransformResults>();
-                foreach (var dt in Instance.PreprocessDataTransforms)
+                try
                 {
                     var presults = new DataTransformResults();
                     presults.StartTime = DateTime.Now;
@@ -54,39 +54,39 @@ namespace PipelineMLCore
                     presults.LogUpdateResults(updateMessage);
                     results.PreprocessTransformOutput.Add(presults);
                 }
-            }
-            catch (Exception ex)
-            {
-                updateMessage($"Failure running Preprocessors: {ex.Message}");
-                Log.Logger.Error("Failure running Preprocessors: {Message}", ex.Message);
-                return results;
+                catch (Exception ex)
+                {
+                    updateMessage($"Failure running Preprocessor: {dt.Name} - {ex.Message}");
+                    Log.Logger.Error("Failure running Preprocessor: {Name} - {Message}", dt.Name, ex.Message);
+                    return results;
+                }
             }
 
             // Run ML
-            try
+            results.MachineLearningResults = new List<IMachineLearningResults>();
+            foreach (var ml in Instance.MLList)
             {
-                results.MachineLearningResults = new List<IMachineLearningResults>();
-                foreach (var ml in Instance.MLList)
+                try
                 {
                     DatasetBase copiedDataset = dataset.Copy();
                     var mlout = ml.TrainML(copiedDataset, updateMessage);
                     mlout.LogUpdateResults(updateMessage);
                     results.MachineLearningResults.Add(mlout);
                 }
-            }
-            catch (Exception ex)
-            {
-                updateMessage($"Failure running ML: {ex.Message}");
-                Log.Logger.Error("Failure running ML: {Message}", ex.Message);
-                return results;
+                catch (Exception ex)
+                {
+                    updateMessage($"Failure running ML: {ml.Name} - {ex.Message}");
+                    Log.Logger.Error("Failure running ML: {Name} - {Message}", ml.Name, ex.Message);
+                    return results;
+                }
             }
 
 
             // Run Postprocessors
-            try
+            results.PostprocessTransformOutput = new List<IDataTransformResults>();
+            foreach (var dt in Instance.PostprocessDataTransforms)
             {
-                results.PostprocessTransformOutput = new List<IDataTransformResults>();
-                foreach (var dt in Instance.PostprocessDataTransforms)
+                try
                 {
                     var presults = new DataTransformResults();
                     presults.StartTime = DateTime.Now;
@@ -96,16 +96,16 @@ namespace PipelineMLCore
                     presults.StopTime = DateTime.Now;
                     presults.RowCount = dataset.Table.Rows.Count;
                     presults.LogUpdateResults(updateMessage);
-                    results.PreprocessTransformOutput.Add(presults);
+                    results.PostprocessTransformOutput.Add(presults);
                 }
-            }
-            catch (Exception ex)
-            {
-                updateMessage($"Failure running Postprocessors: {ex.Message}");
-                Log.Logger.Error("Failure running Postprocessors: {Message}", ex.Message);
-                return results;
-            }
+                catch (Exception ex)
+                {
+                    updateMessage($"Failure running Postprocessor: {dt.Name} - {ex.Message}");
+                    Log.Logger.Error("Failure running Postprocessor: {Name} - {Message}", dt.Name, ex.Message);
+                    return results;
+                }
 
+            }
 
 
 
