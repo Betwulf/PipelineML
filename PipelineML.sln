@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineML", "PipelineML\PipelineML.csproj", "{F2B635EB-88C9-4B86-BCDC-2D80A4D4751F}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineMLShared", "PipelineMLShared\PipelineMLShared.csproj", "{7124DFF2-87BA-486D-BC09-53E97E7BAD9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineMLCoreTest", "PipelineMLCoreTest\PipelineMLCoreTest.csproj", "{1B4F39D7-0D95-4EB5-A92F-C2DDAACD7CDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineMLWeb", "PipelineMLWeb\PipelineMLWeb.csproj", "{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,22 @@ Global
 		{1B4F39D7-0D95-4EB5-A92F-C2DDAACD7CDF}.Release|x64.Build.0 = Release|Any CPU
 		{1B4F39D7-0D95-4EB5-A92F-C2DDAACD7CDF}.Release|x86.ActiveCfg = Release|Any CPU
 		{1B4F39D7-0D95-4EB5-A92F-C2DDAACD7CDF}.Release|x86.Build.0 = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|x64.Build.0 = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Debug|x86.Build.0 = Debug|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|ARM.Build.0 = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|x64.ActiveCfg = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|x64.Build.0 = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{084470A4-EE23-44D5-BA6B-0105CFBB8DAD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

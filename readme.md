@@ -17,8 +17,7 @@ that define a pipeline, with an end step to simulate (this part currently is not
  3. Machine Learning Algorithim collection (all can run in parallel on the preprocessed data)
  4. Postprocess Data Tranforms
  5. Evaluators - this will compare the effectiveness of the various machine learning algorithms relative to each other / or absolute.
- 6. Trade Simulation - Step to specifically go run a simulation with the trained machine learning algorithm
-
+ 
 
 (edited with https://stackedit.io/editor)
 
