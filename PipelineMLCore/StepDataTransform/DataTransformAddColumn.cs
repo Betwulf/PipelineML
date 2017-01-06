@@ -1,5 +1,6 @@
 ﻿using Microsoft.CSharp;
 using Newtonsoft.Json;
+using Ninject;
 using Serilog;
 using System;
 using System.CodeDom.Compiler;
@@ -90,7 +91,7 @@ namespace PipelineMLCore
             Config = new DataTransformConfigAddColumn();
         }
 
-        public void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(IKernel kernel, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigAddColumn>(jsonConfig);
         }

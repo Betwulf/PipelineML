@@ -9,11 +9,14 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Ninject;
 
 namespace PipelineMLCore
 {
     public class DatasetGeneratorYahoo : IDatasetGenerator, ISearchableClass
     {
+        private IKernel _kernel;
+
         public string Name { get { return Config.Name; } }
 
         public DatasetDescriptorBase DatasetDescription { get; set; }
@@ -39,11 +42,11 @@ namespace PipelineMLCore
             Config = new DatasetConfigYahooMarketData();
         }
 
-        public void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(IKernel kernel, string jsonConfig)
         {
+            _kernel = kernel;
             Config = JsonConvert.DeserializeObject<DatasetConfigYahooMarketData>(jsonConfig);
-            string fullPath = Path.Combine(rootDirectory, ConfigInternal.SubFolder);
-            cache = new JsonRepository<YahooMarketDataSeries>(fullPath);
+            cache = new JsonRepository<YahooMarketDataSeries>(ConfigInternal.SubFolder, _kernel.Get<IStorage>());
         }
 
         public override string ToString()

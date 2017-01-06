@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -16,8 +17,7 @@ namespace PipelineMLCore
     /// </summary>
     public class PipelineDefinition : ConfigBase
     {
-
-        public string RootDirectory { get; set; }
+        private IKernel _kernel;
 
         public TypeDefinition DatasetGenerator { get; set; }
 
@@ -29,8 +29,9 @@ namespace PipelineMLCore
 
         public ICollection<TypeDefinition> Evaluators { get; set; }
 
-        public PipelineDefinition()
+        public PipelineDefinition(IKernel kernel)
         {
+            _kernel = kernel;
             PreprocessDataTransforms = new List<TypeDefinition>();
             MLList = new List<TypeDefinition>();
             PostprocessDataTransforms = new List<TypeDefinition>();
@@ -39,24 +40,23 @@ namespace PipelineMLCore
 
         public PipelineInstance CreateInstance()
         {
-            var pi = new PipelineInstance
+            var pi = new PipelineInstance(_kernel)
             {
-                Name = Name,
-                RootDirectory = RootDirectory
+                Name = Name
             };
 
             // hydrate dataset generator
             if (DatasetGenerator != null)
             {
                 pi.DatasetGenerator = Activator.CreateInstance(DatasetGenerator.ClassType) as IDatasetGenerator;
-                pi.DatasetGenerator.Configure(RootDirectory, DatasetGenerator.ClassConfig);
+                pi.DatasetGenerator.Configure(_kernel, DatasetGenerator.ClassConfig);
             }
 
             // hydrate preprocess data transforms
             foreach (var item in PreprocessDataTransforms)
             {
                 IDataTransform dt = Activator.CreateInstance(item.ClassType) as IDataTransform;
-                dt.Configure(RootDirectory, item.ClassConfig);
+                dt.Configure(_kernel, item.ClassConfig);
                 pi.PreprocessDataTransforms.Add(dt);
             }
 
@@ -64,7 +64,7 @@ namespace PipelineMLCore
             foreach (var item in MLList)
             {
                 IMachineLearningProcess ml = Activator.CreateInstance(item.ClassType) as IMachineLearningProcess;
-                ml.Configure(RootDirectory, item.ClassConfig);
+                ml.Configure(_kernel, item.ClassConfig);
                 pi.MLList.Add(ml);
             }
 
@@ -72,7 +72,7 @@ namespace PipelineMLCore
             foreach (var item in PostprocessDataTransforms)
             {
                 IDataTransform dt = Activator.CreateInstance(item.ClassType) as IDataTransform;
-                dt.Configure(RootDirectory, item.ClassConfig);
+                dt.Configure(_kernel, item.ClassConfig);
                 pi.PostprocessDataTransforms.Add(dt);
             }
 
@@ -80,7 +80,7 @@ namespace PipelineMLCore
             foreach (var item in Evaluators)
             {
                 IEvaluator eval = Activator.CreateInstance(item.ClassType) as IEvaluator;
-                eval.Configure(RootDirectory, item.ClassConfig);
+                eval.Configure(_kernel, item.ClassConfig);
                 pi.Evaluators.Add(eval);
             }
 

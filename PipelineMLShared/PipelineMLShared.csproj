@@ -34,6 +34,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.1.0\lib\net45\Serilog.dll</HintPath>
       <Private>True</Private>
@@ -76,6 +80,7 @@
     <Compile Include="Base\MachineLearningResults.cs" />
     <Compile Include="Base\PipelineException.cs" />
     <Compile Include="Base\ResultsBase.cs" />
+    <Compile Include="Base\StorageFile.cs" />
     <Compile Include="Base\TypeDefinition.cs" />
     <Compile Include="Data\XorData.cs" />
     <Compile Include="Helpers\CsvConverter.cs" />
@@ -95,6 +100,7 @@
     <Compile Include="Interfaces\IPipelinePart.cs" />
     <Compile Include="Interfaces\IDatasetGenerator.cs" />
     <Compile Include="Interfaces\ISearchableClass.cs" />
+    <Compile Include="Interfaces\IStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

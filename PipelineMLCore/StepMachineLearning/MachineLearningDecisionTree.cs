@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using Ninject;
 
 namespace PipelineMLCore
 {
@@ -31,7 +32,7 @@ namespace PipelineMLCore
             Config = new MachineLearningConfigDecisionTree();
         }
 
-        public void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(IKernel kernel, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<MachineLearningConfigDecisionTree>(jsonConfig);
         }

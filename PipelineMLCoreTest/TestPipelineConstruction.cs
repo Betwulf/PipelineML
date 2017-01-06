@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject;
 using PipelineMLCore;
 using System.Linq;
 
@@ -10,20 +11,23 @@ namespace PipelineMLCoreTest
         [TestMethod]
         public void TestPipelineDefinition()
         {
+            IKernel kernel = new StandardKernel();
+            kernel.Bind<IStorage>().To<StorageFile>();
+
             string testname = TestConstants.testName;
             string testfile = TestConstants.testFile;
-            var pi = new PipelineInstance();
+            var pi = new PipelineInstance(kernel);
             var dsgcfg = new DatasetConfigCSVFile
             {
                 Name = testname,
                 Filepath = testfile
             };
             pi.DatasetGenerator = new DatasetGeneratorCSVFile();
-            pi.DatasetGenerator.Configure(TestConstants.currDirectory, dsgcfg.ToJSON());
+            pi.DatasetGenerator.Configure(kernel, dsgcfg.ToJSON());
             var predtcfg = new DataTransformConfigColumns { Name = TestConstants.testName };
             predtcfg.ColumnNames.Add(TestConstants.testDataColumn);
             var predt = new DataTransformRemoveColumns();
-            predt.Configure(string.Empty, predtcfg.ToJSON());
+            predt.Configure(kernel, predtcfg.ToJSON());
             pi.PreprocessDataTransforms.Add(predt);
 
             // convert to definition

@@ -1,4 +1,5 @@
-﻿using PipelineMLCore;
+﻿using Ninject;
+using PipelineMLCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,10 +38,10 @@ namespace PipelineML
         public PipelineInstance PipelineInst { get; set; }
         
 
-        public frmEditPipelineDefinition()
+        public frmEditPipelineDefinition(IKernel kernel)
         {
-            PipelineDef = new PipelineDefinition();
-            PipelineInst = new PipelineInstance();
+            PipelineDef = new PipelineDefinition(kernel);
+            PipelineInst = new PipelineInstance(kernel);
             InitializeComponent();
             DefaultLoadLocation = @"C:\";
             DefaultFileExtension = "JSON files (*.json)|*.json|All files (*.*)|*.*";
@@ -56,7 +57,6 @@ namespace PipelineML
                 PipelineInst = PipelineDef.CreateInstance();
             }
             txtName.Text = PipelineDef.Name;
-            txtRoot.Text = PipelineDef.RootDirectory;
         }
         public bool GetSaveFilenameFromUser(out string filename)
         {
@@ -118,11 +118,7 @@ namespace PipelineML
         {
             PipelineInst.Name = txtName.Text;
         }
-
-        private void txtRoot_TextChanged(object sender, EventArgs e)
-        {
-            PipelineInst.RootDirectory = txtRoot.Text;
-        }
+        
 
         private void btnAddPreprocessTransform_Click(object sender, EventArgs e)
         {

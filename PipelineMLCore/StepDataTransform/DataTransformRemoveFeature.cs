@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel;
+using Ninject;
 
 namespace PipelineMLCore
 {
@@ -27,7 +28,7 @@ namespace PipelineMLCore
             Config = new DataTransformConfigColumns();
         }
 
-        public void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(IKernel kernel, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DataTransformConfigColumns>(jsonConfig);
         }

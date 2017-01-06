@@ -44,18 +44,16 @@
             this.btnEditML = new System.Windows.Forms.Button();
             this.flwPostprocess = new System.Windows.Forms.FlowLayoutPanel();
             this.lblPostprocess = new System.Windows.Forms.Label();
+            this.btnAddPostProcessTransform = new System.Windows.Forms.Button();
+            this.btnEditPostProcessTransform = new System.Windows.Forms.Button();
             this.flwEvaluate = new System.Windows.Forms.FlowLayoutPanel();
             this.lblEvaluate = new System.Windows.Forms.Label();
             this.prpGrid = new System.Windows.Forms.PropertyGrid();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.lblName = new System.Windows.Forms.Label();
-            this.lblRoot = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.txtRoot = new System.Windows.Forms.TextBox();
             this.btnRun = new System.Windows.Forms.Button();
-            this.btnAddPostProcessTransform = new System.Windows.Forms.Button();
-            this.btnEditPostProcessTransform = new System.Windows.Forms.Button();
             this.flwDatasetGen.SuspendLayout();
             this.flwPreprocess.SuspendLayout();
             this.flwMain.SuspendLayout();
@@ -219,6 +217,26 @@
             this.lblPostprocess.TabIndex = 1;
             this.lblPostprocess.Text = "4) Postprocess Transforms";
             // 
+            // btnAddPostProcessTransform
+            // 
+            this.btnAddPostProcessTransform.Location = new System.Drawing.Point(3, 16);
+            this.btnAddPostProcessTransform.Name = "btnAddPostProcessTransform";
+            this.btnAddPostProcessTransform.Size = new System.Drawing.Size(99, 32);
+            this.btnAddPostProcessTransform.TabIndex = 8;
+            this.btnAddPostProcessTransform.Text = "Add...";
+            this.btnAddPostProcessTransform.UseVisualStyleBackColor = true;
+            this.btnAddPostProcessTransform.Click += new System.EventHandler(this.btnAddPostProcessTransform_Click);
+            // 
+            // btnEditPostProcessTransform
+            // 
+            this.btnEditPostProcessTransform.Location = new System.Drawing.Point(3, 54);
+            this.btnEditPostProcessTransform.Name = "btnEditPostProcessTransform";
+            this.btnEditPostProcessTransform.Size = new System.Drawing.Size(99, 32);
+            this.btnEditPostProcessTransform.TabIndex = 9;
+            this.btnEditPostProcessTransform.Text = "Edit...";
+            this.btnEditPostProcessTransform.UseVisualStyleBackColor = true;
+            this.btnEditPostProcessTransform.Click += new System.EventHandler(this.btnEditPostProcessTransform_Click);
+            // 
             // flwEvaluate
             // 
             this.flwEvaluate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -275,15 +293,6 @@
             this.lblName.TabIndex = 8;
             this.lblName.Text = "Name:";
             // 
-            // lblRoot
-            // 
-            this.lblRoot.AutoSize = true;
-            this.lblRoot.Location = new System.Drawing.Point(230, 67);
-            this.lblRoot.Name = "lblRoot";
-            this.lblRoot.Size = new System.Drawing.Size(33, 13);
-            this.lblRoot.TabIndex = 9;
-            this.lblRoot.Text = "Root:";
-            // 
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(77, 63);
@@ -291,15 +300,6 @@
             this.txtName.Size = new System.Drawing.Size(150, 20);
             this.txtName.TabIndex = 10;
             this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
-            // 
-            // txtRoot
-            // 
-            this.txtRoot.Location = new System.Drawing.Point(266, 62);
-            this.txtRoot.Name = "txtRoot";
-            this.txtRoot.Size = new System.Drawing.Size(150, 20);
-            this.txtRoot.TabIndex = 11;
-            this.txtRoot.Text = "C:\\";
-            this.txtRoot.TextChanged += new System.EventHandler(this.txtRoot_TextChanged);
             // 
             // btnRun
             // 
@@ -311,35 +311,13 @@
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
-            // btnAddPostProcessTransform
-            // 
-            this.btnAddPostProcessTransform.Location = new System.Drawing.Point(3, 16);
-            this.btnAddPostProcessTransform.Name = "btnAddPostProcessTransform";
-            this.btnAddPostProcessTransform.Size = new System.Drawing.Size(99, 32);
-            this.btnAddPostProcessTransform.TabIndex = 8;
-            this.btnAddPostProcessTransform.Text = "Add...";
-            this.btnAddPostProcessTransform.UseVisualStyleBackColor = true;
-            this.btnAddPostProcessTransform.Click += new System.EventHandler(this.btnAddPostProcessTransform_Click);
-            // 
-            // btnEditPostProcessTransform
-            // 
-            this.btnEditPostProcessTransform.Location = new System.Drawing.Point(3, 54);
-            this.btnEditPostProcessTransform.Name = "btnEditPostProcessTransform";
-            this.btnEditPostProcessTransform.Size = new System.Drawing.Size(99, 32);
-            this.btnEditPostProcessTransform.TabIndex = 9;
-            this.btnEditPostProcessTransform.Text = "Edit...";
-            this.btnEditPostProcessTransform.UseVisualStyleBackColor = true;
-            this.btnEditPostProcessTransform.Click += new System.EventHandler(this.btnEditPostProcessTransform_Click);
-            // 
             // frmEditPipelineDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(842, 761);
             this.Controls.Add(this.btnRun);
-            this.Controls.Add(this.txtRoot);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.lblRoot);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.btnSave);
@@ -386,9 +364,7 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblRoot;
         private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.TextBox txtRoot;
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Button btnAddML;
         private System.Windows.Forms.Button btnEditML;

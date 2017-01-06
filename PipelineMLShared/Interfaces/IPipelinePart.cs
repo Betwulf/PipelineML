@@ -1,8 +1,10 @@
-﻿namespace PipelineMLCore
+﻿using Ninject;
+
+namespace PipelineMLCore
 {
     public interface IPipelinePart : INamed
     {
-        void Configure(string rootDirectory, string jsonConfig);
+        void Configure(IKernel kernel, string jsonConfig);
 
         ConfigBase Config { get; set; }
     }

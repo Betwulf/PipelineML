@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject;
 using PipelineMLCore;
 
 namespace PipelineMLCoreTest
@@ -9,12 +10,15 @@ namespace PipelineMLCoreTest
         [TestMethod]
         public void TestAddColumn()
         {
+            IKernel kernel = new StandardKernel();
+            kernel.Bind<IStorage>().To<StorageFile>();
+
             var dt = new DataTransformAddColumn();
             var dtcfg = new DataTransformConfigAddColumn();
             dtcfg.Code = TestConstants.testCode;
             dtcfg.Name = TestConstants.testName;
             dtcfg.NewColumn = TestConstants.testDataColumnNew;
-            dt.Configure(string.Empty, dtcfg.ToJSON());
+            dt.Configure(kernel, dtcfg.ToJSON());
             DatasetBase dsIn = TestConstants.GetDatasetBase();
             var result = dt.Transform(dsIn, System.Console.WriteLine);
             Assert.IsTrue(result.Table.Columns.Count == 2);

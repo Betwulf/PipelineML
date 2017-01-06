@@ -10,81 +10,50 @@ namespace PipelineMLCore
 {
     public class JsonRepository<T> where T : INamed
     {
-        private readonly string mRootDir;
-        private Dictionary<string, T> DocStore;
+        private static string jsonExt = ".json";
+        private Dictionary<string, T> DocCache;
         private readonly bool isCached;
+        private IStorage _storage;
+        private string _path;
 
-        public JsonRepository(string aRootDir)
+        public JsonRepository(string path, IStorage storage)
         {
-            DocStore = new Dictionary<string, T>();
-            mRootDir = aRootDir;
+            DocCache = new Dictionary<string, T>();
             isCached = true;
+            _storage = storage;
+            _path = Path.Combine(path, GetType().GenericTypeArguments[0].FullName);
         }
 
-        public string CollectionId
-        { get { return this.GetType().GenericTypeArguments[0].FullName; } }
-
-        public string DatabaseLink
-        { get { return this.GetType().ToString(); } }
-
-        public string SelfLink
-        {
-            // Should Remove and delete from interface too
-            get { return this.GetType().ToString(); }
-        }
-
-
-        public string GetDir { get { return System.IO.Path.Combine(mRootDir, CollectionId); } }
 
         private string GetFilename(string name)
         {
-            return System.IO.Path.Combine(GetDir, name + ".json");
+            return name + jsonExt;
         }
 
         public async Task<T> CreateAsync(T entity, Action<string> updateMessage)
         {
             await Task.Run(() =>
             {
-
-                string pathString = GetDir;
-                Directory.CreateDirectory(pathString); // Create Directory if it isn't already made
-                pathString = GetFilename(entity.Name);
-                if (!File.Exists(pathString))
+                _storage.WriteData(_path, GetFilename(entity.Name), JsonConvert.SerializeObject(entity));
+                updateMessage($"Saving New File \"{_path}\\{GetFilename(entity.Name)}\" .");
+                if (isCached)
                 {
-                    updateMessage($"Saving New File \"{pathString}\" .");
-                    File.WriteAllText(pathString, JsonConvert.SerializeObject(entity));
-                    if (isCached) DocStore.Add(entity.Name, entity);
-                }
-                else
-                {
-                    updateMessage($"Overwriting File \"{pathString}\" .");
-                    File.WriteAllText(pathString, JsonConvert.SerializeObject(entity));
-                    if (isCached)
-                    {
-                        DocStore.Remove(entity.Name); // Overwrite cache
-                        DocStore.Add(entity.Name, entity);
-                    }
+                    if (DocCache.Any(x => x.Key == entity.Name))
+                        DocCache.Remove(entity.Name); // Overwrite cache with updated object
+                    DocCache.Add(entity.Name, entity);
                 }
             });
             return entity;
 
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string entityName)
         {
             await Task.Run(() =>
             {
-                if (isCached) DocStore.Remove(id);
-                string pathString = GetFilename(id);
-                Console.WriteLine("Deleting file: {0}\n", pathString);
-                if (File.Exists(pathString))
-                {
-                    File.Delete(pathString);
-                }
-                else
-                {
-                    Console.WriteLine("File \"{0}\" did not exist.", pathString);
-                }
+                if (isCached) DocCache.Remove(entityName);
+                _storage.RemoveData(_path, GetFilename(entityName));
+                Console.WriteLine($"Deleting file: \"{_path}\\{GetFilename(entityName)}\" ");
             });
         }
 
@@ -100,22 +69,21 @@ namespace PipelineMLCore
 
         public IQueryable<T> GetAll()
         {
-            var dir = new DirectoryInfo(GetDir);
-            IEnumerable<FileInfo> fileList = dir.GetFiles("*.json", SearchOption.AllDirectories);
+            var filenameList = _storage.GetAllFilenames(_path);
             List<T> tempList = new List<T>();
-            foreach (var item in fileList)
+            foreach (var name in filenameList)
             {
-                T storedDoc = default(T);
+                T cachedDoc = default(T);
                 T tempObject = default(T);
-                var id = item.Name.Remove(item.Name.Length - item.Extension.Length);
-                if (isCached && DocStore.TryGetValue(id, out storedDoc))
+                var id = name.Remove(name.Length - jsonExt.Length);
+                if (isCached && DocCache.TryGetValue(id, out cachedDoc))
                 {
-                    tempObject = storedDoc;
+                    tempObject = cachedDoc;
                 }
                 else
                 {
-                    tempObject = JsonConvert.DeserializeObject<T>(File.ReadAllText(item.FullName));
-                    if (isCached) DocStore.Add(id, tempObject);
+                    tempObject = JsonConvert.DeserializeObject<T>(_storage.ReadData(_path, name));
+                    if (isCached) DocCache.Add(id, tempObject);
                 }
                 tempList.Add(tempObject);
             }
@@ -127,24 +95,19 @@ namespace PipelineMLCore
         public T GetById(string id)
         {
             T storedDoc;
-            if (isCached && DocStore.TryGetValue(id, out storedDoc))
+            if (isCached && DocCache.TryGetValue(id, out storedDoc))
             {
                 //Console.WriteLine("returning stored doc: " + id);
                 return storedDoc;
             }
-            string pathString = GetDir;
-            Directory.CreateDirectory(pathString); // Create Directory if it isn't already made
-            pathString = GetFilename(id);
-            if (File.Exists(pathString))
+            string data = _storage.ReadData(_path, GetFilename(id));
+            if (data != null)
             {
-                T theDoc = JsonConvert.DeserializeObject<T>(File.ReadAllText(pathString));
-                if (isCached) DocStore.Add(id, theDoc);
+                T theDoc = JsonConvert.DeserializeObject<T>(data);
+                if (isCached) DocCache.Add(id, theDoc);
                 return theDoc;
             }
-            else
-            {
-                return default(T);
-            }
+            return default(T);
         }
 
         public async Task<T> UpdateAsync(string id, T entity, Action<string> updateMessage)
@@ -154,13 +117,8 @@ namespace PipelineMLCore
 
         public void DeleteDatabase()
         {
-            var dir = new DirectoryInfo(GetDir);
-            IEnumerable<FileInfo> fileList = dir.GetFiles("*.json", SearchOption.AllDirectories);
-            List<T> tempList = new List<T>();
-            foreach (var item in fileList)
-            {
-                File.Delete(item.FullName);
-            }
+            DocCache.Clear();
+            _storage.EmptyPath(_path);
         }
     }
 }

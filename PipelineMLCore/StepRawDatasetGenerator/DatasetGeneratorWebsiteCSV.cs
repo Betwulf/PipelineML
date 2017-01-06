@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Ninject;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -29,7 +30,7 @@ namespace PipelineMLCore
 
         }
 
-        public void Configure(string rootDirectory, string jsonConfig)
+        public void Configure(IKernel kernel, string jsonConfig)
         {
             Config = JsonConvert.DeserializeObject<DatasetConfigWebsiteCSV>(jsonConfig);
         }

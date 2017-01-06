@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Ninject;
 
 namespace PipelineMLCoreTest
 {
@@ -15,7 +16,11 @@ namespace PipelineMLCoreTest
         [TestMethod]
         public void TestDatasetConfigYahooMarketData()
         {
-            string dir = TestConstants.directory;
+            // ninject config for test
+            IKernel kernel = new StandardKernel();
+            kernel.Bind<IStorage>().To<StorageFile>();
+            
+
             string filename = TestConstants.yahooFilename;
             string subfolder = TestConstants.subFolder;
             var cfg = new DatasetConfigYahooMarketData();
@@ -25,27 +30,28 @@ namespace PipelineMLCoreTest
             cfg.Symbols = new List<string>() { TestConstants.yahooStock };
             cfg.Name = TestConstants.testName;
 
+            
             var dgy = new DatasetGeneratorYahoo();
-            dgy.Configure(dir, cfg.ToJSON());
+            dgy.Configure(kernel, cfg.ToJSON());
             var result = dgy.Generate(Console.WriteLine);
 
-            string filepath = Path.Combine(dir, subfolder, filename);
-            Console.WriteLine(filepath);
             Assert.IsTrue(result.Table.Columns.Count == 9);
-            Assert.IsTrue(Directory.Exists(dir));
-            Assert.IsTrue(File.Exists(filepath));
         }
 
 
         [TestMethod]
         public void TestDatasetConfigCSVFile()
         {
+            // ninject config for test
+            IKernel kernel = new StandardKernel();
+            kernel.Bind<IStorage>().To<StorageFile>();
+
             var cfg = new DatasetConfigCSVFile();
             cfg.Name = TestConstants.testName;
             cfg.Filepath = TestConstants.testFile;
 
             var dgy = new DatasetGeneratorCSVFile();
-            dgy.Configure(TestConstants.currDirectory, cfg.ToJSON());
+            dgy.Configure(kernel, cfg.ToJSON());
             var result = dgy.Generate(Console.WriteLine);
 
             Assert.IsTrue(result.Table.Columns.Count == 2);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Ninject;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.IO;
@@ -11,10 +12,13 @@ namespace PipelineMLCore
     /// </summary>
     public class PipelineInstance : ConfigBase
     {
+        private IKernel _kernel;
+
         public string InstanceID { get; set; }
 
-        public PipelineInstance()
+        public PipelineInstance(IKernel kernel)
         {
+            _kernel = kernel;
             InstanceID = Path.GetTempFileName();
             PreprocessDataTransforms = new List<IDataTransform>();
             MLList = new List<IMachineLearningProcess>();
@@ -24,11 +28,10 @@ namespace PipelineMLCore
 
         public PipelineDefinition CreateDefinition()
         {
-            var pd = new PipelineDefinition
+            var pd = new PipelineDefinition(_kernel)
             {
                 // Base params
                 Name = Name,
-                RootDirectory = RootDirectory,
                 DatasetGenerator = TypeDefinition.Create(DatasetGenerator)
             };
 
@@ -59,8 +62,6 @@ namespace PipelineMLCore
             return pd;
 
         }
-
-        public string RootDirectory { get; set; }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public IDatasetGenerator DatasetGenerator { get; set; }
