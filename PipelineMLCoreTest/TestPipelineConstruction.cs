@@ -16,7 +16,10 @@ namespace PipelineMLCoreTest
 
             string testname = TestConstants.testName;
             string testfile = TestConstants.testFile;
-            var pi = new PipelineInstance(kernel);
+
+            var pi = new PipelineInstance();
+            pi.Configure(kernel);
+
             var dsgcfg = new DatasetConfigCSVFile
             {
                 Name = testname,

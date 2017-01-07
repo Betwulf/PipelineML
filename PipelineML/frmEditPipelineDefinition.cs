@@ -18,6 +18,8 @@ namespace PipelineML
 
     public partial class frmEditPipelineDefinition : Form
     {
+        private IKernel _kernel;
+
         public class WrapCollection<T>
         {
             public WrapCollection(List<T> collection)
@@ -40,8 +42,11 @@ namespace PipelineML
 
         public frmEditPipelineDefinition(IKernel kernel)
         {
-            PipelineDef = new PipelineDefinition(kernel);
-            PipelineInst = new PipelineInstance(kernel);
+            _kernel = kernel;
+            PipelineDef = new PipelineDefinition();
+            PipelineDef.Configure(kernel);
+            PipelineInst = new PipelineInstance();
+            PipelineInst.Configure(kernel);
             InitializeComponent();
             DefaultLoadLocation = @"C:\";
             DefaultFileExtension = "JSON files (*.json)|*.json|All files (*.*)|*.*";
@@ -54,6 +59,7 @@ namespace PipelineML
             {
                 string configJson = File.ReadAllText(filename);
                 PipelineDef = ConfigBase.FromJSON<PipelineDefinition>(configJson);
+                PipelineDef.Configure(_kernel);
                 PipelineInst = PipelineDef.CreateInstance();
             }
             txtName.Text = PipelineDef.Name;

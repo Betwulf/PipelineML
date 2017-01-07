@@ -137,7 +137,15 @@ namespace PipelineMLCore
                 var overlap = futureData.Find(x => x.PriceDate == lastMarketData.PriceDate);
 
                 if (overlap == null)
-                { throw new ArgumentException("AddToCache - requires overlapped records to correctly calc adjustment"); }
+                {
+                    // then we cannot join the two datasets (due to a need to adjust
+                    // the prices you need a continuous section, gaps will cause you 
+                    // to miss certain in between events like splits that affect adj price)
+                    await cache.DeleteAsync(ticker);
+                    cachedData.MarketDataList = tickerData;
+                    await cache.UpdateAsync(ticker, cachedData, updateMessage);
+                    return;
+                }
                 if (overlap.AdjustedClose != lastMarketData.AdjustedClose)
                 {
                     // then adjustment is needed

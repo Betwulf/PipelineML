@@ -29,21 +29,27 @@ namespace PipelineMLCore
 
         public ICollection<TypeDefinition> Evaluators { get; set; }
 
-        public PipelineDefinition(IKernel kernel)
+        public PipelineDefinition()
         {
-            _kernel = kernel;
             PreprocessDataTransforms = new List<TypeDefinition>();
             MLList = new List<TypeDefinition>();
             PostprocessDataTransforms = new List<TypeDefinition>();
             Evaluators = new List<TypeDefinition>();
         }
 
+        public void Configure(IKernel kernel)
+        {
+            _kernel = kernel;
+        }
+
         public PipelineInstance CreateInstance()
         {
-            var pi = new PipelineInstance(_kernel)
+            var pi = new PipelineInstance()
             {
                 Name = Name
             };
+
+            pi.Configure(_kernel);
 
             // hydrate dataset generator
             if (DatasetGenerator != null)
