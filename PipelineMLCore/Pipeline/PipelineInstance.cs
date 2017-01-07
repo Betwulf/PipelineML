@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace PipelineMLCore
 {
@@ -16,9 +17,8 @@ namespace PipelineMLCore
 
         public string InstanceID { get; set; }
 
-        public PipelineInstance(IKernel kernel)
+        public PipelineInstance()
         {
-            _kernel = kernel;
             InstanceID = Path.GetTempFileName();
             PreprocessDataTransforms = new List<IDataTransform>();
             MLList = new List<IMachineLearningProcess>();
@@ -28,12 +28,14 @@ namespace PipelineMLCore
 
         public PipelineDefinition CreateDefinition()
         {
-            var pd = new PipelineDefinition(_kernel)
+            var pd = new PipelineDefinition()
             {
                 // Base params
                 Name = Name,
                 DatasetGenerator = TypeDefinition.Create(DatasetGenerator)
             };
+
+            pd.Configure(_kernel);
 
             // Preprocessors
             PreprocessDataTransforms
@@ -61,6 +63,11 @@ namespace PipelineMLCore
 
             return pd;
 
+        }
+
+        public void Configure(IKernel kernel)
+        {
+            _kernel = kernel;
         }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]

@@ -35,7 +35,7 @@ namespace PipelineMLCore
             await Task.Run(() =>
             {
                 _storage.WriteData(_path, GetFilename(entity.Name), JsonConvert.SerializeObject(entity));
-                updateMessage($"Saving New File \"{_path}\\{GetFilename(entity.Name)}\" .");
+                updateMessage($"Saving File \"{_path}\\{GetFilename(entity.Name)}\" .");
                 if (isCached)
                 {
                     if (DocCache.Any(x => x.Key == entity.Name))
