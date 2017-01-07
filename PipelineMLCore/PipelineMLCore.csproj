@@ -85,6 +85,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -100,6 +101,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pipeline\PipelineProject.cs" />
     <Compile Include="StepDataTransform\DataTransformSetTraining.cs" />
     <Compile Include="StepDataTransform\DataTransformAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigAddColumn.cs" />
