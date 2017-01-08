@@ -9,7 +9,7 @@ namespace PipelineMLWeb.Controllers
     public class PipelineProjectController : Controller
     {
         // GET: PipelineProject
-        public ActionResult Index()
+        public ActionResult Edit()
         {
             return View();
         }
