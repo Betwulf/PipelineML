@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json.Schema.Generation;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json;
 
 namespace PipelineMLWeb.Controllers
 {
@@ -12,6 +15,13 @@ namespace PipelineMLWeb.Controllers
         public ActionResult Edit()
         {
             return View();
+        }
+
+        public ActionResult Schema()
+        {
+            JSchemaGenerator generator = new JSchemaGenerator();
+
+            //return Content(JSchema.)
         }
     }
 }
