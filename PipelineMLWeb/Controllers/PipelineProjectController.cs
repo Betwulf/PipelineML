@@ -20,7 +20,7 @@ namespace PipelineMLWeb.Controllers
         public ActionResult Schema()
         {
             JSchemaGenerator generator = new JSchemaGenerator();
-
+            return null;
             //return Content(JSchema.)
         }
     }

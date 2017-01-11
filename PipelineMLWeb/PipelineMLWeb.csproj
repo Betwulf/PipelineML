@@ -250,9 +250,13 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\jsoneditor.min.js" />
+    <Content Include="Scripts\jsoneditor.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\PipelineProject.js" />
+    <Content Include="Scripts\PipelineProject.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -293,6 +297,8 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\PipelineProject\Edit.cshtml" />
+    <Content Include="Views\Shared\_NavbarPartial.cshtml" />
+    <Content Include="Views\Shared\_LayoutCanvas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,21 +1,23 @@
 ﻿
 @{
     ViewBag.Title = "Edit Project Pipeline";
+    Layout = "~/Views/Shared/_LayoutCanvas.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-
-<script src="/Scripts/jsoneditor.min.js"></script>
-<script src="/Scripts/notes.js"></script>
-<div class="row">
+<div class="row canvas-row">
     <div class="col-sm-8 blog-main">
         <canvas id="main-canvas"></canvas>
     </div>
 
-    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="col-sm-4 blog-sidebar">
         <div class="sidebar-module">
-            <span id='valid_indicator'></span>
-            <div id='editor_holder'></div>
+            <span id="valid_indicator"></span>
+            <div id="editor_holder"></div>
         </div>
     </div>
 </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsoneditor")
+    <script src="/Scripts/PipelineProject.js"></script>
+
+}

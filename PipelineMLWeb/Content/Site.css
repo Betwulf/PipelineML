@@ -2,7 +2,17 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
+.canvas-body {
+    padding-top: 51px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: #555;
+}
 
+h3 {
+    color: lightgray;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -21,4 +31,13 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.canvas-row {
+    margin-right: 0px;
+}
+
+canvas {
+  margin: 0;
+  padding: 0;
 }
