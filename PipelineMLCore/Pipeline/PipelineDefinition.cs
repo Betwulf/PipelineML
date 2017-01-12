@@ -19,6 +19,8 @@ namespace PipelineMLCore
     {
         private IKernel _kernel;
 
+        public Guid Id { get; set; }
+
         public TypeDefinition DatasetGenerator { get; set; }
 
         public ICollection<TypeDefinition> PreprocessDataTransforms { get; set; }
@@ -31,6 +33,7 @@ namespace PipelineMLCore
 
         public PipelineDefinition()
         {
+            Id = Guid.NewGuid();
             PreprocessDataTransforms = new List<TypeDefinition>();
             MLList = new List<TypeDefinition>();
             PostprocessDataTransforms = new List<TypeDefinition>();

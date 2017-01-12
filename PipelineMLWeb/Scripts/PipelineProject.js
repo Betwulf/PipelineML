@@ -118,7 +118,7 @@ $(document).ready(function () {
     // then draws the new borders accordingly.
     function resizeCanvas() {
         cvs.width = $("#main-canvas").parent().width();
-        cvs.height = window.innerHeight - 72; // Adjustment for the navbar height
+        cvs.height = window.innerHeight - 76; // Adjustment for the navbar height
         redraw();
     }
 

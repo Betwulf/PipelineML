@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PipelineMLCore.Pipeline
+namespace PipelineMLCore
 {
     public class PipelineProject
     {
@@ -14,7 +14,7 @@ namespace PipelineMLCore.Pipeline
 
         public PipelineProject()
         {
-
+            Id = Guid.NewGuid();
         }
 
         public void Configure(IKernel kernel)
@@ -25,13 +25,15 @@ namespace PipelineMLCore.Pipeline
         [Required, MaxLength(40)]
         public string Name { get; set; }
 
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required]
         public Guid Id { get; set; }
 
-        public PipelineDefinition Definition { get; set; }
+        [Required]
+        public Guid PipelineDefinitionGuid { get; set; }
 
-        public List<PipelineResults> Results { get; set; }
+        public List<PipelineResultsId> RunResults { get; set; }
     }
 }

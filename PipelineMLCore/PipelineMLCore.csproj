@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pipeline\PipelineProject.cs" />
+    <Compile Include="Pipeline\PipelineResultsId.cs" />
     <Compile Include="StepDataTransform\DataTransformSetTraining.cs" />
     <Compile Include="StepDataTransform\DataTransformAddColumn.cs" />
     <Compile Include="StepDataTransform\DataTransformConfigAddColumn.cs" />

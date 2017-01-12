@@ -17,13 +17,15 @@ namespace PipelineMLCore
         public PipelineResults Run(Action<string> updateMessage)
         {
             var results = new PipelineResults();
+            var now = DateTime.Now;
+            results.RunDate = now;
             DatasetBase dataset = null;
 
             // Run DatasetGenerator
             try
             {
                 results.DataSetGeneratorResult = new DatasetBaseGeneratorResults();
-                results.DataSetGeneratorResult.StartTime = DateTime.Now;
+                results.DataSetGeneratorResult.StartTime = now;
                 results.DataSetGeneratorResult.FromDatasetGenerator = Instance.DatasetGenerator;
                 dataset = Instance.DatasetGenerator.Generate(results.DataSetGeneratorResult.GetLoggedUpdateMessage(updateMessage));
                 results.DataSetGeneratorResult.SampleResults = dataset.GenerateSample();
@@ -33,6 +35,7 @@ namespace PipelineMLCore
             }
             catch (Exception ex)
             {
+                // TODO: need to get errors into the PipelineResults
                 updateMessage($"Failure running Dataset Generator: {ex.Message}");
                 Log.Logger.Error("Failure running Dataset Generator: {Message}", ex.Message);
                 return results;

@@ -94,8 +94,13 @@
       <HintPath>..\packages\Newtonsoft.Json.Schema.2.0.8\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -209,6 +214,22 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="DataContexts\ApplicationDbContext.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.Designer.cs">
+      <DependentUpon>201701122128029_2017.01.12 First.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
+    <Compile Include="DataContexts\PipelineDbContext.cs" />
+    <Compile Include="DataContexts\PipelineMigrations\201701122131512_2017.01.12 First.cs" />
+    <Compile Include="DataContexts\PipelineMigrations\201701122131512_2017.01.12 First.Designer.cs">
+      <DependentUpon>201701122131512_2017.01.12 First.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\PipelineMigrations\201701122147246_2017.01.12 Second.cs" />
+    <Compile Include="DataContexts\PipelineMigrations\201701122147246_2017.01.12 Second.Designer.cs">
+      <DependentUpon>201701122147246_2017.01.12 Second.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\PipelineMigrations\Configuration.cs" />
     <Compile Include="Hubs\CounterHub.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
     <Compile Include="PipelineClaimsTypes.cs" />
@@ -234,6 +255,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Reamde.txt" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -314,6 +336,27 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PipelineMLCore\PipelineMLCore.csproj">
+      <Project>{7c910241-6ba7-4bf7-9b9c-b546c09c735f}</Project>
+      <Name>PipelineMLCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PipelineMLShared\PipelineMLShared.csproj">
+      <Project>{7124dff2-87ba-486d-bc09-53e97e7bad9a}</Project>
+      <Name>PipelineMLShared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.resx">
+      <DependentUpon>201701122128029_2017.01.12 First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\PipelineMigrations\201701122131512_2017.01.12 First.resx">
+      <DependentUpon>201701122131512_2017.01.12 First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\PipelineMigrations\201701122147246_2017.01.12 Second.resx">
+      <DependentUpon>201701122147246_2017.01.12 Second.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

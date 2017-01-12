@@ -1,0 +1,8 @@
+﻿Enable-Migrations -ContextTypeName PipelineMLWeb.DataContexts.PipelineDbContext -MigrationsDirectory DataContexts\PipelineMigrations -force
+Enable-Migrations -ContextTypeName PipelineMLWeb.DataContexts.ApplicationDbContext -MigrationsDirectory DataContexts\IdentityMigrations
+
+Set DbMigrationsConfiguration.AutomaticMiggrationsEnabled:true
+
+add-migration -ConfigurationTypeName PipelineMLWeb.DataContexts.IdentityMigrations.Configuration "2017.01.12 First"
+Update-Database -ConfigurationTypeName PipelineMLWeb.DataContexts.PipelineMigrations.Configuration
+
