@@ -128,13 +128,26 @@ $(document).ready(function () {
     function redraw() {
         //Background
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(80, 80, 80, 0.1)';
-        ctx.fillRect(0,0,cvs.width,cvs.height);
+        ctx.fillStyle = 'rgba(85, 85, 85, 1)';
+        ctx.fillRect(0,0,cvs.width,cvs.height); // refresh background
         for (aWave in sinewaveList) {
             updateWave(sinewaveList[aWave]);
             drawWave(sinewaveList[aWave]);
         }
         requestAnimationFrame(redraw);
     }
+
+
+    // signalR
+
+    var conn = $.hubConnection();
+    var hub = conn.createHubProxy("CounterHub");
+    hub.on("OnHit", function (count) {
+        $('#counter').text(count);
+    });
+    conn.start(function () {
+        hub.invoke('RecordHit');
+    });
+
 
 });
