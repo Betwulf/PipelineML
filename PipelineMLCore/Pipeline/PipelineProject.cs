@@ -15,6 +15,7 @@ namespace PipelineMLCore
         public PipelineProject()
         {
             Id = Guid.NewGuid();
+            RunResults = new List<PipelineResultsId>();
         }
 
         public void Configure(IKernel kernel)
@@ -34,6 +35,7 @@ namespace PipelineMLCore
         [Required]
         public Guid PipelineDefinitionGuid { get; set; }
 
-        public List<PipelineResultsId> RunResults { get; set; }
+        [Required]
+        public ICollection<PipelineResultsId> RunResults { get; set; }
     }
 }

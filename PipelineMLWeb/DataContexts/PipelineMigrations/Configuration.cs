@@ -1,5 +1,6 @@
 namespace PipelineMLWeb.DataContexts.PipelineMigrations
 {
+    using PipelineMLCore;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -15,6 +16,8 @@ namespace PipelineMLWeb.DataContexts.PipelineMigrations
 
         protected override void Seed(PipelineMLWeb.DataContexts.PipelineDbContext context)
         {
+            var pguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
+            context.Projects.AddOrUpdate(new PipelineProject() { Id = pguid, Name = "Test", Description = "Test", PipelineDefinitionGuid = pguid });
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 

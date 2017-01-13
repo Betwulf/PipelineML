@@ -229,6 +229,14 @@
     <Compile Include="DataContexts\PipelineMigrations\201701122147246_2017.01.12 Second.Designer.cs">
       <DependentUpon>201701122147246_2017.01.12 Second.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\PipelineMigrations\201701122203382_2017.01.12 Third.cs" />
+    <Compile Include="DataContexts\PipelineMigrations\201701122203382_2017.01.12 Third.Designer.cs">
+      <DependentUpon>201701122203382_2017.01.12 Third.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\PipelineMigrations\201701131343428_2017.01.13 four.cs" />
+    <Compile Include="DataContexts\PipelineMigrations\201701131343428_2017.01.13 four.Designer.cs">
+      <DependentUpon>201701131343428_2017.01.13 four.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\PipelineMigrations\Configuration.cs" />
     <Compile Include="Hubs\CounterHub.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
@@ -356,6 +364,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\PipelineMigrations\201701122147246_2017.01.12 Second.resx">
       <DependentUpon>201701122147246_2017.01.12 Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\PipelineMigrations\201701122203382_2017.01.12 Third.resx">
+      <DependentUpon>201701122203382_2017.01.12 Third.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\PipelineMigrations\201701131343428_2017.01.13 four.resx">
+      <DependentUpon>201701131343428_2017.01.13 four.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
