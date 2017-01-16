@@ -11,6 +11,8 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity.Owin;
 using PipelineMLWeb.Models;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
+using Microsoft.Owin.Security;
 
 namespace PipelineMLWeb.Controllers
 {
@@ -42,21 +44,21 @@ namespace PipelineMLWeb.Controllers
 
 
         // GET: PipelineProject
-        public ActionResult Edit()
+        public async Task<ActionResult> Edit()
         {
+            var guidstr = Guid.Parse("00000000-0000-0000-0000-000000000000").ToString();
             if (User.Identity.Name == "a@a.com")
             {
+                //var user = UserManager.FindById(User.Identity.GetUserId());
+                ApplicationUser user = UserManager.FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
                 Debug.WriteLine("Found user a@a");
-                if (!((System.Security.Claims.ClaimsIdentity)User.Identity).HasClaim(PipelineClaimsTypes.PipelineProject, Guid.Parse("00000000-0000-0000-0000-000000000000").ToString()))
+                if (user.Claims.FirstOrDefault(x => x.ClaimValue == guidstr) == null)
                 {
                     Debug.WriteLine("User a@a doesnt have claim --- trying to add");
-                    var aClaim = new Claim(PipelineClaimsTypes.PipelineProject, Guid.Parse("00000000-0000-0000-0000-000000000000").ToString());
-                    UserManager.AddClaimAsync(HttpContext.User.Identity.Name, aClaim);
-                    //var user = UserManager.FindById(User.Identity.GetUserId());
-                    ApplicationUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
-                    UserManager.UpdateAsync(user);
-                    //((System.Security.Claims.ClaimsIdentity)User.Identity).AddClaim(aClaim);
-                    //UserManager.UpdateAsync(User.Identity.GetApplicationUser());
+                    var aClaim = new Claim(PipelineClaimsTypes.PipelineProject, guidstr);
+                    await UserManager.AddClaimAsync(user.Id, aClaim);
+                    await UserManager.UpdateAsync(user);
+                    ((ClaimsIdentity)User.Identity).AddClaim(aClaim);
                 }
                 else
                 {
