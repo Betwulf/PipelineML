@@ -330,6 +330,8 @@
     <Content Include="Views\PipelineProject\Edit.cshtml" />
     <Content Include="Views\Shared\_NavbarPartial.cshtml" />
     <Content Include="Views\Shared\_LayoutCanvas.cshtml" />
+    <Content Include="Views\PipelineProject\Create.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

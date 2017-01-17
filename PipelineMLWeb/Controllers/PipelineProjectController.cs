@@ -13,9 +13,13 @@ using PipelineMLWeb.Models;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using Microsoft.Owin.Security;
+using PipelineMLCore;
+using PipelineMLWeb.DataContexts;
+using System.Web.Routing;
 
 namespace PipelineMLWeb.Controllers
 {
+    [Authorize]
     public class PipelineProjectController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -42,28 +46,49 @@ namespace PipelineMLWeb.Controllers
             }
         }
 
-
-        // GET: PipelineProject
-        public async Task<ActionResult> Edit()
+        public ActionResult Create()
         {
-            var guidstr = Guid.Parse("00000000-0000-0000-0000-000000000000").ToString();
-            if (User.Identity.Name == "a@a.com")
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ProjectViewModel model)
+        {
+            var newProj = new PipelineProject();
+            newProj.Name = model.Name;
+            newProj.Description = model.Description;
+
+            var db = HttpContext.GetOwinContext().Get<PipelineDbContext>();
+            db.Projects.Add(newProj);
+            int x = await db.SaveChangesAsync();
+            if (x == 1) // saved one change
             {
-                //var user = UserManager.FindById(User.Identity.GetUserId());
                 ApplicationUser user = UserManager.FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
-                Debug.WriteLine("Found user a@a");
-                if (user.Claims.FirstOrDefault(x => x.ClaimValue == guidstr) == null)
-                {
-                    Debug.WriteLine("User a@a doesnt have claim --- trying to add");
-                    var aClaim = new Claim(PipelineClaimsTypes.PipelineProject, guidstr);
-                    await UserManager.AddClaimAsync(user.Id, aClaim);
-                    await UserManager.UpdateAsync(user);
-                    ((ClaimsIdentity)User.Identity).AddClaim(aClaim);
-                }
-                else
-                {
-                    Debug.WriteLine("User a@a has CLAIM!");
-                }
+                var aClaim = new Claim(PipelineClaimsTypes.PipelineProject, newProj.Id.ToString());
+                await UserManager.AddClaimAsync(user.Id, aClaim);
+                await UserManager.UpdateAsync(user);
+                ((ClaimsIdentity)User.Identity).AddClaim(aClaim);
+
+                return RedirectToAction("Edit", new RouteValueDictionary( new { controller = "PipelineProject", action = "Edit", id = newProj.Id.ToString() }));
+            }
+            // TODO: Handle Errors
+            return View();
+        }
+
+        public async Task<ActionResult> Edit(string id)
+        {
+            ApplicationUser user = UserManager.FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            Debug.WriteLine($"Edit: user {user.UserName} Guid: {id}");
+            if (user.Claims.FirstOrDefault(x => x.ClaimType == PipelineClaimsTypes.PipelineProject && x.ClaimValue == id) == null)
+            {
+                Debug.WriteLine($"User {user.UserName} doesnt have claim --- how did they get here?");
+                return RedirectToAction("Error", new RouteValueDictionary(new { controller = "Home", action = "Error",  id = "You do not have the right to this project." } ));
+            }
+            else
+            {
+                Debug.WriteLine($"User {user.UserName} has CLAIM!");
             }
             return View();
         }

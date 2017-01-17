@@ -26,5 +26,11 @@ namespace PipelineMLWeb.Controllers
 
             return View();
         }
+
+        public ActionResult Error(string id)
+        {
+            ViewBag.Message = id;
+            return View();
+        }
     }
 }
