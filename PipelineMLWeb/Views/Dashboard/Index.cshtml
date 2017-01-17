@@ -3,7 +3,23 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>Dashboard</h2>
+<h2>Dashboard - Projects</h2>
 
-Come here to see the list of projects you have access to.
+<div class="row">
+    <table id="projectTable" class="table table-striped">
+        <tr>
+            <th>Project Name</th>
+            <th>Project Description</th>
+            <th>Edit</th>
+            <th>Run</th>
+            <th>Review</th>
+            <th>Delete</th>
+        </tr>
+    </table>
+</div>
 
+<div class="row"><button type="button" class="btn btn-default" onclick="window.location='/PipelineProject/Create';">Create New Project</button></div>
+
+@section Scripts {
+    <script src="/Scripts/ProjectList.js"></script>
+}

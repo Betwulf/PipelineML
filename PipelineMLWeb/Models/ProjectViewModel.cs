@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PipelineMLCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,6 +23,15 @@ namespace PipelineMLWeb.Models
         public ProjectViewModel()
         {
             Parts = new List<PipelinePartViewModel>();
+        }
+
+        public ProjectViewModel(PipelineProject proj)
+        {
+            Parts = new List<PipelinePartViewModel>();
+            Name = proj.Name;
+            Id = proj.Id;
+            Description = proj.Description;
+            // TODO: populate parts
         }
 
         public Guid Id { get; set; }
