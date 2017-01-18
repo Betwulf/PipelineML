@@ -36,7 +36,23 @@ namespace PipelineMLWeb.DataContexts
         {
             return Get<PipelineResults>(id);
         }
+        public void SavePipelineResults(Guid id, PipelineResults results)
+        {
+            Save(id, results);
+        }
 
+
+
+
+
+        public PipelineDefinition GetPipelineDefinitionByGuid(Guid id)
+        {
+            return Get<PipelineDefinition>(id);
+        }
+        public void SavePipelineDefinition(Guid id, PipelineDefinition def)
+        {
+            Save(id, def);
+        }
 
 
 
@@ -59,5 +75,12 @@ namespace PipelineMLWeb.DataContexts
             var json = _storage.ReadData(nameof(T), id.ToString());
             return JsonConvert.DeserializeObject<T>(json);
         }
+
+        private void Save<T>(Guid id, T dataObject)
+        {
+            var json = JsonConvert.SerializeObject(dataObject);
+            _storage.WriteData(nameof(T), id.ToString(), json);
+        }
+
     }
 }
