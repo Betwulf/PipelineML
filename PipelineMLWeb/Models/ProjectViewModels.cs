@@ -7,6 +7,8 @@ using System.Web;
 
 namespace PipelineMLWeb.Models
 {
+    // Defines the shell of the pieces of a pipeline
+    // to be used to get the details of the part when necessary
     public class PipelinePartViewModel
     {
         public Guid Id { get; set; }
@@ -14,8 +16,7 @@ namespace PipelineMLWeb.Models
         [Required, MaxLength(40)]
         public string Name { get; set; }
 
-        public string InterfaceName { get; set; }
-
+        public string ClassName { get; set; }
     } 
 
     public class ProjectViewModel

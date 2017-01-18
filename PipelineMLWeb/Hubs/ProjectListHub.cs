@@ -13,6 +13,7 @@ using System.Web;
 
 namespace PipelineMLWeb.Hubs
 {
+    [Authorize]
     public class ProjectListHub : Hub
     {
         [Authorize]

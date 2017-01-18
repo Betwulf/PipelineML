@@ -23,6 +23,23 @@ namespace PipelineMLWeb.DataContexts
 
     public class PipelineDbContext : DbContext
     {
+
+        // The Entity Framework portion of this database context
+        public DbSet<PipelineProject> Projects { get; set; }
+
+        public DbSet<PipelineResultsId> RunResultIds { get; set; }
+
+
+
+        // The file storage portion of this database context
+        public PipelineResults GetPipelineResultsByGuid(Guid id)
+        {
+            return Get<PipelineResults>(id);
+        }
+
+
+
+
         private IKernel _kernel;
         private IStorage _storage;
 
@@ -35,15 +52,6 @@ namespace PipelineMLWeb.DataContexts
         {
             _kernel = kernel;
             _storage = kernel.Get<IStorage>();
-        }
-
-        public DbSet<PipelineProject> Projects { get; set; }
-
-        public DbSet<PipelineResultsId> RunResultIds { get; set; }
-
-        public PipelineResults GetPipelineResultsByGuid(Guid id)
-        {
-            return Get<PipelineResults>(id);
         }
 
         private T Get<T>(Guid id)

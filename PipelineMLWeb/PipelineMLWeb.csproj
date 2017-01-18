@@ -239,7 +239,8 @@
     </Compile>
     <Compile Include="DataContexts\PipelineMigrations\Configuration.cs" />
     <Compile Include="Hubs\CounterHub.cs" />
-    <Compile Include="Models\ProjectViewModel.cs" />
+    <Compile Include="Hubs\EditProjectHub.cs" />
+    <Compile Include="Models\ProjectViewModels.cs" />
     <Compile Include="PipelineClaimsTypes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
