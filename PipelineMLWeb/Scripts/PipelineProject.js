@@ -146,7 +146,7 @@ $(document).ready(function () {
     var conn = $.hubConnection();
     var hub = conn.createHubProxy("EditProjectHub");
     hub.on("OnGetAvailableClassTypes", function (data) {
-        partList = data.PipelineParts;
+        partList = data;
     });
     conn.start(function () {
         hub.invoke('GetAvailableClassTypes');

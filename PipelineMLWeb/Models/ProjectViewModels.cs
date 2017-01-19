@@ -22,22 +22,43 @@ namespace PipelineMLWeb.Models
     }
 
 
+    // provides the UI with lists of available pipeline part classes to choose from
     public class PipelinePartListViewModel
     {
-        private static Dictionary<string, List<SearchableClassViewModel>> _pipelineParts = null;
 
+        private static string _datasetGenerator;
+        public string DatasetGenerator { get; set; }
+
+
+        private static string _dataTranforms;
+        public string DataTransform { get; set; }
+
+        private static string _machineLearning;
+        public string MachineLearning { get; set; }
+
+
+        private static string _evaluator;
+        public string Evaluator { get; set; }
+
+
+        private static Dictionary<string, List<SearchableClassViewModel>> _pipelineParts = null;
         public Dictionary<string, List<SearchableClassViewModel>> PipelineParts { get { return _pipelineParts; } }
+
 
         public PipelinePartListViewModel()
         {
-
             if (_pipelineParts == null)
             {
+                _datasetGenerator = typeof(IDatasetGenerator).ToString();
+                _dataTranforms = typeof(IDataTransform).ToString();
+                _machineLearning = typeof(IMachineLearningProcess).ToString();
+                _evaluator = typeof(IEvaluator).ToString();
+
                 _pipelineParts = new Dictionary<string, List<SearchableClassViewModel>>();
-                _pipelineParts.Add(typeof(IDatasetGenerator).ToString(), GetPartsList(typeof(IDatasetGenerator)));
-                _pipelineParts.Add(typeof(IDataTransform).ToString(), GetPartsList(typeof(IDataTransform)));
-                _pipelineParts.Add(typeof(IMachineLearningProcess).ToString(), GetPartsList(typeof(IMachineLearningProcess)));
-                _pipelineParts.Add(typeof(IEvaluator).ToString(), GetPartsList(typeof(IEvaluator)));
+                _pipelineParts.Add(_datasetGenerator, GetPartsList(typeof(IDatasetGenerator)));
+                _pipelineParts.Add(_dataTranforms, GetPartsList(typeof(IDataTransform)));
+                _pipelineParts.Add(_machineLearning, GetPartsList(typeof(IMachineLearningProcess)));
+                _pipelineParts.Add(_evaluator, GetPartsList(typeof(IEvaluator)));
             }
         }
 
