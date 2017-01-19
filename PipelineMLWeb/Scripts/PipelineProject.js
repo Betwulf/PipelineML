@@ -2,8 +2,11 @@
 var cvs;
 var ctx;
 var sinewaveList;
+var partList;
 
 $(document).ready(function () {
+
+
 
     //$.getJSON("/Notes/Data", starting_value, loadedData);
     // JSONEditor Setup params
@@ -141,12 +144,12 @@ $(document).ready(function () {
     // signalR
 
     var conn = $.hubConnection();
-    var hub = conn.createHubProxy("CounterHub");
-    hub.on("OnHit", function (count) {
-        $('#counter').text(count);
+    var hub = conn.createHubProxy("EditProjectHub");
+    hub.on("OnGetAvailableClassTypes", function (data) {
+        partList = data.PipelineParts;
     });
     conn.start(function () {
-        hub.invoke('RecordHit');
+        hub.invoke('GetAvailableClassTypes');
     });
 
 

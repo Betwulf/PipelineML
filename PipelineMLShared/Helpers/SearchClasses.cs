@@ -32,15 +32,11 @@ namespace PipelineMLCore
         public static List<Type> SearchForClassesThatImplementInterface(Type interfaceType, string searchDirectory, Predicate<Type> filter)
         {
             List<Type> returnArray = new List<Type>();
-            if (!Directory.Exists(searchDirectory))
-            {
-                string errString = "Directory does not exist [" + searchDirectory + "]";
-                throw new Exception(errString);
-            }
 
             // Before looking through DLLs, check exe
             var localAsses = AppDomain.CurrentDomain.GetAssemblies();
-            var list = localAsses.SelectMany( assembly => assembly.GetExportedTypes())
+            var subAsses = localAsses.Where(x => x.IsDynamic == false); // Exception thrown if you try to use a dynamic assembly
+            var list = subAsses.SelectMany( assembly => assembly.GetExportedTypes())
                 .Where( t => interfaceType.IsAssignableFrom(t))
                 .Where( t => typeof(ISearchableClass).IsAssignableFrom(t));
             foreach (var item in list)
@@ -64,6 +60,10 @@ namespace PipelineMLCore
             // Get DLLs
             if (SearchDirectory)
             {
+                if (!Directory.Exists(searchDirectory))
+                {
+                    throw new Exception($"Directory does not exist [{searchDirectory}]");
+                }
                 string[] dirs = Directory.GetFiles(searchDirectory, "*.dll", SearchOption.AllDirectories);
                 foreach (string dir in dirs)
                 {

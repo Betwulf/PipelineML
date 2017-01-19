@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -29,6 +30,7 @@ namespace PipelineMLWeb.Models
 
         public PipelinePartListViewModel()
         {
+
             if (_pipelineParts == null)
             {
                 _pipelineParts = new Dictionary<string, List<SearchableClassViewModel>>();
@@ -42,7 +44,7 @@ namespace PipelineMLWeb.Models
         private List<SearchableClassViewModel> GetPartsList(Type partInterface)
         {
             var TypeList = SearchClasses.SearchForClassesThatImplementInterface(partInterface);
-            List<SearchableClassViewModel> partsList = new List<Models.SearchableClassViewModel>();
+            List<SearchableClassViewModel> partsList = new List<SearchableClassViewModel>();
             foreach (var item in TypeList)
             {
                 ISearchableClass iSearchable = Activator.CreateInstance(item) as ISearchableClass;

@@ -18,12 +18,19 @@ namespace PipelineMLWeb.Hubs
     public class EditProjectHub : Hub
     {
         [Authorize]
-        public void GetAvailableClassTypes(string interfaceType)
+        public void GetAvailableClassTypes()
         {
-            List<Type> TypeList;
-            TypeList = SearchClasses.SearchForClassesThatImplementInterface(Type.GetType(interfaceType));
+            try
+            {
+                PipelinePartListViewModel model = new PipelinePartListViewModel();
 
-            Clients.Caller.OnGetAvailableClassTypes(TypeList);
+                Clients.Caller.OnGetAvailableClassTypes(model);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
 
         }
     }

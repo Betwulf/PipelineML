@@ -14,6 +14,7 @@ $(document).ready(function () {
     var hub = conn.createHubProxy("ProjectListHub");
     hub.on("OnGetProjects", function (viewModel)
     {
+        $('#loading').remove();
         gViewModel = viewModel;
         if (viewModel !== null && viewModel.length > 0)
         {
@@ -25,10 +26,10 @@ $(document).ready(function () {
                     '<td><a href="/PipelineProject/Edit/' + viewModel[i].Id + '">Edit</a></td>' +
                     "</tr>";
             }
-            $('#projectTable > tbody:last-child').after(row);
+            $('#projectTable tbody').append(row);
         }
         else {
-            $('#projectTable > tbody:last-child').after('<tr><td colspan="6">No projects yet...</td></tr>');
+            $('#projectTable tbody').append('<tr><td colspan="6">No projects yet...</td></tr>');
         }
 
     });
