@@ -18,6 +18,25 @@ namespace PipelineMLWeb.Hubs
     public class EditProjectHub : Hub
     {
         [Authorize]
+        public void GetProject(string guid)
+        {
+            ApplicationUser currentUser = this.GetApplicationUser();
+            var DbContext = this.GetPipelineDbContext();
+            var projectClaim = currentUser.Claims.FirstOrDefault(x => x.ClaimType == PipelineClaimsTypes.PipelineProject && x.ClaimValue == guid);
+            Guid tempGuid;
+            if (Guid.TryParse(guid, out tempGuid))
+            {
+                if (projectClaim != null)
+                {
+                    var project = DbContext.Projects.FirstOrDefault(x => x.Id == tempGuid);
+                    ProjectViewModel model = new ProjectViewModel(project);
+                    var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
+                    model.SetDefinition(def);
+                }
+            }
+        }
+
+        [Authorize]
         public void GetAvailableClassTypes()
         {
             try

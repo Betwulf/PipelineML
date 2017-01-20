@@ -7,6 +7,8 @@ namespace PipelineMLCore
 {
     public class DataTransformRemoveColumns : IDataTransform, ISearchableClass
     {
+        public Guid Id { get; set; }
+
         public string Name { get { return Config.Name; } }
 
         public string FriendlyName { get { return "Remove Columns Data Transform"; } }

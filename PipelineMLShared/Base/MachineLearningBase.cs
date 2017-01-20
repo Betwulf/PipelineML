@@ -11,6 +11,8 @@ namespace PipelineMLCore
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ConfigBase Config { get; set; }
 
+        public Guid Id { get; set; }
+
         public string Name { get { return Config.Name; } }
 
 

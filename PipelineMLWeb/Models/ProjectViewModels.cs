@@ -1,6 +1,7 @@
 ﻿using PipelineMLCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
@@ -86,36 +87,81 @@ namespace PipelineMLWeb.Models
         public string Name { get; set; }
 
         public string ClassName { get; set; }
+
+        public int x { get; set; }
+
+        public int y { get; set; }
+
     }
 
 
 
-    // Summary view of the pipeline project
+    /// <summary>
+    /// Container and View Model for the Project definition Editor
+    /// </summary>
     public class ProjectViewModel
     {
-        public ProjectViewModel()
-        {
-            Parts = new List<PipelinePartViewModel>();
-        }
-
-        public ProjectViewModel(PipelineProject proj)
-        {
-            Parts = new List<PipelinePartViewModel>();
-            Name = proj.Name;
-            Id = proj.Id;
-            Description = proj.Description;
-            // TODO: populate parts
-        }
 
         public Guid Id { get; set; }
 
         [Required, MaxLength(40)]
         public string Name { get; set; }
 
-        
         public string Description { get; set; }
 
-        public List<PipelinePartViewModel> Parts { get; set; }
+        public PipelinePartViewModel DataGeneratorPart { get; set; }
+
+        public List<PipelinePartViewModel> PreProcessParts { get; set; }
+
+        public List<PipelinePartViewModel> MLParts { get; set; }
+
+        public List<PipelinePartViewModel> PostProcessParts { get; set; }
+
+        public List<PipelinePartViewModel> EvalutorParts { get; set; }
+
+
+
+        public ProjectViewModel()
+        {
+            Init();
+        }
+
+
+        private void Init()
+        {
+            PreProcessParts = new List<PipelinePartViewModel>();
+            MLParts = new List<PipelinePartViewModel>();
+            PostProcessParts = new List<PipelinePartViewModel>();
+            EvalutorParts = new List<PipelinePartViewModel>();
+        }
+
+
+        public ProjectViewModel(PipelineProject proj)
+        {
+            Init();
+            Name = proj.Name;
+            Id = proj.Id;
+            Description = proj.Description;
+        }
+
+
+        public void SetDefinition(PipelineDefinition def)
+        {
+            var inst = def.CreateInstance();
+            DataGeneratorPart = new PipelinePartViewModel();
+            DataGeneratorPart.ClassName = inst.DatasetGenerator.GetType().Name;
+            DataGeneratorPart.Name = inst.DatasetGenerator.Name;
+            DataGeneratorPart.Id = inst.DatasetGenerator.Id;
+
+            foreach (var item in inst.PreprocessDataTransforms)
+            {
+                var part = new PipelinePartViewModel();
+                part.Id = item.Id;
+                part.Name = item.Name;
+                part.ClassName = item.GetType().Name;
+            }
+        }
+
 
     }
 }

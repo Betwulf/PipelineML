@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using System;
 
 namespace PipelineMLCore
 {
@@ -7,5 +8,7 @@ namespace PipelineMLCore
         void Configure(IKernel kernel, string jsonConfig);
 
         ConfigBase Config { get; set; }
+
+        Guid Id { get; set; }
     }
 }

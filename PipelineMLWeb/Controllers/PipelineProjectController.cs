@@ -59,8 +59,16 @@ namespace PipelineMLWeb.Controllers
             var newProj = new PipelineProject();
             newProj.Name = model.Name;
             newProj.Description = model.Description;
+            newProj.PipelineDefinitionGuid = new Guid();
+            var newPipelineDef = new PipelineDefinition();
+            newPipelineDef.Id = newProj.PipelineDefinitionGuid;
+            newPipelineDef.Name = model.Name;
 
+       
             var db = HttpContext.GetOwinContext().Get<PipelineDbContext>();
+            // Save definition file
+            db.SavePipelineDefinition(newPipelineDef.Id, newPipelineDef);
+            // Save project
             db.Projects.Add(newProj);
             int x = await db.SaveChangesAsync();
             if (x == 1) // saved one change

@@ -15,7 +15,9 @@ namespace PipelineMLCore
 {
     public class DatasetGeneratorYahoo : IDatasetGenerator, ISearchableClass
     {
-        private IKernel _kernel;
+        private IKernel _kernel;    
+
+        public Guid Id { get; set; }
 
         public string Name { get { return Config.Name; } }
 

@@ -22,10 +22,9 @@ namespace PipelineMLWeb.Hubs
             try
             {
                 // Get ninject, the current user, identity DB and pipeline DB
-                var dbb = new ApplicationDbContext();
-                ApplicationUser currentUser = dbb.Users.Find(HttpContext.Current.User.Identity.GetUserId());
-                var kernel = Startup.CreateNinject();
-                var DbContext = new PipelineDbContext(kernel);
+                ApplicationUser currentUser = this.GetApplicationUser();
+                var DbContext = this.GetPipelineDbContext();
+
 
                 // Find the current user's project claims, then pull up the associated projects
                 var projectClaims = currentUser.Claims.Where(x => x.ClaimType == PipelineClaimsTypes.PipelineProject).Select(x => x.ClaimValue);
@@ -48,6 +47,7 @@ namespace PipelineMLWeb.Hubs
             catch (Exception ex)
             {
                 Debug.WriteLine("SignalR Error: " + ex.Message);
+                //TODO: Add Serilog
             }
         }
     }
