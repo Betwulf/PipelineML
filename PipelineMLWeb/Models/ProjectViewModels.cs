@@ -159,7 +159,37 @@ namespace PipelineMLWeb.Models
                 part.Id = item.Id;
                 part.Name = item.Name;
                 part.ClassName = item.GetType().Name;
+                PreProcessParts.Add(part);
             }
+
+            foreach (var item in inst.MLList)
+            {
+                var part = new PipelinePartViewModel();
+                part.Id = item.Id;
+                part.Name = item.Name;
+                part.ClassName = item.GetType().Name;
+                MLParts.Add(part);
+            }
+
+            foreach (var item in inst.PostprocessDataTransforms)
+            {
+                var part = new PipelinePartViewModel();
+                part.Id = item.Id;
+                part.Name = item.Name;
+                part.ClassName = item.GetType().Name;
+                PostProcessParts.Add(part);
+            }
+
+            foreach (var item in inst.Evaluators)
+            {
+                var part = new PipelinePartViewModel();
+                part.Id = item.Id;
+                part.Name = item.Name;
+                part.ClassName = item.GetType().Name;
+                EvalutorParts.Add(part);
+            }
+
+
         }
 
 

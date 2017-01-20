@@ -32,6 +32,7 @@ namespace PipelineMLWeb.Hubs
                     ProjectViewModel model = new ProjectViewModel(project);
                     var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
                     model.SetDefinition(def);
+                    Clients.Caller.OnGetProject(model);
                 }
             }
         }
