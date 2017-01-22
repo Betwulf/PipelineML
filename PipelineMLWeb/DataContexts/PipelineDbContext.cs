@@ -3,6 +3,7 @@ using Microsoft.Owin;
 using Newtonsoft.Json;
 using Ninject;
 using PipelineMLCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -72,8 +73,16 @@ namespace PipelineMLWeb.DataContexts
 
         private T Get<T>(Guid id)
         {
-            var json = _storage.ReadData(nameof(T), id.ToString());
-            return JsonConvert.DeserializeObject<T>(json);
+            try
+            {
+                var json = _storage.ReadData(nameof(T), id.ToString());
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error($"Error reading file: {typeof(T).Name} id: {id} Message: {ex.Message}");
+            }
+            return default(T);
         }
 
         private void Save<T>(Guid id, T dataObject)

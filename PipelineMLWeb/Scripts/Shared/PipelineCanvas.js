@@ -1,10 +1,10 @@
 ﻿var PipelineCanvas = function () {
 
     var canvasId;
+    var isDrawingProject = false;
 
     // Build Sinewave object
     function getWave(periodicity, height, color, xoffset, yoffset) {
-        var nowTime = new Date();
         this.xoffset = xoffset;
         this.yoffset = yoffset;
         this.height = height;
@@ -12,6 +12,7 @@
         this.periodicity = periodicity;
         this.points = [];
     }
+
 
     // change wave shapes
     function updateWave(sinewave) {
@@ -30,6 +31,7 @@
 
     // drawWave
     function drawWave(sinewave) {
+        ctx.lineWidth = 1;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 10;
@@ -51,14 +53,87 @@
 
 
 
+    var projectModel;
+    var boxScale = 1.0;
+    var boxMargin = 20;
+    var boxOffsetX = 0;
+    var boxOffsetY = 0;
+    var boxHeight = 60;
+    var boxWidth = 180;
+    var boxFont = '12pt Arial';
+    var boxFontHeight = 12;
+    var boxColor = 'rgba(255, 255, 255, 1)';
+    var boxTextColor = 'white';
+
+    function drawPlus(x,y,w,h)
+    {
+        ctx.beginPath();
+        ctx.strokeStyle = boxColor;
+        ctx.lineWidth = 6;
+        ctx.moveTo(x + (w / 2), y);
+        ctx.lineTo(x + (w / 2), y + h);
+        ctx.moveTo(x + (w/2) - (h/2), y + (h/2));
+        ctx.lineTo(x + (w / 2) + (h / 2), y + (h / 2));
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function drawBox(x,y,w,h,boxText)
+    {
+        ctx.beginPath();
+        ctx.strokeStyle = boxColor;
+        ctx.lineWidth = 2;
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + w, y);
+        ctx.lineTo(x + w, y + h);
+        ctx.lineTo(x, y + h);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.font = boxFont;
+        ctx.textAlign = "center";
+        var txtSize = ctx.measureText(boxText);
+        //console.log("w: " + txtSize.width + " h: " + txtSize.height);
+        ctx.fillStyle = boxTextColor;
+        ctx.fillText(boxText, x + (w / 2), y + (h / 2) + boxFontHeight / 2);
+    }
+
+
+    function drawBoxes()
+    {
+        var currX = boxOffsetX + boxMargin;
+        var currY = boxOffsetY + boxMargin;
+        boxHeight = boxHeight * boxScale;
+        boxWidth = boxWidth * boxScale;
+
+        // first get dimensions
+        if (projectModel.DataGeneratorPart != null)
+        {
+            drawBox(currX, currY, boxWidth, boxHeight, projectModel.DataGeneratorPart.Name);
+        }
+        else
+        {
+            drawPlus(currX, currY, boxWidth, boxHeight);
+        }
+    }
+
+
+    startDrawingProject = function(model)
+    {
+        projectModel = model;
+        isDrawingProject = true;
+    }
+
+
     // Runs each time the DOM window resize event fires.
     // Resets the canvas dimensions to match window,
     // then draws the new borders accordingly.
     function resizeCanvas() {
         cvs.width = $("#" + canvasId).parent().width();
-        cvs.height = window.innerHeight - 76; // Adjustment for the navbar height
+        cvs.height = window.innerHeight - 96; // Adjustment for the navbar and project name height 
         redraw();
     }
+
 
 
 
@@ -72,8 +147,18 @@
             updateWave(sinewaveList[aWave]);
             drawWave(sinewaveList[aWave]);
         }
+
+        // draw project
+        if (isDrawingProject)
+        {
+            //TODO: Project drawing stuff goes here
+            drawBoxes();
+        }
+
         requestAnimationFrame(redraw);
     }
+
+
 
     // Exported method call
     startDrawing = function (aCanvasId) {
@@ -97,8 +182,8 @@
 
 
     return {
-        startDrawing: startDrawing // ,
-
+        startDrawing: startDrawing,
+        startDrawingProject: startDrawingProject
     };
 
 };

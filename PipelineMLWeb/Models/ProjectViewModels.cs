@@ -148,10 +148,13 @@ namespace PipelineMLWeb.Models
         public void SetDefinition(PipelineDefinition def)
         {
             var inst = def.CreateInstance();
-            DataGeneratorPart = new PipelinePartViewModel();
-            DataGeneratorPart.ClassName = inst.DatasetGenerator.GetType().Name;
-            DataGeneratorPart.Name = inst.DatasetGenerator.Name;
-            DataGeneratorPart.Id = inst.DatasetGenerator.Id;
+            if (inst.DatasetGenerator != null)
+            {
+                DataGeneratorPart = new PipelinePartViewModel();
+                DataGeneratorPart.ClassName = inst.DatasetGenerator.GetType().Name;
+                DataGeneratorPart.Name = inst.DatasetGenerator.Name;
+                DataGeneratorPart.Id = inst.DatasetGenerator.Id;
+            }
 
             foreach (var item in inst.PreprocessDataTransforms)
             {

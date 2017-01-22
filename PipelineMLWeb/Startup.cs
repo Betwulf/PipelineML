@@ -4,6 +4,8 @@ using Ninject;
 using Owin;
 using PipelineMLCore;
 using PipelineMLWeb.DataContexts;
+using Serilog;
+using System;
 
 [assembly: OwinStartupAttribute(typeof(PipelineMLWeb.Startup))]
 namespace PipelineMLWeb
@@ -13,6 +15,9 @@ namespace PipelineMLWeb
         
         public void Configuration(IAppBuilder app)
         {
+            Log.Logger = new LoggerConfiguration().ReadFrom.AppSettings().CreateLogger();
+            Log.Logger.Information("Application Startup {time}", DateTime.Now);
+
             ConfigureAuth(app);
             ConfigureNinject(app);
             app.CreatePerOwinContext<PipelineDbContext>(PipelineDbContext.Create);

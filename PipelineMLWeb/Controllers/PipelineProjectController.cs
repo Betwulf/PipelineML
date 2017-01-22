@@ -87,6 +87,7 @@ namespace PipelineMLWeb.Controllers
 
         public async Task<ActionResult> Edit(string id)
         {
+            ViewBag.projectId = id;
             ApplicationUser user = UserManager.FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
             Debug.WriteLine($"Edit: user {user.UserName} Guid: {id}");
             if (user.Claims.FirstOrDefault(x => x.ClaimType == PipelineClaimsTypes.PipelineProject && x.ClaimValue == id) == null)

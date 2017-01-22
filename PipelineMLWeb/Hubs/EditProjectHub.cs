@@ -31,8 +31,12 @@ namespace PipelineMLWeb.Hubs
                     var project = DbContext.Projects.FirstOrDefault(x => x.Id == tempGuid);
                     ProjectViewModel model = new ProjectViewModel(project);
                     var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
-                    model.SetDefinition(def);
-                    Clients.Caller.OnGetProject(model);
+                    if (def != null)
+                    {
+                        model.SetDefinition(def);
+                        Clients.Caller.OnGetProject(model);
+                    }
+                    //TODO: Handle error case where def == null
                 }
             }
         }
