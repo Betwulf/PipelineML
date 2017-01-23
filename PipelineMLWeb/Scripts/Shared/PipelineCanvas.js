@@ -1,6 +1,8 @@
 ﻿var PipelineCanvas = function () {
 
     var canvasId;
+    var canvasOffsetX;
+    var canvasOffsetY;
     var isDrawingProject = false;
 
     // Build Sinewave object
@@ -53,7 +55,7 @@
 
 
 
-    var projectModel;
+    var projectModel; // the view model holding all details of the project
     var boxScale = 1.0;
     var boxMargin = 20;
     var boxOffsetX = 0;
@@ -72,7 +74,7 @@
         ctx.lineWidth = 6;
         ctx.moveTo(x + (w / 2), y);
         ctx.lineTo(x + (w / 2), y + h);
-        ctx.moveTo(x + (w/2) - (h/2), y + (h/2));
+        ctx.moveTo(x + (w / 2) - (h / 2), y + (h / 2));
         ctx.lineTo(x + (w / 2) + (h / 2), y + (h / 2));
         ctx.stroke();
         ctx.closePath();
@@ -107,7 +109,7 @@
         boxWidth = boxWidth * boxScale;
 
         // first get dimensions
-        if (projectModel.DataGeneratorPart != null)
+        if (projectModel.DataGeneratorPart !== null)
         {
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.DataGeneratorPart.Name);
         }
@@ -118,11 +120,37 @@
     }
 
 
+
+    function handleMouseDown(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        mouseX = parseInt(e.clientX - canvasOffsetX);
+        mouseY = parseInt(e.clientY - canvasOffsetY);
+        // TODO: capture hitboxes and test
+    }
+
+
+
+    function handleMouseMove(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        mouseX = parseInt(e.clientX - canvasOffsetX);
+        mouseY = parseInt(e.clientY - canvasOffsetY);
+        // TODO: capture hitboxes and test
+    }
+
+
+    // Starts drawing the project elements when data is loaded
     startDrawingProject = function(model)
     {
         projectModel = model;
         isDrawingProject = true;
     }
+
+
+
+
+
 
 
     // Runs each time the DOM window resize event fires.
@@ -166,7 +194,12 @@
         // Start the Canvas
         cvs = document.getElementById(canvasId);
         ctx = cvs.getContext('2d');
+        var canvasOffset = cvs.offset();
+        canvasOffsetX = canvasOffset.left;
+        canvasOffsetY = canvasOffset.top;
         window.addEventListener('resize', resizeCanvas, false);
+        cvs.mousedown(function (e) { handleMouseDown(e); });
+        cvs.mousemove(function (e) { handleMouseMove(e); });
         resizeCanvas();
 
         // Create Canvas Background
