@@ -8,7 +8,7 @@ namespace PipelineMLWeb.Controllers
 {
     public class DashboardController : Controller
     {
-
+        [Authorize]
         public ActionResult Index()
         {
             return View();
