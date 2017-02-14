@@ -152,12 +152,12 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, projectModel.PreProcessParts[part].Id, projectModel.PreProcessParts[part].ClassName));
             currY = currY + boxHeight + boxMargin;
         }
-        if (projectModel.PreProcessParts.length == 0)
+        if (projectModel.PreProcessParts.length === 0)
         {
             drawPlus(currX, currY, boxWidth, boxHeight);
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, null, classTypes.DataTransform));
         }
-        // then plus
+        // TODO: ... add the rest....
 
     }
 
@@ -176,7 +176,22 @@
             if (mouseX >= box.x && mouseX <= box.xw && mouseY >= box.y && mouseY <= box.yh)
             {
                 // THEN HIT!
-                console.log("HIT: " + box.id)
+                console.log("HIT: " + box.classname);
+                $('#editor_holder').empty();
+                //for (typenum in classTypes.PipelineParts[box.classname])
+                //{
+                    var form = $('<form></form>').attr("id", 'hiddenForm').attr("name", 'hiddenForm');
+                    $.each(classTypes.PipelineParts[box.classname], function (key, value) {
+                        $("<input type='text' value='" + value.FriendlyName + "' >")
+             .attr("id", value.ClassType)
+             .attr("name", value.FriendlyName)
+             .appendTo(form);
+
+
+                    });
+                    $('#editor_holder').append(form);
+                    $('#editor_holder').appendTo('body').submit();
+                
             }
         }
     };
