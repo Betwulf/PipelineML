@@ -225,12 +225,12 @@
         // Start the Canvas
         cvs = document.getElementById(canvasId);
         ctx = cvs.getContext('2d');
-        var canvasOffset = cvs.offset();
+        var canvasOffset = $("#" + canvasId).offset();
         canvasOffsetX = canvasOffset.left;
         canvasOffsetY = canvasOffset.top;
         window.addEventListener('resize', resizeCanvas, false);
-        cvs.mousedown(function (e) { handleMouseDown(e); });
-        cvs.mousemove(function (e) { handleMouseMove(e); });
+        $("#" + canvasId).mousedown(function (e) { handleMouseDown(e); });
+        $("#" + canvasId).mousemove(function (e) { handleMouseMove(e); });
         resizeCanvas();
 
         // Create Canvas Background
