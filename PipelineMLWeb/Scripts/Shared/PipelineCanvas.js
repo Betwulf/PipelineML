@@ -66,6 +66,19 @@
     var boxFontHeight = 12;
     var boxColor = 'rgba(255, 255, 255, 1)';
     var boxTextColor = 'white';
+    var hitBoxes = [];
+
+    // used to build the hitbox list
+    function getHitBox(x, y, w, h, id, classname) {
+        this.x = x;
+        this.y = y;
+        this.xw = x + w;
+        this.yh = y + h;
+        this.id = id;
+        this.classname = classname;
+    }
+
+
 
     function drawPlus(x,y,w,h)
     {
@@ -79,6 +92,7 @@
         ctx.stroke();
         ctx.closePath();
     }
+
 
     function drawBox(x,y,w,h,boxText)
     {
@@ -95,7 +109,6 @@
         ctx.font = boxFont;
         ctx.textAlign = "center";
         var txtSize = ctx.measureText(boxText);
-        //console.log("w: " + txtSize.width + " h: " + txtSize.height);
         ctx.fillStyle = boxTextColor;
         ctx.fillText(boxText, x + (w / 2), y + (h / 2) + boxFontHeight / 2);
     }
@@ -103,20 +116,38 @@
 
     function drawBoxes()
     {
+        // first get dimensions
         var currX = boxOffsetX + boxMargin;
         var currY = boxOffsetY + boxMargin;
         boxHeight = boxHeight * boxScale;
         boxWidth = boxWidth * boxScale;
 
-        // first get dimensions
+        // DataGenerator Stack
         if (projectModel.DataGeneratorPart !== null)
         {
+            projectModel.DataGeneratorPart.x = currX;
+            projectModel.DataGeneratorPart.y = currY;
+            projectModel.DataGeneratorPart.xw = currX + boxWidth;
+            projectModel.DataGeneratorPart.yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.DataGeneratorPart.Name);
         }
         else
         {
             drawPlus(currX, currY, boxWidth, boxHeight);
         }
+
+        // Preprocess Stack
+        currX = currX + boxWidth + boxMargin;
+        for (part in projectModel.PreProcessParts) {
+            projectModel.PreProcessParts[part].x = currX;
+            projectModel.PreProcessParts[part].y = currY;
+            projectModel.PreProcessParts[part].xw = currX + boxWidth;
+            projectModel.PreProcessParts[part].yh = currY + boxHeight;
+            drawBox(currX, currY, boxWidth, boxHeight, projectModel.PreProcessParts[part].Name);
+            currY = currY + boxHeight + boxMargin;
+        }
+        // then plus
+
     }
 
 
