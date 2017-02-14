@@ -28,18 +28,18 @@ namespace PipelineMLWeb.Models
     {
 
         private static string _datasetGenerator;
-        public string DatasetGenerator { get; set; }
+        public string DatasetGenerator { get { return _datasetGenerator; } }
 
 
         private static string _dataTranforms;
-        public string DataTransform { get; set; }
+        public string DataTransform { get { return _dataTranforms; } }
 
         private static string _machineLearning;
-        public string MachineLearning { get; set; }
+        public string MachineLearning { get { return _machineLearning; } }
 
 
         private static string _evaluator;
-        public string Evaluator { get; set; }
+        public string Evaluator { get { return _evaluator; } }
 
 
         private static Dictionary<string, List<SearchableClassViewModel>> _pipelineParts = null;

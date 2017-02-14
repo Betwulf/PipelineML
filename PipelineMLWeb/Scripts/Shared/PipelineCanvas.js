@@ -66,14 +66,17 @@
     var boxFontHeight = 12;
     var boxColor = 'rgba(255, 255, 255, 1)';
     var boxTextColor = 'white';
-    var hitBoxes = [];
+    var hitBoxes = []; // used for mouse events
+    var classTypes = null;
+
 
     // used to build the hitbox list
-    function getHitBox(x, y, w, h, id, classname) {
+    function getHitBox(x, y, w, h, column, id, classname) {
         this.x = x;
         this.y = y;
         this.xw = x + w;
         this.yh = y + h;
+        this.column = column;
         this.id = id;
         this.classname = classname;
     }
@@ -114,8 +117,9 @@
     }
 
 
-    function drawBoxes()
-    {
+    function drawBoxes() {
+        if (classTypes === null) return;
+        hitBoxes = [];
         // first get dimensions
         var currX = boxOffsetX + boxMargin;
         var currY = boxOffsetY + boxMargin;
@@ -123,28 +127,35 @@
         boxWidth = boxWidth * boxScale;
 
         // DataGenerator Stack
-        if (projectModel.DataGeneratorPart !== null)
-        {
+        if (projectModel.DataGeneratorPart !== null) {
             projectModel.DataGeneratorPart.x = currX;
             projectModel.DataGeneratorPart.y = currY;
             projectModel.DataGeneratorPart.xw = currX + boxWidth;
             projectModel.DataGeneratorPart.yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.DataGeneratorPart.Name);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 0, projectModel.DataGeneratorPart.Id, projectModel.DataGeneratorPart.ClassName));
         }
-        else
-        {
+        else {
             drawPlus(currX, currY, boxWidth, boxHeight);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 0, null, classTypes.DatasetGenerator));
         }
 
         // Preprocess Stack
         currX = currX + boxWidth + boxMargin;
+        currY = boxOffsetY + boxMargin;
         for (part in projectModel.PreProcessParts) {
             projectModel.PreProcessParts[part].x = currX;
             projectModel.PreProcessParts[part].y = currY;
             projectModel.PreProcessParts[part].xw = currX + boxWidth;
             projectModel.PreProcessParts[part].yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.PreProcessParts[part].Name);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, projectModel.PreProcessParts[part].Id, projectModel.PreProcessParts[part].ClassName));
             currY = currY + boxHeight + boxMargin;
+        }
+        if (projectModel.PreProcessParts.length == 0)
+        {
+            drawPlus(currX, currY, boxWidth, boxHeight);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, null, classTypes.DataTransform));
         }
         // then plus
 
@@ -157,8 +168,18 @@
         e.stopPropagation();
         mouseX = parseInt(e.clientX - canvasOffsetX);
         mouseY = parseInt(e.clientY - canvasOffsetY);
-        // TODO: capture hitboxes and test
-    }
+        console.log("Testing (" + mouseX + ", " + mouseY + ")");
+        for (boxnum in hitBoxes)
+        {
+            var box = hitBoxes[boxnum];
+            console.log("box:" + box.x + ", " + box.y + " - " + box.xw + ", " + box.yh);
+            if (mouseX >= box.x && mouseX <= box.xw && mouseY >= box.y && mouseY <= box.yh)
+            {
+                // THEN HIT!
+                console.log("HIT: " + box.id)
+            }
+        }
+    };
 
 
 
@@ -168,15 +189,14 @@
         mouseX = parseInt(e.clientX - canvasOffsetX);
         mouseY = parseInt(e.clientY - canvasOffsetY);
         // TODO: capture hitboxes and test
-    }
+    };
 
 
     // Starts drawing the project elements when data is loaded
-    startDrawingProject = function(model)
-    {
+    startDrawingProject = function (model) {
         projectModel = model;
         isDrawingProject = true;
-    }
+    };
 
 
 
@@ -219,6 +239,11 @@
 
 
 
+    getClassTypes = function (aClassTypes) {
+        classTypes = aClassTypes;
+    };
+
+
     // Exported method call
     startDrawing = function (aCanvasId) {
         canvasId = aCanvasId;
@@ -239,15 +264,13 @@
                         new getWave(0.4, halfHeight / 2 + 20, 'rgba(120, 120, 120, 1)', 100, halfHeight),
                         new getWave(0.3, halfHeight / 2 + 30, 'rgba(120, 120, 120, 1)', 150, halfHeight)
         ];
-
-
-
     };
 
 
     return {
         startDrawing: startDrawing,
-        startDrawingProject: startDrawingProject
+        startDrawingProject: startDrawingProject,
+        getClassTypes: getClassTypes
     };
 
 };

@@ -65,18 +65,22 @@ $(document).ready(function () {
 
     var conn = $.hubConnection();
     var hub = conn.createHubProxy("EditProjectHub");
+
     hub.on("OnGetAvailableClassTypes", function (data) {
         partList = data;
+        pipelineCanvas.getClassTypes(partList);
     });
+
     hub.on("OnGetProject", function (data) {
         project = data;
         $('#projectName').text('Project: ' + project.Name);
         pipelineCanvas.startDrawingProject(project);
-        //CreateEditor();
     });
+
     conn.start(function () {
         hub.invoke('GetAvailableClassTypes');
-        hub.invoke('GetProject', projectId); // TODO: put project ID here.
+        console.log('Got project id:' + projectId);
+        hub.invoke('GetProject', projectId);
     });
 
 
