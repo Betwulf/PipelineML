@@ -2,7 +2,6 @@
 var cvs;
 var ctx;
 var sinewaveList;
-var partList;
 var editor; //JSON Editor
 var project; // pipeline project view model
 var pipelineCanvas; // javascript drawing functions
@@ -66,10 +65,6 @@ $(document).ready(function () {
     var conn = $.hubConnection();
     var hub = conn.createHubProxy("EditProjectHub");
 
-    hub.on("OnGetAvailableClassTypes", function (data) {
-        partList = data;
-        pipelineCanvas.getClassTypes(partList);
-    });
 
     hub.on("OnGetProject", function (data) {
         project = data;

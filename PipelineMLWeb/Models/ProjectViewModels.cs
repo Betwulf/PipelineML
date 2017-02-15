@@ -24,7 +24,7 @@ namespace PipelineMLWeb.Models
 
 
     // provides the UI with lists of available pipeline part classes to choose from
-    public class PipelinePartListViewModel
+    public class PipelineClassTypesViewModel
     {
 
         private static string _datasetGenerator;
@@ -46,7 +46,7 @@ namespace PipelineMLWeb.Models
         public Dictionary<string, List<SearchableClassViewModel>> PipelineParts { get { return _pipelineParts; } }
 
 
-        public PipelinePartListViewModel()
+        public PipelineClassTypesViewModel()
         {
             if (_pipelineParts == null)
             {
@@ -98,6 +98,8 @@ namespace PipelineMLWeb.Models
     public class ProjectViewModel
     {
 
+        public PipelineClassTypesViewModel ClassTypes { get; set; }
+
         public Guid Id { get; set; }
 
         [Required, MaxLength(40)]
@@ -125,6 +127,7 @@ namespace PipelineMLWeb.Models
 
         private void Init()
         {
+            ClassTypes = new PipelineClassTypesViewModel();
             PreProcessParts = new List<PipelinePartViewModel>();
             MLParts = new List<PipelinePartViewModel>();
             PostProcessParts = new List<PipelinePartViewModel>();

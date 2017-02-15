@@ -26,7 +26,6 @@
             { x: cvs.width * 1 / 3, y: sinewave.height * Math.sin((currentPhase * sinewave.periodicity + sinewave.xoffset + 120) * Math.PI / 180) + sinewave.yoffset },
             { x: cvs.width * 2 / 3, y: sinewave.height * Math.sin((currentPhase * sinewave.periodicity + sinewave.xoffset + 240) * Math.PI / 180) + sinewave.yoffset },
             { x: cvs.width, y: sinewave.height * Math.sin((currentPhase * sinewave.periodicity + sinewave.xoffset + 360) * Math.PI / 180) + sinewave.yoffset }];
-
     }
 
 
@@ -83,8 +82,7 @@
 
 
 
-    function drawPlus(x,y,w,h)
-    {
+    function drawPlus(x, y, w, h) {
         ctx.beginPath();
         ctx.strokeStyle = boxColor;
         ctx.lineWidth = 6;
@@ -97,8 +95,7 @@
     }
 
 
-    function drawBox(x,y,w,h,boxText)
-    {
+    function drawBox(x, y, w, h, boxText) {
         ctx.beginPath();
         ctx.strokeStyle = boxColor;
         ctx.lineWidth = 2;
@@ -152,8 +149,7 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, projectModel.PreProcessParts[part].Id, projectModel.PreProcessParts[part].ClassName));
             currY = currY + boxHeight + boxMargin;
         }
-        if (projectModel.PreProcessParts.length === 0)
-        {
+        if (projectModel.PreProcessParts.length === 0) {
             drawPlus(currX, currY, boxWidth, boxHeight);
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, null, classTypes.DataTransform));
         }
@@ -161,6 +157,12 @@
 
     }
 
+    function handleCreatePipelinePart(event)
+    {
+        console.log("Create: " + event.data.id);
+        var $div = $('#editor_holder');
+        $div.html('');
+    }
 
 
     function handleMouseDown(e) {
@@ -168,33 +170,34 @@
         e.stopPropagation();
         mouseX = parseInt(e.clientX - canvasOffsetX);
         mouseY = parseInt(e.clientY - canvasOffsetY);
-        console.log("Testing (" + mouseX + ", " + mouseY + ")");
-        for (boxnum in hitBoxes)
-        {
+        for (boxnum in hitBoxes) {
             var box = hitBoxes[boxnum];
-            console.log("box:" + box.x + ", " + box.y + " - " + box.xw + ", " + box.yh);
-            if (mouseX >= box.x && mouseX <= box.xw && mouseY >= box.y && mouseY <= box.yh)
-            {
+            if (mouseX >= box.x && mouseX <= box.xw && mouseY >= box.y && mouseY <= box.yh) {
                 // THEN HIT!
                 console.log("HIT: " + box.classname);
-                $('#editor_holder').empty();
-                //for (typenum in classTypes.PipelineParts[box.classname])
-                //{
-                    var form = $('<form></form>').attr("id", 'hiddenForm').attr("name", 'hiddenForm');
-                    $.each(classTypes.PipelineParts[box.classname], function (key, value) {
-                        $("<input type='text' value='" + value.FriendlyName + "' >")
-             .attr("id", value.ClassType)
-             .attr("name", value.FriendlyName)
-             .appendTo(form);
+                var $div = $('#editor_holder');
+                $div.html('');
+                var form = $('<div></div>').attr("id", 'selectType').attr("name", 'selectType');
+                $.each(classTypes.PipelineParts[box.classname], function (key, value) {
+                    console.log("Adding: " + value.FriendlyName);
+                    var $subdiv = $('<div></div>').attr("class", 'row');
+                    $("<button class='btn btn-sm btn-default' value='" + value.FriendlyName + "' >")
+                    .attr("id", value.ClassType)
+                    .attr("name", value.FriendlyName)
+                    .text(value.FriendlyName)
+                    .on('click', { id: value.ClassType }, handleCreatePipelinePart)
+                    .appendTo($subdiv);
+                    $subdiv.appendTo(form);
 
-
-                    });
-                    $('#editor_holder').append(form);
-                    $('#editor_holder').appendTo('body').submit();
+                });
                 
+                $div.append('<h1>Select Type:</h1>');
+                $(form).appendTo($div);
+                //$div.appendTo('body').submit();
+
             }
         }
-    };
+    }
 
 
 
@@ -204,12 +207,13 @@
         mouseX = parseInt(e.clientX - canvasOffsetX);
         mouseY = parseInt(e.clientY - canvasOffsetY);
         // TODO: capture hitboxes and test
-    };
+    }
 
 
     // Starts drawing the project elements when data is loaded
     startDrawingProject = function (model) {
         projectModel = model;
+        classTypes = projectModel.ClassTypes;
         isDrawingProject = true;
     };
 
@@ -243,8 +247,7 @@
         }
 
         // draw project
-        if (isDrawingProject)
-        {
+        if (isDrawingProject) {
             //TODO: Project drawing stuff goes here
             drawBoxes();
         }
@@ -253,10 +256,6 @@
     }
 
 
-
-    getClassTypes = function (aClassTypes) {
-        classTypes = aClassTypes;
-    };
 
 
     // Exported method call
@@ -284,8 +283,7 @@
 
     return {
         startDrawing: startDrawing,
-        startDrawingProject: startDrawingProject,
-        getClassTypes: getClassTypes
+        startDrawingProject: startDrawingProject
     };
 
 };
