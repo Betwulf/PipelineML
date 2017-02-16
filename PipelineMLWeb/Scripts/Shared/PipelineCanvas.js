@@ -199,8 +199,6 @@
                 
                 $div.append('<h3>Select Type:</h3>');
                 $(form).appendTo($div);
-                //$div.appendTo('body').submit();
-
             }
         }
     }
