@@ -31,6 +31,13 @@ namespace PipelineMLWeb.Hubs
                 }
             }
         }
-        
+
+
+        [Authorize]
+        public void CreatePipelinePart(CreatePipelinePartViewModel createPart)
+        {
+            Type classType = Type.GetType(createPart.classType);
+            // TODO: create type and add it to the appropriate project, then save and update project in UI
+        }
     }
 }

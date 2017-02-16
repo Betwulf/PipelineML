@@ -47,7 +47,7 @@ namespace PipelineMLWeb.Hubs
             catch (Exception ex)
             {
                 Debug.WriteLine("SignalR Error: " + ex.Message);
-                //TODO: Add Serilog
+                //TODO: Add Serilog and handle
             }
         }
     }

@@ -73,10 +73,12 @@ $(document).ready(function () {
     });
 
     conn.start(function () {
-        hub.invoke('GetAvailableClassTypes');
         console.log('Got project id:' + projectId);
         hub.invoke('GetProject', projectId);
     });
 
-
+    pipelineCanvas.getCreatePipelinePartFunction(function (data) {
+        console.log('Create Pipeline Part:' + data.classType);
+        hub.invoke('CreatePipelinePart', data);
+    });
 });

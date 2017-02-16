@@ -1,9 +1,30 @@
 ﻿var PipelineCanvas = function () {
 
+    // Canvas Variables 
     var canvasId;
     var canvasOffsetX;
     var canvasOffsetY;
     var isDrawingProject = false;
+
+    // Data and Functions
+    var projectModel; // the view model holding all details of the project
+    var classTypes = null; //  for convenience - part of the project model that provides class types.
+    var createPipelinePart = null; // passed in function to call when creating a pipeline part
+
+    // Box Variables
+    var boxScale = 1.0;
+    var boxMargin = 20;
+    var boxOffsetX = 0;
+    var boxOffsetY = 0;
+    var boxHeight = 60;
+    var boxWidth = 180;
+    var boxFont = '12pt Arial';
+    var boxFontHeight = 12;
+    var boxColor = 'rgba(200, 200, 200, 1)';
+    var boxTextColor = 'white';
+    var hitBoxes = []; // used for mouse events
+
+
 
     // Build Sinewave object
     function getWave(periodicity, height, color, xoffset, yoffset) {
@@ -52,21 +73,6 @@
     }
 
 
-
-
-    var projectModel; // the view model holding all details of the project
-    var boxScale = 1.0;
-    var boxMargin = 20;
-    var boxOffsetX = 0;
-    var boxOffsetY = 0;
-    var boxHeight = 60;
-    var boxWidth = 180;
-    var boxFont = '12pt Arial';
-    var boxFontHeight = 12;
-    var boxColor = 'rgba(255, 255, 255, 1)';
-    var boxTextColor = 'white';
-    var hitBoxes = []; // used for mouse events
-    var classTypes = null;
 
 
     // used to build the hitbox list
@@ -162,6 +168,8 @@
         console.log("Create: " + event.data.id);
         var $div = $('#editor_holder');
         $div.html('');
+        createPipelinePart( { projectId: projectModel.Id, classType: event.data.id, columNumber: 0 });
+
     }
 
 
@@ -177,17 +185,15 @@
                 console.log("HIT: " + box.classname);
                 var $div = $('#editor_holder');
                 $div.html('');
-                var form = $('<div></div>').attr("id", 'selectType').attr("name", 'selectType');
+                var form = $('<div></div>').attr("id", 'selectType').attr("role", 'group').attr("class", 'btn-group-vertical');
                 $.each(classTypes.PipelineParts[box.classname], function (key, value) {
                     console.log("Adding: " + value.FriendlyName);
-                    var $subdiv = $('<div></div>').attr("class", 'row');
                     $("<button class='btn btn-sm btn-default' value='" + value.FriendlyName + "' >")
                     .attr("id", value.ClassType)
                     .attr("name", value.FriendlyName)
                     .text(value.FriendlyName)
                     .on('click', { id: value.ClassType }, handleCreatePipelinePart)
-                    .appendTo($subdiv);
-                    $subdiv.appendTo(form);
+                    .appendTo(form);
 
                 });
                 
@@ -281,9 +287,15 @@
     };
 
 
+    getCreatePipelinePartFunction = function (fn) 
+    {
+        createPipelinePart = fn;
+    }
+
     return {
         startDrawing: startDrawing,
-        startDrawingProject: startDrawingProject
+        startDrawingProject: startDrawingProject,
+        getCreatePipelinePartFunction: getCreatePipelinePartFunction
     };
 
 };
