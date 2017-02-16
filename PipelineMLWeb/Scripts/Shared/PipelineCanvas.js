@@ -185,10 +185,10 @@
                 console.log("HIT: " + box.classname);
                 var $div = $('#editor_holder');
                 $div.html('');
-                var form = $('<div></div>').attr("id", 'selectType').attr("role", 'group').attr("class", 'btn-group-vertical');
+                var form = $('<div></div>').attr("id", 'selectType').attr("class", 'list-group');
                 $.each(classTypes.PipelineParts[box.classname], function (key, value) {
                     console.log("Adding: " + value.FriendlyName);
-                    $("<button class='btn btn-sm btn-default' value='" + value.FriendlyName + "' >")
+                    $("<a href='#' class='list-group-item' value='" + value.FriendlyName + "' >")
                     .attr("id", value.ClassType)
                     .attr("name", value.FriendlyName)
                     .text(value.FriendlyName)
@@ -197,7 +197,7 @@
 
                 });
                 
-                $div.append('<h1>Select Type:</h1>');
+                $div.append('<h3>Select Type:</h3>');
                 $(form).appendTo($div);
                 //$div.appendTo('body').submit();
 
