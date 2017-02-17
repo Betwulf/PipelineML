@@ -75,7 +75,7 @@ namespace PipelineMLWeb.DataContexts
         {
             try
             {
-                var json = _storage.ReadData(nameof(T), id.ToString());
+                var json = _storage.ReadData(typeof(T).Name, id.ToString());
                 return JsonConvert.DeserializeObject<T>(json);
             }
             catch (Exception ex)
@@ -88,7 +88,7 @@ namespace PipelineMLWeb.DataContexts
         private void Save<T>(Guid id, T dataObject)
         {
             var json = JsonConvert.SerializeObject(dataObject);
-            _storage.WriteData(nameof(T), id.ToString(), json);
+            _storage.WriteData(typeof(T).Name, id.ToString(), json);
         }
 
     }

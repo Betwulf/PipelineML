@@ -10,7 +10,7 @@ namespace PipelineMLCore
 {
     public class DatasetGeneratorWebsiteCSV : IDatasetGenerator, ISearchableClass
     {
-        public Guid Id { get; set; }
+        public Guid Id { get { return Config.Id; } }
 
         public string Name { get { return Config.Name; } }
 

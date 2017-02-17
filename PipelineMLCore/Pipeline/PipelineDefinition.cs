@@ -19,8 +19,6 @@ namespace PipelineMLCore
     {
         private IKernel _kernel;
 
-        public Guid Id { get; set; }
-
         public TypeDefinition DatasetGenerator { get; set; }
 
         public ICollection<TypeDefinition> PreprocessDataTransforms { get; set; }

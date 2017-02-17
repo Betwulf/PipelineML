@@ -9,6 +9,6 @@ namespace PipelineMLCore
 
         ConfigBase Config { get; set; }
 
-        Guid Id { get; set; }
+        Guid Id { get; }
     }
 }
