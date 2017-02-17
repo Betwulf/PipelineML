@@ -59,9 +59,8 @@ namespace PipelineMLWeb.Controllers
             var newProj = new PipelineProject();
             newProj.Name = model.Name;
             newProj.Description = model.Description;
-            newProj.PipelineDefinitionGuid = new Guid();
             var newPipelineDef = new PipelineDefinition();
-            newPipelineDef.Id = newProj.PipelineDefinitionGuid;
+            newProj.PipelineDefinitionGuid = newPipelineDef.Id;
             newPipelineDef.Name = model.Name;
 
        

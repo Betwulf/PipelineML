@@ -129,7 +129,7 @@
         boxHeight = boxHeight * boxScale;
         boxWidth = boxWidth * boxScale;
 
-        // DataGenerator Stack
+        // DataGenerator Column
         if (projectModel.DataGeneratorPart !== null) {
             projectModel.DataGeneratorPart.x = currX;
             projectModel.DataGeneratorPart.y = currY;
@@ -143,7 +143,7 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 0, null, classTypes.DatasetGenerator));
         }
 
-        // Preprocess Stack
+        // Preprocess Column
         currX = currX + boxWidth + boxMargin;
         currY = boxOffsetY + boxMargin;
         for (part in projectModel.PreProcessParts) {
@@ -159,8 +159,61 @@
             drawPlus(currX, currY, boxWidth, boxHeight);
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, null, classTypes.DataTransform));
         }
-        // TODO: ... add the rest....
 
+
+        // Machine Learning Column
+        currX = currX + boxWidth + boxMargin;
+        currY = boxOffsetY + boxMargin;
+        for (part in projectModel.MLParts) {
+            projectModel.MLParts[part].x = currX;
+            projectModel.MLParts[part].y = currY;
+            projectModel.MLParts[part].xw = currX + boxWidth;
+            projectModel.MLParts[part].yh = currY + boxHeight;
+            drawBox(currX, currY, boxWidth, boxHeight, projectModel.MLParts[part].Name);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, projectModel.MLParts[part].Id, projectModel.MLParts[part].ClassName));
+            currY = currY + boxHeight + boxMargin;
+        }
+        if (projectModel.MLParts.length === 0) {
+            drawPlus(currX, currY, boxWidth, boxHeight);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, null, classTypes.MachineLearning));
+        }
+
+
+        // Postprocess Column
+        currX = currX + boxWidth + boxMargin;
+        currY = boxOffsetY + boxMargin;
+        for (part in projectModel.PostProcessParts) {
+            projectModel.PostProcessParts[part].x = currX;
+            projectModel.PostProcessParts[part].y = currY;
+            projectModel.PostProcessParts[part].xw = currX + boxWidth;
+            projectModel.PostProcessParts[part].yh = currY + boxHeight;
+            drawBox(currX, currY, boxWidth, boxHeight, projectModel.PostProcessParts[part].Name);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, projectModel.PostProcessParts[part].Id, projectModel.PostProcessParts[part].ClassName));
+            currY = currY + boxHeight + boxMargin;
+        }
+        if (projectModel.PostProcessParts.length === 0) {
+            drawPlus(currX, currY, boxWidth, boxHeight);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, null, classTypes.DataTransform));
+        }
+
+
+
+        // Evaluator Column
+        currX = currX + boxWidth + boxMargin;
+        currY = boxOffsetY + boxMargin;
+        for (part in projectModel.EvalutorParts) {
+            projectModel.EvalutorParts[part].x = currX;
+            projectModel.EvalutorParts[part].y = currY;
+            projectModel.EvalutorParts[part].xw = currX + boxWidth;
+            projectModel.EvalutorParts[part].yh = currY + boxHeight;
+            drawBox(currX, currY, boxWidth, boxHeight, projectModel.EvalutorParts[part].Name);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, projectModel.EvalutorParts[part].Id, projectModel.EvalutorParts[part].ClassName));
+            currY = currY + boxHeight + boxMargin;
+        }
+        if (projectModel.EvalutorParts.length === 0) {
+            drawPlus(currX, currY, boxWidth, boxHeight);
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, null, classTypes.Evaluator));
+        }
     }
 
     function handleCreatePipelinePart(event)
@@ -183,22 +236,29 @@
             if (mouseX >= box.x && mouseX <= box.xw && mouseY >= box.y && mouseY <= box.yh) {
                 // THEN HIT!
                 console.log("HIT: " + box.classname);
-                var $div = $('#editor_holder');
-                $div.html('');
-                var form = $('<div></div>').attr("id", 'selectType').attr("class", 'list-group');
-                $.each(classTypes.PipelineParts[box.classname], function (key, value) {
-                    console.log("Adding: " + value.FriendlyName);
-                    $("<a href='#' class='list-group-item' value='" + value.FriendlyName + "' >")
-                    .attr("id", value.ClassType)
-                    .attr("name", value.FriendlyName)
-                    .text(value.FriendlyName)
-                    .on('click', { id: value.ClassType }, handleCreatePipelinePart)
-                    .appendTo(form);
+                if (box.id === null) {
+                    // no object here, just a plus sign, so let them add!
+                    var $div = $('#editor_holder');
+                    $div.html('');
+                    var form = $('<div></div>').attr("id", 'selectType').attr("class", 'list-group');
+                    $.each(classTypes.PipelineParts[box.classname], function (key, value) {
+                        console.log("Adding: " + value.FriendlyName);
+                        $("<a href='#' class='list-group-item' value='" + value.FriendlyName + "' >")
+                        .attr("id", value.ClassType)
+                        .attr("name", value.FriendlyName)
+                        .text(value.FriendlyName)
+                        .on('click', { id: value.ClassType }, handleCreatePipelinePart)
+                        .appendTo(form);
 
-                });
-                
-                $div.append('<h3>Select Type:</h3>');
-                $(form).appendTo($div);
+                    });
+
+                    $div.append('<h3>Select Type:</h3>');
+                    $(form).appendTo($div);
+                }
+                else {
+                    // they want to edit an object
+
+                }
             }
         }
     }

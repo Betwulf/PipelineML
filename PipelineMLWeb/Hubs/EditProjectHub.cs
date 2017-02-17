@@ -46,7 +46,7 @@ namespace PipelineMLWeb.Hubs
         }
 
         [Authorize]
-        public void CreatePipelinePart(CreatePipelinePartViewModel createPart)
+        public void CreatePipelinePart(EditPipelinePartViewModel createPart)
         {
             ApplicationUser currentUser = this.GetApplicationUser();
             var DbContext = this.GetPipelineDbContext();
@@ -71,9 +71,19 @@ namespace PipelineMLWeb.Hubs
                             break;
                     }
                     DbContext.SavePipelineDefinition(def.Id, def);
+                    // Return updated project  to UI
+                    ProjectViewModel model = new ProjectViewModel(project);
+                    model.SetDefinition(def);
+                    Clients.Caller.OnGetProject(model);
                 }
             }
             // TODO: create type and add it to the appropriate project, then save and update project in UI
+        }
+
+        [Authorize]
+        public void GetPipelinePartAndSchema(EditPipelinePartViewModel partData)
+        {
+            //TODO: get the current pipeline config and schema and return it to the UI
         }
     }
 }
