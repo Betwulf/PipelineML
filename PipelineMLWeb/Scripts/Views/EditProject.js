@@ -5,13 +5,20 @@ var sinewaveList;
 var editor; //JSON Editor
 var project; // pipeline project view model
 var pipelineCanvas; // javascript drawing functions
+var editingData;
 
 $(document).ready(function () {
 
+    // the function to receive editing info for a pipeline part that the user selected to edit
+    var editPipelinePart = function (data) {
+        //TODO: Fix editor, dispose of old one if any?
+        editingData = data;
+        createEditor(data.schemaJSON, data.dataJSON);
+    };
 
 
-    var CreateEditor = function () {
-        //$.getJSON("/Notes/Data", starting_value, loadedData);
+    var createEditor = function (schema, data) {
+        starting_value = data;
         // JSONEditor Setup params
         JSONEditor.defaults.options.theme = 'bootstrap3';
         JSONEditor.defaults.options.disable_array_add = 'true';
@@ -22,36 +29,16 @@ $(document).ready(function () {
         JSONEditor.defaults.options.disable_properties = 'true';
         // Initialize the json editor with a JSON schema
         editor = new JSONEditor(document.getElementById('editor_holder'), {
-            schema: {
-                type: "object",
-                title: "Car",
-                properties: {
-                    make: {
-                        type: "string",
-                        enum: [
-                          "Toyota",
-                          "BMW",
-                          "Honda",
-                          "Ford",
-                          "Chevy",
-                          "VW"
-                        ]
-                    },
-                    model: {
-                        type: "string"
-                    },
-                    year: {
-                        type: "integer",
-                        enum: [
-                          1995, 1996, 1997, 1998, 1999,
-                          2000, 2001, 2002, 2003, 2004,
-                          2005, 2006, 2007, 2008, 2009,
-                          2010, 2011, 2012, 2013, 2014
-                        ],
-                        default: 2008
-                    }
-                }
-            }
+            schema: schema,
+
+            // Seed the form with a starting value
+            startval: starting_value,
+
+            // Disable additional properties
+            no_additional_properties: true,
+
+            // Require all properties by default
+            required_by_default: true
         });
     };
 
@@ -72,13 +59,25 @@ $(document).ready(function () {
         pipelineCanvas.startDrawingProject(project);
     });
 
+    hub.on("OnEditPipelinePart", function (data) {
+        console.log("OnEditPipelinePart: " + data.classType)
+        editPipelinePart(data);
+    });
+    
     conn.start(function () {
         console.log('Got project id:' + projectId);
         hub.invoke('GetProject', projectId);
     });
 
+
+
     pipelineCanvas.getCreatePipelinePartFunction(function (data) {
         console.log('Create Pipeline Part:' + data.classType);
         hub.invoke('CreatePipelinePart', data);
+    });
+
+    pipelineCanvas.getEditPipelinePartFunction(function (data) {
+        console.log('Edit Pipeline Part:' + data.classType);
+        hub.invoke('GetPipelinePartAndSchema', data);
     });
 });

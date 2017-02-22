@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace PipelineMLCore
 {
@@ -43,6 +44,94 @@ namespace PipelineMLCore
             _kernel = kernel;
         }
 
+        public IPipelinePart CreateInstanceOf(int column, TypeDefinition typeDef)
+        {
+            if (typeDef == null) return null;
+            switch (column)
+            {
+                case 0:
+                    // hydrate DatasetGenerator
+                    var datasetGenerator = Activator.CreateInstance(typeDef.ClassType) as IDatasetGenerator;
+                    datasetGenerator.Configure(_kernel, typeDef.ClassConfig);
+                    return datasetGenerator;
+                case 1:
+                case 3:
+                    // hydrate data transform
+                    IDataTransform dt = Activator.CreateInstance(typeDef.ClassType) as IDataTransform;
+                    dt.Configure(_kernel, typeDef.ClassConfig);
+                    return dt;
+                case 2:
+                    IMachineLearningProcess ml = Activator.CreateInstance(typeDef.ClassType) as IMachineLearningProcess;
+                    ml.Configure(_kernel, typeDef.ClassConfig);
+                    return ml;
+                case 4:
+                    IEvaluator eval = Activator.CreateInstance(typeDef.ClassType) as IEvaluator;
+                    eval.Configure(_kernel, typeDef.ClassConfig);
+                    return eval;
+                default:
+                    return null;
+            }
+        }
+
+
+        public IPipelinePart CreateInstanceOf(int column, Type classType, string Guid)
+        {
+            switch (column)
+            {
+                case 0:
+                    // hydrate DatasetGenerator
+                    if (DatasetGenerator != null && DatasetGenerator.ClassType == classType)
+                    {
+                        var partDG = CreateInstanceOf(column, DatasetGenerator);
+                        if (partDG.Id.ToString() == Guid)
+                            return partDG;
+                    }
+                    return null;
+                case 1:
+                    // hydrate preprocess data transforms
+                    var resultPre = PreprocessDataTransforms.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    if (resultPre != null)
+                    {
+                        var partPre = CreateInstanceOf(column, resultPre);
+                        if (partPre.Id.ToString() == Guid)
+                            return partPre;
+                    }
+                    return null;
+                case 2:
+                    // hydrate ml MLList
+                    var resultML = MLList.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    if (resultML != null)
+                    {
+                        var partML = CreateInstanceOf(column, resultML);
+                        if (partML.Id.ToString() == Guid)
+                            return partML;
+                    }
+                    return null;
+                case 3:
+                    // hydrate preprocess data transforms
+                    var resultPost = PostprocessDataTransforms.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    if (resultPost != null)
+                    {
+                        var partPost = CreateInstanceOf(column, resultPost);
+                        if (partPost.Id.ToString() == Guid)
+                            return partPost;
+                    }
+                    return null;
+                case 4:
+                    var resultEval = Evaluators.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    if (resultEval != null)
+                    {
+                        var partEval = CreateInstanceOf(column, resultEval);
+                        if (partEval.Id.ToString() == Guid)
+                            return partEval;
+                    }
+                    return null;
+                default:
+                    return null;
+            }
+        }
+
+
         public PipelineInstance CreateInstance()
         {
             var pi = new PipelineInstance()
@@ -53,41 +142,33 @@ namespace PipelineMLCore
             pi.Configure(_kernel);
 
             // hydrate dataset generator
-            if (DatasetGenerator != null)
-            {
-                pi.DatasetGenerator = Activator.CreateInstance(DatasetGenerator.ClassType) as IDatasetGenerator;
-                pi.DatasetGenerator.Configure(_kernel, DatasetGenerator.ClassConfig);
-            }
+            pi.DatasetGenerator = CreateInstanceOf(0, DatasetGenerator) as IDatasetGenerator;
 
             // hydrate preprocess data transforms
             foreach (var item in PreprocessDataTransforms)
             {
-                IDataTransform dt = Activator.CreateInstance(item.ClassType) as IDataTransform;
-                dt.Configure(_kernel, item.ClassConfig);
+                IDataTransform dt = CreateInstanceOf(1, item) as IDataTransform;
                 pi.PreprocessDataTransforms.Add(dt);
             }
 
             // hydrate ml
             foreach (var item in MLList)
             {
-                IMachineLearningProcess ml = Activator.CreateInstance(item.ClassType) as IMachineLearningProcess;
-                ml.Configure(_kernel, item.ClassConfig);
+                IMachineLearningProcess ml = CreateInstanceOf(2,item) as IMachineLearningProcess;
                 pi.MLList.Add(ml);
             }
 
             // hydrate postprocess data transforms
             foreach (var item in PostprocessDataTransforms)
             {
-                IDataTransform dt = Activator.CreateInstance(item.ClassType) as IDataTransform;
-                dt.Configure(_kernel, item.ClassConfig);
+                IDataTransform dt = CreateInstanceOf(3, item) as IDataTransform;
                 pi.PostprocessDataTransforms.Add(dt);
             }
 
             //hydrate Evaluators
             foreach (var item in Evaluators)
             {
-                IEvaluator eval = Activator.CreateInstance(item.ClassType) as IEvaluator;
-                eval.Configure(_kernel, item.ClassConfig);
+                IEvaluator eval = CreateInstanceOf(4, item) as IEvaluator;
                 pi.Evaluators.Add(eval);
             }
 

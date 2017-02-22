@@ -86,7 +86,7 @@ namespace PipelineMLWeb.Models
         [Required, MaxLength(40)]
         public string Name { get; set; }
 
-        public string ClassName { get; set; }
+        public Type ClassType { get; set; }
 
     }
 
@@ -150,7 +150,7 @@ namespace PipelineMLWeb.Models
             if (inst.DatasetGenerator != null)
             {
                 DataGeneratorPart = new PipelinePartViewModel();
-                DataGeneratorPart.ClassName = inst.DatasetGenerator.GetType().Name;
+                DataGeneratorPart.ClassType = inst.DatasetGenerator.GetType();
                 DataGeneratorPart.Name = inst.DatasetGenerator.Name;
                 DataGeneratorPart.Id = inst.DatasetGenerator.Id;
             }
@@ -160,7 +160,7 @@ namespace PipelineMLWeb.Models
                 var part = new PipelinePartViewModel();
                 part.Id = item.Id;
                 part.Name = item.Name;
-                part.ClassName = item.GetType().Name;
+                part.ClassType = item.GetType();
                 PreProcessParts.Add(part);
             }
 
@@ -169,7 +169,7 @@ namespace PipelineMLWeb.Models
                 var part = new PipelinePartViewModel();
                 part.Id = item.Id;
                 part.Name = item.Name;
-                part.ClassName = item.GetType().Name;
+                part.ClassType = item.GetType();
                 MLParts.Add(part);
             }
 
@@ -178,7 +178,7 @@ namespace PipelineMLWeb.Models
                 var part = new PipelinePartViewModel();
                 part.Id = item.Id;
                 part.Name = item.Name;
-                part.ClassName = item.GetType().Name;
+                part.ClassType = item.GetType();
                 PostProcessParts.Add(part);
             }
 
@@ -187,7 +187,7 @@ namespace PipelineMLWeb.Models
                 var part = new PipelinePartViewModel();
                 part.Id = item.Id;
                 part.Name = item.Name;
-                part.ClassName = item.GetType().Name;
+                part.ClassType = item.GetType();
                 EvalutorParts.Add(part);
             }
 

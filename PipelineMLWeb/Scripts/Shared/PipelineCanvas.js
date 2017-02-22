@@ -10,6 +10,7 @@
     var projectModel; // the view model holding all details of the project
     var classTypes = null; //  for convenience - part of the project model that provides class types.
     var createPipelinePart = null; // passed in function to call when creating a pipeline part
+    var editPipelinePart = null; // passed in function to call when a user wants to edit a pipeline part
 
     // Box Variables
     var boxScale = 1.0;
@@ -76,14 +77,14 @@
 
 
     // used to build the hitbox list
-    function getHitBox(x, y, w, h, column, id, classname) {
+    function getHitBox(x, y, w, h, column, id, classType) {
         this.x = x;
         this.y = y;
         this.xw = x + w;
         this.yh = y + h;
         this.column = column;
         this.id = id;
-        this.classname = classname;
+        this.classType = classType;
     }
 
 
@@ -136,7 +137,7 @@
             projectModel.DataGeneratorPart.xw = currX + boxWidth;
             projectModel.DataGeneratorPart.yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.DataGeneratorPart.Name);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 0, projectModel.DataGeneratorPart.Id, projectModel.DataGeneratorPart.ClassName));
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 0, projectModel.DataGeneratorPart.Id, projectModel.DataGeneratorPart.ClassType));
         }
         else {
             drawPlus(currX, currY, boxWidth, boxHeight);
@@ -152,7 +153,7 @@
             projectModel.PreProcessParts[part].xw = currX + boxWidth;
             projectModel.PreProcessParts[part].yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.PreProcessParts[part].Name);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, projectModel.PreProcessParts[part].Id, projectModel.PreProcessParts[part].ClassName));
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, projectModel.PreProcessParts[part].Id, projectModel.PreProcessParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
         if (projectModel.PreProcessParts.length === 0) {
@@ -170,7 +171,7 @@
             projectModel.MLParts[part].xw = currX + boxWidth;
             projectModel.MLParts[part].yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.MLParts[part].Name);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, projectModel.MLParts[part].Id, projectModel.MLParts[part].ClassName));
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, projectModel.MLParts[part].Id, projectModel.MLParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
         if (projectModel.MLParts.length === 0) {
@@ -188,7 +189,7 @@
             projectModel.PostProcessParts[part].xw = currX + boxWidth;
             projectModel.PostProcessParts[part].yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.PostProcessParts[part].Name);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, projectModel.PostProcessParts[part].Id, projectModel.PostProcessParts[part].ClassName));
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, projectModel.PostProcessParts[part].Id, projectModel.PostProcessParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
         if (projectModel.PostProcessParts.length === 0) {
@@ -207,7 +208,7 @@
             projectModel.EvalutorParts[part].xw = currX + boxWidth;
             projectModel.EvalutorParts[part].yh = currY + boxHeight;
             drawBox(currX, currY, boxWidth, boxHeight, projectModel.EvalutorParts[part].Name);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, projectModel.EvalutorParts[part].Id, projectModel.EvalutorParts[part].ClassName));
+            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, projectModel.EvalutorParts[part].Id, projectModel.EvalutorParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
         if (projectModel.EvalutorParts.length === 0) {
@@ -221,7 +222,7 @@
         console.log("Create: " + event.data.id);
         var $div = $('#editor_holder');
         $div.html('');
-        createPipelinePart( { projectId: projectModel.Id, classType: event.data.id, columNumber: 0 });
+        createPipelinePart( { projectId: projectModel.Id, classType: event.data.id, columNumber: event.data.column });
 
     }
 
@@ -235,19 +236,19 @@
             var box = hitBoxes[boxnum];
             if (mouseX >= box.x && mouseX <= box.xw && mouseY >= box.y && mouseY <= box.yh) {
                 // THEN HIT!
-                console.log("HIT: " + box.classname);
+                console.log("HIT: " + box.classType);
                 if (box.id === null) {
                     // no object here, just a plus sign, so let them add!
                     var $div = $('#editor_holder');
                     $div.html('');
                     var form = $('<div></div>').attr("id", 'selectType').attr("class", 'list-group');
-                    $.each(classTypes.PipelineParts[box.classname], function (key, value) {
+                    $.each(classTypes.PipelineParts[box.classType], function (key, value) {
                         console.log("Adding: " + value.FriendlyName);
                         $("<a href='#' class='list-group-item' value='" + value.FriendlyName + "' >")
                         .attr("id", value.ClassType)
                         .attr("name", value.FriendlyName)
                         .text(value.FriendlyName)
-                        .on('click', { id: value.ClassType }, handleCreatePipelinePart)
+                        .on('click', { id: value.ClassType, column: box.column }, handleCreatePipelinePart)
                         .appendTo(form);
 
                     });
@@ -257,7 +258,7 @@
                 }
                 else {
                     // they want to edit an object
-
+                    editPipelinePart({ projectId: projectModel.Id, pipelinePartId: box.id, classType: box.classType, columNumber: box.column });
                 }
             }
         }
@@ -344,16 +345,23 @@
         ];
     };
 
-
+    // Get the function we would need to call to create a new pipeline part that the user requested
     getCreatePipelinePartFunction = function (fn) 
     {
         createPipelinePart = fn;
     }
 
+    // get the function to call when a user clicks on an existing pipeline part for editing
+    getEditPipelinePartFunction = function (fn)
+    {
+        editPipelinePart = fn;
+    }
+
     return {
         startDrawing: startDrawing,
         startDrawingProject: startDrawingProject,
-        getCreatePipelinePartFunction: getCreatePipelinePartFunction
+        getCreatePipelinePartFunction: getCreatePipelinePartFunction,
+        getEditPipelinePartFunction: getEditPipelinePartFunction
     };
 
 };

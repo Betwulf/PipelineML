@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json.Schema.Generation;
 using PipelineMLCore;
 using PipelineMLWeb.DataContexts;
 using PipelineMLWeb.Models;
@@ -30,6 +31,7 @@ namespace PipelineMLWeb.Hubs
             // TODO: Handle case where project is null
         }
 
+
         private PipelineProject GetProjectInternal(ApplicationUser user, PipelineDbContext dbContext, string projectId)
         {
             var projectClaim = user.Claims.FirstOrDefault(x => x.ClaimType == PipelineClaimsTypes.PipelineProject && x.ClaimValue == projectId);
@@ -44,6 +46,7 @@ namespace PipelineMLWeb.Hubs
             }
             return null;
         }
+
 
         [Authorize]
         public void CreatePipelinePart(EditPipelinePartViewModel createPart)
@@ -80,10 +83,33 @@ namespace PipelineMLWeb.Hubs
             // TODO: create type and add it to the appropriate project, then save and update project in UI
         }
 
+
         [Authorize]
         public void GetPipelinePartAndSchema(EditPipelinePartViewModel partData)
         {
-            //TODO: get the current pipeline config and schema and return it to the UI
+            ApplicationUser currentUser = this.GetApplicationUser();
+            var DbContext = this.GetPipelineDbContext();
+            Type classType = Type.GetType(partData.classType);
+            var project = GetProjectInternal(currentUser, DbContext, partData.projectId);
+            if (project != null)
+            {
+                var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
+                var part = def.CreateInstanceOf(partData.columnNumber, classType, partData.pipelinePartId);
+                string partConfigJson = part.Config.ToJSON();
+
+                JSchemaGenerator generator = new JSchemaGenerator();
+                string partConfigSchema = generator.Generate(part.Config.GetType()).ToString();
+
+                var data = new PipelinePartSchemaAndData() {
+                    classType = partData.classType, columnNumber = partData.columnNumber, projectId = partData.projectId, pipelinePartId = partData.pipelinePartId };
+                data.schemaJSON = partConfigSchema;
+                data.dataJSON = partConfigJson;
+
+                // TODO: Handle this on Javascript side
+                Clients.Caller.OnEditPipelinePart(data);
+
+
+            }
         }
     }
 }
