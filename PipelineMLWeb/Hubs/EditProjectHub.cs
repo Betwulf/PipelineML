@@ -98,6 +98,10 @@ namespace PipelineMLWeb.Hubs
                 string partConfigJson = part.Config.ToJSON();
 
                 JSchemaGenerator generator = new JSchemaGenerator();
+                generator.ContractResolver = new PipelinePartContractResolver();
+                // types with no defined ID have their type name as the ID
+                generator.SchemaIdGenerationHandling = SchemaIdGenerationHandling.TypeName;
+                generator.DefaultRequired = Newtonsoft.Json.Required.Always;
                 string partConfigSchema = generator.Generate(part.Config.GetType()).ToString();
 
                 var data = new PipelinePartSchemaAndData() {

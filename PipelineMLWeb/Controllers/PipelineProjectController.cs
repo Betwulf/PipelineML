@@ -60,6 +60,7 @@ namespace PipelineMLWeb.Controllers
             newProj.Name = model.Name;
             newProj.Description = model.Description;
             var newPipelineDef = new PipelineDefinition();
+            newPipelineDef.Configure(Startup.CreateNinject());
             newProj.PipelineDefinitionGuid = newPipelineDef.Id;
             newPipelineDef.Name = model.Name;
 

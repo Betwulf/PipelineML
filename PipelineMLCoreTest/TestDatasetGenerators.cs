@@ -18,7 +18,7 @@ namespace PipelineMLCoreTest
         {
             // ninject config for test
             IKernel kernel = new StandardKernel();
-            kernel.Bind<IStorage>().To<StorageFile>();
+            kernel.Bind<IStorage>().ToMethod(context => new StorageFile(@"C:\Temp\"));
             
 
             string filename = TestConstants.yahooFilename;
@@ -26,7 +26,6 @@ namespace PipelineMLCoreTest
             var cfg = new DatasetConfigYahooMarketData();
             cfg.StartDate = TestConstants.startDate;
             cfg.EndDate = TestConstants.endDate;
-            cfg.SubFolder = subfolder;
             cfg.Symbols = new List<string>() { TestConstants.yahooStock };
             cfg.Name = TestConstants.testName;
 
@@ -44,7 +43,7 @@ namespace PipelineMLCoreTest
         {
             // ninject config for test
             IKernel kernel = new StandardKernel();
-            kernel.Bind<IStorage>().To<StorageFile>();
+            kernel.Bind<IStorage>().ToMethod(context => new StorageFile(@"C:\Temp\"));
 
             var cfg = new DatasetConfigCSVFile();
             cfg.Name = TestConstants.testName;

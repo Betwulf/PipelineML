@@ -258,6 +258,8 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\StorageProvider.cs" />
+    <Compile Include="Code\PipelinePartContractResolver.cs" />
     <Compile Include="DataContexts\ApplicationDbContext.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.Designer.cs">
@@ -287,7 +289,7 @@
     <Compile Include="Hubs\HubExtensions.cs" />
     <Compile Include="Models\EditPipelinePartViewModel.cs" />
     <Compile Include="Models\ProjectViewModels.cs" />
-    <Compile Include="PipelineClaimsTypes.cs" />
+    <Compile Include="Code\PipelineClaimsTypes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

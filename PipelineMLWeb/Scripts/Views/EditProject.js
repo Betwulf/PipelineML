@@ -13,7 +13,7 @@ $(document).ready(function () {
     var editPipelinePart = function (data) {
         //TODO: Fix editor, dispose of old one if any?
         editingData = data;
-        createEditor(data.schemaJSON, data.dataJSON);
+        createEditor(JSON.parse(data.schemaJSON), JSON.parse(data.dataJSON));
     };
 
 
@@ -21,12 +21,12 @@ $(document).ready(function () {
         starting_value = data;
         // JSONEditor Setup params
         JSONEditor.defaults.options.theme = 'bootstrap3';
-        JSONEditor.defaults.options.disable_array_add = 'true';
-        JSONEditor.defaults.options.disable_array_delete = 'true';
-        JSONEditor.defaults.options.disable_array_reorder = 'true';
+        JSONEditor.defaults.options.iconlib = 'bootstrap3';
         JSONEditor.defaults.options.disable_collapse = 'true';
         JSONEditor.defaults.options.disable_edit_json = 'true';
         JSONEditor.defaults.options.disable_properties = 'true';
+
+
         // Initialize the json editor with a JSON schema
         editor = new JSONEditor(document.getElementById('editor_holder'), {
             schema: schema,
@@ -60,7 +60,7 @@ $(document).ready(function () {
     });
 
     hub.on("OnEditPipelinePart", function (data) {
-        console.log("OnEditPipelinePart: " + data.classType)
+        console.log("OnEditPipelinePart: " + data.classType);
         editPipelinePart(data);
     });
     

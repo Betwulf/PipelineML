@@ -6,8 +6,10 @@ using PipelineMLCore;
 using PipelineMLWeb.DataContexts;
 using Serilog;
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 
-[assembly: OwinStartupAttribute(typeof(PipelineMLWeb.Startup))]
+[assembly: OwinStartup(typeof(PipelineMLWeb.Startup))]
 namespace PipelineMLWeb
 {
     public partial class Startup
@@ -22,6 +24,7 @@ namespace PipelineMLWeb
             ConfigureNinject(app);
             app.CreatePerOwinContext<PipelineDbContext>(PipelineDbContext.Create);
             app.MapSignalR();
+
         }
 
         public void ConfigureNinject(IAppBuilder app)
@@ -32,8 +35,10 @@ namespace PipelineMLWeb
 
         public static IKernel CreateNinject()
         {
+            NameValueCollection appSettings = ConfigurationManager.AppSettings;
             IKernel _kernel = new StandardKernel();
-            _kernel.Bind<IStorage>().To<StorageFile>();
+            //_kernel.Bind<IStorage>().To<StorageFile>();
+            _kernel.Bind<IStorage>().ToProvider(new StorageProvider(appSettings));
             return _kernel;
         }
     }

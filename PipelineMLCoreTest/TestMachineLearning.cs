@@ -17,7 +17,7 @@ namespace PipelineMLCoreTest
         public void TestDecisionTreeWithTitanicData()
         {
             IKernel kernel = new StandardKernel();
-            kernel.Bind<IStorage>().To<StorageFile>();
+            kernel.Bind<IStorage>().ToMethod(context => new StorageFile(@"C:\Temp\"));
 
             // config dataset
             var cfg = new DatasetConfigCSVFile();

@@ -11,7 +11,7 @@ namespace PipelineMLCoreTest
         public void TestAddColumn()
         {
             IKernel kernel = new StandardKernel();
-            kernel.Bind<IStorage>().To<StorageFile>();
+            kernel.Bind<IStorage>().ToMethod(context => new StorageFile(@"C:\Temp\"));
 
             var dt = new DataTransformAddColumn();
             var dtcfg = new DataTransformConfigAddColumn();

@@ -8,13 +8,10 @@ namespace PipelineMLCore
 
         public string ClassConfig { get; set; }
 
-        public string Guid { get; set; }
-
-        private TypeDefinition(Type type, string config, string guid)
+        private TypeDefinition(Type type, string config)
         {
             ClassType = type;
             ClassConfig = config;
-            Guid = guid;
         }
         public TypeDefinition()
         {
@@ -23,7 +20,7 @@ namespace PipelineMLCore
 
         public static TypeDefinition Create(IPipelinePart part)
         {
-            return new TypeDefinition(part.GetType(), part.Config.ToJSON(), part.Id.ToString());
+            return new TypeDefinition(part.GetType(), part.Config.ToJSON());
         }
     }
 }

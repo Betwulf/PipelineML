@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PipelineMLCore
 {
@@ -7,6 +8,8 @@ namespace PipelineMLCore
     {
         public Guid Id { get; set; }
 
+        [Required]
+        [DataType(DataType.Text)]
         public string Name { get; set; }
 
         public ConfigBase()

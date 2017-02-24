@@ -48,7 +48,9 @@ namespace PipelineMLWeb.DataContexts
 
         public PipelineDefinition GetPipelineDefinitionByGuid(Guid id)
         {
-            return Get<PipelineDefinition>(id);
+            var def = Get<PipelineDefinition>(id);
+            def.Configure(_kernel);
+            return def;
         }
         public void SavePipelineDefinition(Guid id, PipelineDefinition def)
         {

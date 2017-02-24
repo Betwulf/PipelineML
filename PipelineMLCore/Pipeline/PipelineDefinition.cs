@@ -89,7 +89,7 @@ namespace PipelineMLCore
                     return null;
                 case 1:
                     // hydrate preprocess data transforms
-                    var resultPre = PreprocessDataTransforms.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    var resultPre = PreprocessDataTransforms.FirstOrDefault(x => x.ClassType == classType);
                     if (resultPre != null)
                     {
                         var partPre = CreateInstanceOf(column, resultPre);
@@ -99,7 +99,7 @@ namespace PipelineMLCore
                     return null;
                 case 2:
                     // hydrate ml MLList
-                    var resultML = MLList.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    var resultML = MLList.FirstOrDefault(x => x.ClassType == classType);
                     if (resultML != null)
                     {
                         var partML = CreateInstanceOf(column, resultML);
@@ -109,7 +109,7 @@ namespace PipelineMLCore
                     return null;
                 case 3:
                     // hydrate preprocess data transforms
-                    var resultPost = PostprocessDataTransforms.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    var resultPost = PostprocessDataTransforms.FirstOrDefault(x => x.ClassType == classType);
                     if (resultPost != null)
                     {
                         var partPost = CreateInstanceOf(column, resultPost);
@@ -118,7 +118,7 @@ namespace PipelineMLCore
                     }
                     return null;
                 case 4:
-                    var resultEval = Evaluators.FirstOrDefault(x => x.ClassType == classType && x.Guid == Guid);
+                    var resultEval = Evaluators.FirstOrDefault(x => x.ClassType == classType);
                     if (resultEval != null)
                     {
                         var partEval = CreateInstanceOf(column, resultEval);

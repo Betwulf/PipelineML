@@ -46,9 +46,13 @@ namespace PipelineMLCore
 
         public void Configure(IKernel kernel, string jsonConfig)
         {
+            if (kernel == null)
+            {
+                throw new ArgumentNullException(nameof(kernel), "Ninject Kernel is NULL");
+            }
             _kernel = kernel;
             Config = JsonConvert.DeserializeObject<DatasetConfigYahooMarketData>(jsonConfig);
-            cache = new JsonRepository<YahooMarketDataSeries>(ConfigInternal.SubFolder, _kernel.Get<IStorage>());
+            cache = new JsonRepository<YahooMarketDataSeries>(Id.ToString(), _kernel.Get<IStorage>());
         }
 
         public override string ToString()

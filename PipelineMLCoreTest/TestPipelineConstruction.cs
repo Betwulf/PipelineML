@@ -15,7 +15,7 @@ namespace PipelineMLCoreTest
         public void TestPipelineDefinition()
         {
             IKernel kernel = new StandardKernel();
-            kernel.Bind<IStorage>().To<StorageFile>();
+            kernel.Bind<IStorage>().ToMethod(context => new StorageFile(@"C:\Temp\"));
 
             string testname = TestConstants.testName;
             string testfile = TestConstants.testFile;

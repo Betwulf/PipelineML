@@ -9,8 +9,12 @@ namespace PipelineMLCore
 {
     public class StorageFile : IStorage
     {
-        private string _rootDir = "C:\\Temp\\";
+        private string _rootPath;
 
+        public StorageFile(string rootPath)
+        {
+            _rootPath = rootPath;
+        }
         
 
         public IQueryable<Tuple<string, string>> GetAll(string path)
@@ -80,13 +84,13 @@ namespace PipelineMLCore
 
         private string FullDirectory(string path)
         {
-            return Path.Combine(_rootDir, path);
+            return Path.Combine(_rootPath, path);
         }
 
 
         private string FullPath(string path, string file)
         {
-            return Path.Combine(_rootDir, path, file);
+            return Path.Combine(_rootPath, path, file);
         }
     }
 }
