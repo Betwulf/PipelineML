@@ -222,7 +222,7 @@
         console.log("Create: " + event.data.id);
         var $div = $('#editor_holder');
         $div.html('');
-        createPipelinePart( { projectId: projectModel.Id, classType: event.data.id, columNumber: event.data.column });
+        createPipelinePart({ projectId: projectModel.Id, classType: event.data.id, columnNumber: event.data.column });
 
     }
 
@@ -258,7 +258,7 @@
                 }
                 else {
                     // they want to edit an object
-                    editPipelinePart({ projectId: projectModel.Id, pipelinePartId: box.id, classType: box.classType, columNumber: box.column });
+                    editPipelinePart({ projectId: projectModel.Id, pipelinePartId: box.id, classType: box.classType, columnNumber: box.column });
                 }
             }
         }

@@ -284,7 +284,6 @@
       <DependentUpon>201701131343428_2017.01.13 four.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\PipelineMigrations\Configuration.cs" />
-    <Compile Include="Hubs\CounterHub.cs" />
     <Compile Include="Hubs\EditProjectHub.cs" />
     <Compile Include="Hubs\HubExtensions.cs" />
     <Compile Include="Models\EditPipelinePartViewModel.cs" />

@@ -69,8 +69,29 @@ namespace PipelineMLWeb.Hubs
                             Console.WriteLine($"Creating DatasetGenerator: {createPart.classType}");
                             def.DatasetGenerator = new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() };
                         break;
-                        case 5:
-                            Console.WriteLine(5);
+                        case 1:
+                            // Preprocess data transform
+                            Console.WriteLine($"Creating pre process transform: {createPart.classType}");
+                            def.PreprocessDataTransforms.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                            break;
+                        case 2:
+                            // ML
+                            Console.WriteLine($"Creating machine learning: {createPart.classType}");
+                            def.MLList.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                            break;
+                        case 3:
+                            // Postprocess data transform
+                            Console.WriteLine($"Creating post process transform: {createPart.classType}");
+                            def.PostprocessDataTransforms.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                            break;
+                        case 4:
+                            // evaluator
+                            Console.WriteLine($"Creating evaluator: {createPart.classType}");
+                            def.Evaluators.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                            break;
+                        default:
+                            Console.WriteLine($"unknown column number {createPart.columnNumber} for {createPart.classType} ");
+                            //TODO: Handle this case better
                             break;
                     }
                     DbContext.SavePipelineDefinition(def.Id, def);
