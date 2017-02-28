@@ -6,6 +6,8 @@ var editor; //JSON Editor
 var project; // pipeline project view model
 var pipelineCanvas; // javascript drawing functions
 var editingData;
+var resetError;
+var onError;
 
 $(document).ready(function () {
 
@@ -16,8 +18,29 @@ $(document).ready(function () {
         createEditor(JSON.parse(data.schemaJSON), JSON.parse(data.dataJSON));
     };
 
+    onError = function (data) {
+        console.log("OnError: " + data.ErrorMessage);
+        $('#projectStateTooltip').attr('data-original-title', data.ErrorMessage);
+        $('#projectStateTooltip').tooltip();
+        $('#projectStateTooltip').text("details");
+        $('#projectState').removeProp('hidden');
+        $('#projectStateText').text(data.FriendlyMessage);
+    }
+
+    resetError = function () {
+        console.log("resetError Called");
+        $('#projectStateTooltip').attr('data-original-title', "");
+        $('#projectStateTooltip').tooltip();
+        $('#projectStateTooltip').text("details");
+        $('#projectState').prop('hidden');
+        $('#projectStateText').text('');
+    }
 
     var createEditor = function (schema, data) {
+        resetError();
+        var $div = $('#editor_holder');
+        $div.html('');
+
         starting_value = data;
         // JSONEditor Setup params
         JSONEditor.defaults.options.theme = 'bootstrap3';
@@ -54,6 +77,7 @@ $(document).ready(function () {
 
 
     hub.on("OnGetProject", function (data) {
+        resetError();
         project = data;
         $('#projectName').text('Project: ' + project.Name);
         pipelineCanvas.startDrawingProject(project);
@@ -63,6 +87,10 @@ $(document).ready(function () {
         console.log("OnEditPipelinePart: " + data.classType);
         editPipelinePart(data);
     });
+    hub.on("OnError", function (data) {
+        onError(data);
+    });
+
     
     conn.start(function () {
         console.log('Got project id:' + projectId);
@@ -72,12 +100,23 @@ $(document).ready(function () {
 
 
     pipelineCanvas.getCreatePipelinePartFunction(function (data) {
+        resetError();
         console.log('Create Pipeline Part:' + data.classType);
         hub.invoke('CreatePipelinePart', data);
     });
 
     pipelineCanvas.getEditPipelinePartFunction(function (data) {
+        resetError();
         console.log('Edit Pipeline Part:' + data.classType);
         hub.invoke('GetPipelinePartAndSchema', data);
+    });
+
+    pipelineCanvas.getOnErrorFunction(function (data) {
+        onError(data);
+    });
+
+    
+    pipelineCanvas.getResetErrorFunction(function (data) {
+        resetError();
     });
 });

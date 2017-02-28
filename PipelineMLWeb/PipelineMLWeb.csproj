@@ -287,6 +287,7 @@
     <Compile Include="Hubs\EditProjectHub.cs" />
     <Compile Include="Hubs\HubExtensions.cs" />
     <Compile Include="Models\EditPipelinePartViewModel.cs" />
+    <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\ProjectViewModels.cs" />
     <Compile Include="Code\PipelineClaimsTypes.cs" />
     <Compile Include="Controllers\AccountController.cs" />

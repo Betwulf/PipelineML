@@ -108,32 +108,47 @@ namespace PipelineMLWeb.Hubs
         [Authorize]
         public void GetPipelinePartAndSchema(EditPipelinePartViewModel partData)
         {
-            ApplicationUser currentUser = this.GetApplicationUser();
-            var DbContext = this.GetPipelineDbContext();
-            Type classType = Type.GetType(partData.classType);
-            var project = GetProjectInternal(currentUser, DbContext, partData.projectId);
-            if (project != null)
+            try
             {
-                var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
-                var part = def.CreateInstanceOf(partData.columnNumber, classType, partData.pipelinePartId);
-                string partConfigJson = part.Config.ToJSON();
+                ApplicationUser currentUser = this.GetApplicationUser();
+                var DbContext = this.GetPipelineDbContext();
+                Type classType = Type.GetType(partData.classType);
+                var project = GetProjectInternal(currentUser, DbContext, partData.projectId);
+                if (project != null)
+                {
+                    var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
+                    var part = def.CreateInstanceOf(partData.columnNumber, classType, partData.pipelinePartId);
+                    string partConfigJson = part.Config.ToJSON();
 
-                JSchemaGenerator generator = new JSchemaGenerator();
-                generator.ContractResolver = new PipelinePartContractResolver();
-                // types with no defined ID have their type name as the ID
-                generator.SchemaIdGenerationHandling = SchemaIdGenerationHandling.TypeName;
-                generator.DefaultRequired = Newtonsoft.Json.Required.Always;
-                string partConfigSchema = generator.Generate(part.Config.GetType()).ToString();
+                    JSchemaGenerator generator = new JSchemaGenerator();
+                    generator.ContractResolver = new PipelinePartContractResolver();
+                    // types with no defined ID have their type name as the ID
+                    generator.SchemaIdGenerationHandling = SchemaIdGenerationHandling.TypeName;
+                    generator.DefaultRequired = Newtonsoft.Json.Required.Always;
+                    string partConfigSchema = generator.Generate(part.Config.GetType()).ToString();
+                    partConfigSchema = partConfigSchema.Insert(1, $"\"title\": \"Edit: {part.Name}\", ");
 
-                var data = new PipelinePartSchemaAndData() {
-                    classType = partData.classType, columnNumber = partData.columnNumber, projectId = partData.projectId, pipelinePartId = partData.pipelinePartId };
-                data.schemaJSON = partConfigSchema;
-                data.dataJSON = partConfigJson;
+                    var data = new PipelinePartSchemaAndData()
+                    {
+                        classType = partData.classType,
+                        columnNumber = partData.columnNumber,
+                        projectId = partData.projectId,
+                        pipelinePartId = partData.pipelinePartId
+                    };
+                    data.schemaJSON = partConfigSchema;
+                    data.dataJSON = partConfigJson;
 
-                // TODO: Handle this on Javascript side
-                Clients.Caller.OnEditPipelinePart(data);
+                    Clients.Caller.OnEditPipelinePart(data);
 
 
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorData = new ErrorViewModel();
+                errorData.FriendlyMessage = "There was an error trying to edit your project.";
+                errorData.ErrorMessage = ex.Message;
+                Clients.Caller.OnError(errorData);
             }
         }
     }

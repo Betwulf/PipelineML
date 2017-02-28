@@ -29,7 +29,7 @@ namespace PipelineMLCore
         public DatasetGeneratorXorData()
         {
             Config = new DatasetConfigBlank();
-
+            Config.Name = "XOR Data";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

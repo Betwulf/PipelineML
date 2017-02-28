@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace PipelineMLCore
 {
@@ -8,6 +9,7 @@ namespace PipelineMLCore
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public DataColumnBase NewColumn { get; set; }
 
+        [Required]
         public string Code { get; set; }
 
         public DataTransformConfigAddColumn()

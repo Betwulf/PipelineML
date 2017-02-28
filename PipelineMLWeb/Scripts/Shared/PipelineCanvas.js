@@ -11,6 +11,9 @@
     var classTypes = null; //  for convenience - part of the project model that provides class types.
     var createPipelinePart = null; // passed in function to call when creating a pipeline part
     var editPipelinePart = null; // passed in function to call when a user wants to edit a pipeline part
+    var resetError = null; // passed in function to call when we can clear past errors from the UI
+    var handleError = null; // passed in function to call when there is an error
+
 
     // Box Variables
     var boxScale = 1.0;
@@ -219,6 +222,7 @@
 
     function handleCreatePipelinePart(event)
     {
+        resetError();
         console.log("Create: " + event.data.id);
         var $div = $('#editor_holder');
         $div.html('');
@@ -357,10 +361,24 @@
         editPipelinePart = fn;
     }
 
+    // passed in function to call when there is an error
+    getOnErrorFunction = function (fn)
+    {
+        handleError = fn;
+    }
+
+    // Clear Error UI
+    getResetErrorFunction = function (fn) {
+        resetError = fn;
+    }
+
+
     return {
         startDrawing: startDrawing,
         startDrawingProject: startDrawingProject,
         getCreatePipelinePartFunction: getCreatePipelinePartFunction,
+        getOnErrorFunction: getOnErrorFunction,
+        getResetErrorFunction: getResetErrorFunction,
         getEditPipelinePartFunction: getEditPipelinePartFunction
     };
 
