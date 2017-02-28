@@ -18,13 +18,13 @@ $(document).ready(function () {
         createEditor(JSON.parse(data.schemaJSON), JSON.parse(data.dataJSON));
     };
 
-    onError = function (data) {
-        console.log("OnError: " + data.ErrorMessage);
-        $('#projectStateTooltip').attr('data-original-title', data.ErrorMessage);
+    onError = function (friendlyMessage, errorMessage) {
+        console.log("OnError: " + errorMessage);
+        $('#projectStateTooltip').attr('data-original-title', errorMessage);
         $('#projectStateTooltip').tooltip();
         $('#projectStateTooltip').text("details");
         $('#projectState').removeProp('hidden');
-        $('#projectStateText').text(data.FriendlyMessage);
+        $('#projectStateText').text(friendlyMessage);
     }
 
     resetError = function () {
@@ -88,7 +88,7 @@ $(document).ready(function () {
         editPipelinePart(data);
     });
     hub.on("OnError", function (data) {
-        onError(data);
+        onError(data.FriendlyMessage, data.ErrorMessage);
     });
 
     
@@ -111,8 +111,8 @@ $(document).ready(function () {
         hub.invoke('GetPipelinePartAndSchema', data);
     });
 
-    pipelineCanvas.getOnErrorFunction(function (data) {
-        onError(data);
+    pipelineCanvas.getOnErrorFunction(function (friendlyMessage, errorMessage) {
+        onError(friendlyMessage, errorMessage);
     });
 
     

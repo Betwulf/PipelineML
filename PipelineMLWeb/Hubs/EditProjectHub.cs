@@ -11,24 +11,43 @@ namespace PipelineMLWeb.Hubs
     [Authorize]
     public class EditProjectHub : Hub
     {
+        private void SendError(string errorMessage, string friendlyMessage)
+        {
+            var errorData = new ErrorViewModel() { ErrorMessage = errorMessage, FriendlyMessage = friendlyMessage };
+            Clients.Caller.OnError(errorData);
+        }
+
         [Authorize]
         public void GetProject(string guid)
         {
-            ApplicationUser currentUser = this.GetApplicationUser();
-            var DbContext = this.GetPipelineDbContext();
-            var project = GetProjectInternal(currentUser, DbContext, guid);
-            if (project != null)
+            try
             {
-                ProjectViewModel model = new ProjectViewModel(project);
-                var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
-                if (def != null)
+                ApplicationUser currentUser = this.GetApplicationUser();
+                var DbContext = this.GetPipelineDbContext();
+                var project = GetProjectInternal(currentUser, DbContext, guid);
+                if (project != null)
                 {
-                    model.SetDefinition(def);
-                    Clients.Caller.OnGetProject(model);
+                    ProjectViewModel model = new ProjectViewModel(project);
+                    var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
+                    if (def != null)
+                    {
+                        model.SetDefinition(def);
+                        Clients.Caller.OnGetProject(model);
+                    }
+                    else
+                    {
+                        SendError($"Could not find and create the project definition id: {project.PipelineDefinitionGuid}", "There was an error trying to load your project.");
+                    }
                 }
-                //TODO: Handle error case where def == null
+                else
+                {
+                    SendError($"Could not find and create the project id: {project.Id}", "There was an error trying to load your project.");
+                }
             }
-            // TODO: Handle case where project is null
+            catch (Exception ex)
+            {
+                SendError(ex.Message, "There was an error trying to load your project.");
+            }
         }
 
 
@@ -145,10 +164,7 @@ namespace PipelineMLWeb.Hubs
             }
             catch (Exception ex)
             {
-                var errorData = new ErrorViewModel();
-                errorData.FriendlyMessage = "There was an error trying to edit your project.";
-                errorData.ErrorMessage = ex.Message;
-                Clients.Caller.OnError(errorData);
+                SendError(ex.Message, "There was an error trying to edit your project.");
             }
         }
     }

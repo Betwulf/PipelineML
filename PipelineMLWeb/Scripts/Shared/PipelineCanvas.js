@@ -159,10 +159,9 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, projectModel.PreProcessParts[part].Id, projectModel.PreProcessParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
-        if (projectModel.PreProcessParts.length === 0) {
-            drawPlus(currX, currY, boxWidth, boxHeight);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, null, classTypes.DataTransform));
-        }
+        // Always be able to add another
+        drawPlus(currX, currY, boxWidth, boxHeight);
+        hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 1, null, classTypes.DataTransform));
 
 
         // Machine Learning Column
@@ -177,10 +176,9 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, projectModel.MLParts[part].Id, projectModel.MLParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
-        if (projectModel.MLParts.length === 0) {
-            drawPlus(currX, currY, boxWidth, boxHeight);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, null, classTypes.MachineLearning));
-        }
+        // Always be able to add another
+        drawPlus(currX, currY, boxWidth, boxHeight);
+        hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 2, null, classTypes.MachineLearning));
 
 
         // Postprocess Column
@@ -195,10 +193,9 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, projectModel.PostProcessParts[part].Id, projectModel.PostProcessParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
-        if (projectModel.PostProcessParts.length === 0) {
-            drawPlus(currX, currY, boxWidth, boxHeight);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, null, classTypes.DataTransform));
-        }
+        // Always be able to add another
+        drawPlus(currX, currY, boxWidth, boxHeight);
+        hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 3, null, classTypes.DataTransform));
 
 
 
@@ -214,10 +211,9 @@
             hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, projectModel.EvalutorParts[part].Id, projectModel.EvalutorParts[part].ClassType));
             currY = currY + boxHeight + boxMargin;
         }
-        if (projectModel.EvalutorParts.length === 0) {
-            drawPlus(currX, currY, boxWidth, boxHeight);
-            hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, null, classTypes.Evaluator));
-        }
+        // Always be able to add another
+        drawPlus(currX, currY, boxWidth, boxHeight);
+        hitBoxes.push(new getHitBox(currX, currY, boxWidth, boxHeight, 4, null, classTypes.Evaluator));
     }
 
     function handleCreatePipelinePart(event)
@@ -297,7 +293,10 @@
     // then draws the new borders accordingly.
     function resizeCanvas() {
         cvs.width = $("#" + canvasId).parent().width();
-        cvs.height = window.innerHeight - 96; // Adjustment for the navbar and project name height 
+        cvs.height = window.innerHeight - 98; // Adjustment for the navbar and project name height 
+        var canvasOffset = $("#" + canvasId).offset();
+        canvasOffsetX = canvasOffset.left;
+        canvasOffsetY = canvasOffset.top;
         redraw();
     }
 
