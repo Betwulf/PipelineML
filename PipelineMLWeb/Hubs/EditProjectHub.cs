@@ -11,11 +11,34 @@ namespace PipelineMLWeb.Hubs
     [Authorize]
     public class EditProjectHub : Hub
     {
+        /// <summary>
+        /// Helper function to simplify sending an error through SignalR
+        /// </summary>
+        /// <param name="errorMessage">msg for developers</param>
+        /// <param name="friendlyMessage">msg for users</param>
         private void SendError(string errorMessage, string friendlyMessage)
         {
             var errorData = new ErrorViewModel() { ErrorMessage = errorMessage, FriendlyMessage = friendlyMessage };
             Clients.Caller.OnError(errorData);
         }
+
+
+
+        private PipelineProject GetProjectInternal(ApplicationUser user, PipelineDbContext dbContext, string projectId)
+        {
+            var projectClaim = user.Claims.FirstOrDefault(x => x.ClaimType == PipelineClaimsTypes.PipelineProject && x.ClaimValue == projectId);
+            Guid tempGuid;
+            if (Guid.TryParse(projectId, out tempGuid))
+            {
+                if (projectClaim != null)
+                {
+                    var project = dbContext.Projects.FirstOrDefault(x => x.Id == tempGuid);
+                    return project;
+                }
+            }
+            return null;
+        }
+
 
         [Authorize]
         public void GetProject(string guid)
@@ -51,76 +74,66 @@ namespace PipelineMLWeb.Hubs
         }
 
 
-        private PipelineProject GetProjectInternal(ApplicationUser user, PipelineDbContext dbContext, string projectId)
-        {
-            var projectClaim = user.Claims.FirstOrDefault(x => x.ClaimType == PipelineClaimsTypes.PipelineProject && x.ClaimValue == projectId);
-            Guid tempGuid;
-            if (Guid.TryParse(projectId, out tempGuid))
-            {
-                if (projectClaim != null)
-                {
-                    var project = dbContext.Projects.FirstOrDefault(x => x.Id == tempGuid);
-                    return project;
-                }
-            }
-            return null;
-        }
-
-
         [Authorize]
         public void CreatePipelinePart(EditPipelinePartViewModel createPart)
         {
-            ApplicationUser currentUser = this.GetApplicationUser();
-            var DbContext = this.GetPipelineDbContext();
-            Type classType = Type.GetType(createPart.classType);
-            var project = GetProjectInternal(currentUser, DbContext, createPart.projectId);
-            if (project != null)
+            try
             {
-                var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
-                IPipelinePart part = (IPipelinePart)Activator.CreateInstance(classType);
-                // TODO: Part Guid not being created?
-                if (def != null)
+                ApplicationUser currentUser = this.GetApplicationUser();
+                var DbContext = this.GetPipelineDbContext();
+                Type classType = Type.GetType(createPart.classType);
+                var project = GetProjectInternal(currentUser, DbContext, createPart.projectId);
+                if (project != null)
                 {
-                    switch (createPart.columnNumber)
+                    var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
+                    IPipelinePart part = (IPipelinePart)Activator.CreateInstance(classType);
+                    // TODO: Part Guid not being created?
+                    if (def != null)
                     {
-                        case 0:
-                            // DataGenerator
-                            Console.WriteLine($"Creating DatasetGenerator: {createPart.classType}");
-                            def.DatasetGenerator = new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() };
-                        break;
-                        case 1:
-                            // Preprocess data transform
-                            Console.WriteLine($"Creating pre process transform: {createPart.classType}");
-                            def.PreprocessDataTransforms.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
-                            break;
-                        case 2:
-                            // ML
-                            Console.WriteLine($"Creating machine learning: {createPart.classType}");
-                            def.MLList.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
-                            break;
-                        case 3:
-                            // Postprocess data transform
-                            Console.WriteLine($"Creating post process transform: {createPart.classType}");
-                            def.PostprocessDataTransforms.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
-                            break;
-                        case 4:
-                            // evaluator
-                            Console.WriteLine($"Creating evaluator: {createPart.classType}");
-                            def.Evaluators.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
-                            break;
-                        default:
-                            Console.WriteLine($"unknown column number {createPart.columnNumber} for {createPart.classType} ");
-                            //TODO: Handle this case better
-                            break;
+                        switch (createPart.columnNumber)
+                        {
+                            case 0:
+                                // DataGenerator
+                                Console.WriteLine($"Creating DatasetGenerator: {createPart.classType}");
+                                def.DatasetGenerator = new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() };
+                                break;
+                            case 1:
+                                // Preprocess data transform
+                                Console.WriteLine($"Creating pre process transform: {createPart.classType}");
+                                def.PreprocessDataTransforms.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                                break;
+                            case 2:
+                                // ML
+                                Console.WriteLine($"Creating machine learning: {createPart.classType}");
+                                def.MLList.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                                break;
+                            case 3:
+                                // Postprocess data transform
+                                Console.WriteLine($"Creating post process transform: {createPart.classType}");
+                                def.PostprocessDataTransforms.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                                break;
+                            case 4:
+                                // evaluator
+                                Console.WriteLine($"Creating evaluator: {createPart.classType}");
+                                def.Evaluators.Add(new TypeDefinition() { ClassType = classType, ClassConfig = part.Config.ToJSON() });
+                                break;
+                            default:
+                                Console.WriteLine($"unknown column number {createPart.columnNumber} for {createPart.classType} ");
+                                SendError($"columnNumber was not 0-4, was: {createPart.columnNumber}", "Tried to create an invalid pipeline part.");
+                                break;
+                        }
+                        DbContext.SavePipelineDefinition(def.Id, def);
+                        // Return updated project  to UI
+                        ProjectViewModel model = new ProjectViewModel(project);
+                        model.SetDefinition(def);
+                        Clients.Caller.OnGetProject(model);
                     }
-                    DbContext.SavePipelineDefinition(def.Id, def);
-                    // Return updated project  to UI
-                    ProjectViewModel model = new ProjectViewModel(project);
-                    model.SetDefinition(def);
-                    Clients.Caller.OnGetProject(model);
                 }
             }
-            // TODO: create type and add it to the appropriate project, then save and update project in UI
+            catch (Exception ex)
+            {
+                SendError($"[columnNumber: {createPart.columnNumber} for type: {createPart.classType}] " + ex.Message, "There was an error trying to create your pipeline part.");
+            }
         }
 
 

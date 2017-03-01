@@ -91,6 +91,7 @@ namespace PipelineMLCore
         public DataTransformAddColumn()
         {
             Config = new DataTransformConfigAddColumn();
+            Config.Name = "Add Column";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)
