@@ -28,6 +28,7 @@ namespace PipelineMLCore
         public DataTransformRemoveNullRows()
         {
             Config = new DataTransformConfigColumns();
+            Config.Name = "Remove null data rows";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

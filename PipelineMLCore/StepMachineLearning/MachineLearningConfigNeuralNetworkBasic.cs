@@ -13,6 +13,7 @@ namespace PipelineMLCore
     {
         public MachineLearningConfigNeuralNetworkBasic()
         {
+            Name = "Basic Neural Network";
             ActivationFunction = typeof(SigmoidFunction);
             ActivationFunctionAlpha = 2.0;
             TrainUntilError = 0.01;

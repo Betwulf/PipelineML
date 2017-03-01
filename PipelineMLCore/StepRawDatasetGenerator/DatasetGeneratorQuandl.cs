@@ -23,6 +23,7 @@ namespace PipelineMLCore
         public DatasetGeneratorQuandl()
         {
             Config = new DatasetConfigQuandlMarketData();
+            Config.Name = "Quandl Financial Data";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

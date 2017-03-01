@@ -28,6 +28,7 @@ namespace PipelineMLCore
         public DataTransformSetTraining()
         {
             Config = new DataTransformConfigSetTraining();
+            Config.Name = "Set Training Data";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

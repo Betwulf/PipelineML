@@ -29,6 +29,7 @@ namespace PipelineMLCore
         public DatasetGeneratorWebsiteCSV()
         {
             Config = new DatasetConfigWebsiteCSV();
+            Config.Name = "Website CSV File";
 
         }
 

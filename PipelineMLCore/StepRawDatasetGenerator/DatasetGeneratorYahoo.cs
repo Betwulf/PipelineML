@@ -42,6 +42,7 @@ namespace PipelineMLCore
         public DatasetGeneratorYahoo()
         {
             Config = new DatasetConfigYahooMarketData();
+            Config.Name = "Yahoo Financial Data";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

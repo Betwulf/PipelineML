@@ -30,6 +30,7 @@ namespace PipelineMLCore
         public MachineLearningDecisionTree()
         {
             Config = new MachineLearningConfigDecisionTree();
+            Config.Name = "Decision Tree";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

@@ -24,6 +24,7 @@ namespace PipelineMLCore
         public DataTransformRemoveColumns()
         {
             Config = new DataTransformConfigColumns();
+            Config.Name = "Remove Columns";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

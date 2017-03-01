@@ -30,6 +30,7 @@ namespace PipelineMLCore
         public DataTransformConvertColumnDataType()
         {
             Config = new DataTransformConfigColumns();
+            Config.Name = "Convert column type";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

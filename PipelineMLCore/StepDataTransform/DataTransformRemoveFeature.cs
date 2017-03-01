@@ -28,6 +28,7 @@ namespace PipelineMLCore
         public DataTransformRemoveFeature()
         {
             Config = new DataTransformConfigColumns();
+            Config.Name = "Remove Feature Flag";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)

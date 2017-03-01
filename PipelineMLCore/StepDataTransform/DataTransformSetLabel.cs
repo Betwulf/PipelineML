@@ -28,6 +28,7 @@ namespace PipelineMLCore
         public DataTransformSetLabel()
         {
             Config = new DataTransformConfigColumns();
+            Config.Name = "Set Label";
         }
 
         public void Configure(IKernel kernel, string jsonConfig)
