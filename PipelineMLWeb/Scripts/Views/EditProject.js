@@ -32,7 +32,7 @@ $(document).ready(function () {
         $('#projectStateTooltip').attr('data-original-title', "");
         $('#projectStateTooltip').tooltip();
         $('#projectStateTooltip').text("details");
-        $('#projectState').prop('hidden');
+        $('#projectState').attr('hidden','hidden'); // TODO: is this working?
         $('#projectStateText').text('');
     }
 

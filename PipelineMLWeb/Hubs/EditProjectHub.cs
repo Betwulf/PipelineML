@@ -159,6 +159,7 @@ namespace PipelineMLWeb.Hubs
                     generator.DefaultRequired = Newtonsoft.Json.Required.Always;
                     string partConfigSchema = generator.Generate(part.Config.GetType()).ToString();
                     partConfigSchema = partConfigSchema.Insert(1, $"\"title\": \"Edit: {part.Name}\", ");
+                    partConfigSchema = partConfigSchema.Replace("$ref\": \"", "$ref\": \"#/definitions/");
 
                     var data = new PipelinePartSchemaAndData()
                     {

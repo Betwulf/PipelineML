@@ -123,7 +123,7 @@
         ctx.fillText(boxText, x + (w / 2), y + (h / 2) + boxFontHeight / 2);
     }
 
-
+    // TODO: Add headers to each column describing what it is
     function drawBoxes() {
         if (classTypes === null) return;
         hitBoxes = [];
@@ -252,6 +252,7 @@
                         .appendTo(form);
 
                     });
+                    //TODO: Add tooltips with descriptions for these items
 
                     $div.append('<h3>Select Type:</h3>');
                     $(form).appendTo($div);
