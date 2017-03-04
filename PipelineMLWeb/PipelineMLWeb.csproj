@@ -261,6 +261,7 @@
     <Compile Include="App_Start\StorageProvider.cs" />
     <Compile Include="Code\PipelinePartContractResolver.cs" />
     <Compile Include="DataContexts\ApplicationDbContext.cs" />
+    <Compile Include="DataContexts\ClassSchema.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201701122128029_2017.01.12 First.Designer.cs">
       <DependentUpon>201701122128029_2017.01.12 First.cs</DependentUpon>
@@ -282,6 +283,10 @@
     <Compile Include="DataContexts\PipelineMigrations\201701131343428_2017.01.13 four.cs" />
     <Compile Include="DataContexts\PipelineMigrations\201701131343428_2017.01.13 four.Designer.cs">
       <DependentUpon>201701131343428_2017.01.13 four.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\PipelineMigrations\201703041502409_2017.03.04 Adding schemas.cs" />
+    <Compile Include="DataContexts\PipelineMigrations\201703041502409_2017.03.04 Adding schemas.Designer.cs">
+      <DependentUpon>201703041502409_2017.03.04 Adding schemas.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\PipelineMigrations\Configuration.cs" />
     <Compile Include="Hubs\EditProjectHub.cs" />
@@ -509,6 +514,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\PipelineMigrations\201701131343428_2017.01.13 four.resx">
       <DependentUpon>201701131343428_2017.01.13 four.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\PipelineMigrations\201703041502409_2017.03.04 Adding schemas.resx">
+      <DependentUpon>201703041502409_2017.03.04 Adding schemas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

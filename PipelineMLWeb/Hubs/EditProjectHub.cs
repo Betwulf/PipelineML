@@ -151,14 +151,7 @@ namespace PipelineMLWeb.Hubs
                     var part = def.CreateInstanceOf(partData.columnNumber, classType, partData.pipelinePartId);
                     string partConfigJson = part.Config.ToJSON();
 
-                    JSchemaGenerator generator = new JSchemaGenerator();
-                    generator.ContractResolver = new PipelinePartContractResolver();
-                    // types with no defined ID have their type name as the ID
-                    generator.SchemaIdGenerationHandling = SchemaIdGenerationHandling.TypeName;
-                    generator.DefaultRequired = Newtonsoft.Json.Required.Always;
-                    string partConfigSchema = generator.Generate(part.Config.GetType()).ToString();
-                    partConfigSchema = partConfigSchema.Insert(1, $"\"title\": \"Edit: {part.Name}\", ");
-                    partConfigSchema = partConfigSchema.Replace("$ref\": \"", "$ref\": \"#/definitions/");
+                    var classSchema = DbContext.GetClassSchema(part.Config.GetType(), part.Name);
 
                     var data = new PipelinePartSchemaAndData()
                     {
@@ -167,7 +160,7 @@ namespace PipelineMLWeb.Hubs
                         projectId = partData.projectId,
                         pipelinePartId = partData.pipelinePartId
                     };
-                    data.schemaJSON = partConfigSchema;
+                    data.schemaJSON = classSchema.Schema;
                     data.dataJSON = partConfigJson;
 
                     Clients.Caller.OnEditPipelinePart(data);
