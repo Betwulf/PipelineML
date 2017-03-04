@@ -2,7 +2,7 @@
 var cvs;
 var ctx;
 var sinewaveList;
-var editor; //JSON Editor
+var editor = null; //JSON Editor
 var project; // pipeline project view model
 var pipelineCanvas; // javascript drawing functions
 var editingData;
@@ -51,6 +51,7 @@ $(document).ready(function () {
 
 
         // Initialize the json editor with a JSON schema
+        if (!(editor === null)) editor.destroy();
         editor = new JSONEditor(document.getElementById('editor_holder'), {
             schema: schema,
 

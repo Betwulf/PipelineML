@@ -28,11 +28,14 @@ namespace PipelineMLWeb.Controllers
         {
 
         }
+
+
         public PipelineProjectController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
 
         }
+
 
         public ApplicationUserManager UserManager
         {
@@ -45,6 +48,7 @@ namespace PipelineMLWeb.Controllers
                 _userManager = value;
             }
         }
+
 
         public ActionResult Create()
         {
@@ -84,6 +88,7 @@ namespace PipelineMLWeb.Controllers
             // TODO: Handle Errors
             return View();
         }
+
 
         public async Task<ActionResult> Edit(string id)
         {

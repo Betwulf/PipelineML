@@ -150,9 +150,7 @@ namespace PipelineMLWeb.Hubs
                     var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
                     var part = def.CreateInstanceOf(partData.columnNumber, classType, partData.pipelinePartId);
                     string partConfigJson = part.Config.ToJSON();
-
                     var classSchema = DbContext.GetClassSchema(part.Config.GetType(), part.Name);
-
                     var data = new PipelinePartSchemaAndData()
                     {
                         classType = partData.classType,
@@ -172,6 +170,13 @@ namespace PipelineMLWeb.Hubs
             {
                 SendError(ex.Message, "There was an error trying to edit your project.");
             }
+        }
+
+
+        [Authorize]
+        public void SavePipelinePart(EditPipelinePartViewModel partData)
+        {
+
         }
     }
 }
