@@ -242,18 +242,19 @@
                     var $div = $('#editor_holder');
                     $div.html('');
                     var form = $('<div></div>').attr("id", 'selectType').attr("class", 'list-group');
+                    // Add appropriate classes to list
                     $.each(classTypes.PipelineParts[box.classType], function (key, value) {
-                        console.log("Adding: " + value.FriendlyName);
                         $("<a href='#' class='list-group-item' value='" + value.FriendlyName + "' >")
                         .attr("id", value.ClassType)
                         .attr("name", value.FriendlyName)
+                        .attr("data-toggle", "tooltip")
+                        .attr("data-placement", "bottom")
+                        .attr("data-original-title", value.Description).tooltip()
                         .text(value.FriendlyName)
                         .on('click', { id: value.ClassType, column: box.column }, handleCreatePipelinePart)
                         .appendTo(form);
 
                     });
-                    //TODO: Add tooltips with descriptions for these items
-
                     $div.append('<h3>Select Type:</h3>');
                     $(form).appendTo($div);
                 }

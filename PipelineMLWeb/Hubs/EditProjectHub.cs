@@ -87,7 +87,6 @@ namespace PipelineMLWeb.Hubs
                 {
                     var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
                     IPipelinePart part = (IPipelinePart)Activator.CreateInstance(classType);
-                    // TODO: Part Guid not being created?
                     if (def != null)
                     {
                         switch (createPart.columnNumber)
