@@ -43,6 +43,7 @@ namespace PipelineMLWeb.Hubs
         [Authorize]
         public void GetProject(string guid)
         {
+            string errMsg = "There was an error trying to load your project";
             try
             {
                 ApplicationUser currentUser = this.GetApplicationUser();
@@ -59,17 +60,17 @@ namespace PipelineMLWeb.Hubs
                     }
                     else
                     {
-                        SendError($"Could not find and create the project definition id: {project.PipelineDefinitionGuid}", "There was an error trying to load your project.");
+                        SendError($"Could not find and create the project definition id: {project.PipelineDefinitionGuid}", errMsg);
                     }
                 }
                 else
                 {
-                    SendError($"Could not find and create the project id: {project.Id}", "There was an error trying to load your project.");
+                    SendError($"Could not find and create the project id: {project.Id}", errMsg);
                 }
             }
             catch (Exception ex)
             {
-                SendError(ex.Message, "There was an error trying to load your project.");
+                SendError(ex.Message, errMsg);
             }
         }
 
@@ -174,9 +175,28 @@ namespace PipelineMLWeb.Hubs
 
 
         [Authorize]
-        public void SavePipelinePart(EditPipelinePartViewModel partData)
+        public void SavePipelinePart(PipelinePartSchemaAndData partData)
         {
+            try
+            {
+                ApplicationUser currentUser = this.GetApplicationUser();
+                var DbContext = this.GetPipelineDbContext();
+                Type classType = Type.GetType(partData.classType);
+                var project = GetProjectInternal(currentUser, DbContext, partData.projectId);
+                if (project != null)
+                {
+                    var def = DbContext.GetPipelineDefinitionByGuid(project.PipelineDefinitionGuid);
+                    var inst = def.CreateInstance();
+                    
+                    var part = def.CreateInstanceOf(partData.columnNumber, classType, partData.pipelinePartId);
+                    string partConfigJson = part.Config.ToJSON();
+                }
+            }
+            catch (Exception ex)
+            {
 
+                SendError(ex.Message, "There was an error trying to save your changes.");
+            }
         }
     }
 }
